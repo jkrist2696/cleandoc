@@ -5,15 +5,18 @@ Created on Sun Jul  2 12:18:08 2023
 @author: jkris
 """
 
+from sys import stdout
 from os import path, mkdir, remove
 from shutil import rmtree, copytree, copyfile
 import logging
+from importlib import reload
 import webbrowser
-from sys import stdout
 from .clean import run_black, run_pylint, run_mypy
 from .doq import run_doq
 from .helper import format_header, find_pyfiles
 from .sphinx import run_sphinx_all, get_release
+
+reload(logging)
 
 
 def cleandoc_all(searchpath: str, ignore: bool = False):
@@ -40,9 +43,8 @@ def cleandoc_all(searchpath: str, ignore: bool = False):
     logger.addHandler(logging.StreamHandler(stdout))
     clean_all(searchpath, ignore=ignore)
     mainpage = gen_docs(searchpath)
-    logging.shutdown()
-    del logger
     webbrowser.open(mainpage)
+    logging.shutdown()
 
 
 def clean_all(searchpath: str, ignore: bool = False):
@@ -64,7 +66,9 @@ def clean_all(searchpath: str, ignore: bool = False):
         logger.info(checkstr)
         summary = clean_pyfile(pyfile)
         if (not ignore) and (len(summary) > 0):
-            raise SyntaxWarning(summary)
+            logger.error("%s\n", pyfile)
+            logging.shutdown()
+            raise SyntaxWarning(f"{pyfile}\n{summary}")
         if len(summary) == 0:
             logger.info("File is Clean: %s\n", pyfile)
 

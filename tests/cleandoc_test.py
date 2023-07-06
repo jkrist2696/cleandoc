@@ -12,4 +12,4 @@ from cleandoc import cleandoc_all
 
 scriptdir, scriptname = path.split(__file__)
 cleandoc_path = path.join(path.abspath("../"), "cleandoc")
-cleandoc_all(cleandoc_path, ignore=True)
+cleandoc_all(cleandoc_path)
