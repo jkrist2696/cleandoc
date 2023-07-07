@@ -14,12 +14,13 @@ from typing import Union, List
 from .clean import run_black, run_pylint, run_mypy
 from .doq import run_doq
 from .helper import format_header, find_pyfiles, get_clean_pyfiles, config_log
+from .helper import check_modified_since_docs
 from .sphinx import run_sphinx_all, get_release
 
 reload(logging)
 
 
-def cleandoc_all(searchpath: str, ignore: bool = False):
+def cleandoc_all(searchpath: str, ignore: bool = False, openhtml: bool = True):
     """cleandoc.
 
     Parameters
@@ -30,10 +31,12 @@ def cleandoc_all(searchpath: str, ignore: bool = False):
         ignore
     """
     skiplist = get_clean_pyfiles("cleandoc_log.txt")
+    createdocs = check_modified_since_docs(searchpath, "cleandoc_log.txt")
     config_log("cleandoc_log.txt")
     clean_all(searchpath, ignore=ignore, skip=skiplist)
-    mainpage = gen_docs(searchpath)
-    webbrowser.open(mainpage)
+    mainpage = gen_docs(searchpath, create=createdocs)
+    if openhtml is True:
+        webbrowser.open(mainpage)
     logging.shutdown()
 
 
@@ -92,7 +95,7 @@ def clean_pyfile(pyfilepath: str):
     return summary
 
 
-def gen_docs(pkgpath: str):
+def gen_docs(pkgpath: str, create: bool = True):
     """gen_docs.
 
     Parameters
@@ -101,12 +104,17 @@ def gen_docs(pkgpath: str):
         pkgpath
     """
     logger = config_log("cleandoc_log.txt")
+    basepath, pkgname = path.split(pkgpath)
+    docs = path.join(basepath, "docs")
+    indexpath = path.join(docs, "index.html")
+    if create is False:
+        logger.info("%s\n", format_header("Skipping Gen Docs", repeat_char="o"))
+        logger.info("Docs Location: %s\n", docs)
+        return indexpath
     logger.info("%s\n", format_header("Gen Docs Output", repeat_char="o"))
     logger.debug("    pkgpath: %s", pkgpath)
-    basepath, pkgname = path.split(pkgpath)
     docpath = path.join(basepath, f"_{pkgname}_working_docs")
     confpath = path.join(docpath, "source", "conf.py")
-    docs = path.join(basepath, "docs")
     confpath_old = path.join(docs, "conf.txt")
     release = get_release(confpath_old)
     if path.exists(docpath):
@@ -119,8 +127,7 @@ def gen_docs(pkgpath: str):
     copytree(htmlpath, docs)
     copyfile(confpath, confpath_old)
     rmtree(docpath)
-    indexpath = path.join(docs, "index.html")
-    logger.info("Location: %s\n", docs)
+    logger.info("Docs Location: %s\n", docs)
     return indexpath
 
 

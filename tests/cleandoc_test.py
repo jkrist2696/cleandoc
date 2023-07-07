@@ -13,7 +13,7 @@ import logging
 
 scriptdir, scriptname = path.split(__file__)
 cleandoc_path = path.join(path.abspath("../"), "cleandoc")
-clean_all(cleandoc_path, ignore = True, skip=True)
-gen_docs(cleandoc_path)
-logging.shutdown()
+#clean_all(cleandoc_path, ignore = True, skip=True)
+#gen_docs(cleandoc_path)
+#logging.shutdown()
 cleandoc_all(cleandoc_path)

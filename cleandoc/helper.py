@@ -101,6 +101,77 @@ def find_pyfiles(searchpath: str) -> Tuple[list[str], list[str]]:
     return pathlist, filelist
 
 
+def check_modified(filepath: str, timestr: str) -> bool:
+    """check_modified.
+
+    Parameters
+    ----------
+    filepath : str
+        filepath
+    timestr : str
+        timestr
+
+    Returns
+    -------
+    bool
+
+    """
+    checktime = datetime.strptime(timestr, "%d-%m-%y %H:%M:%S")
+    checkstamp = datetime.timestamp(checktime)
+    editstamp = path.getmtime(filepath)
+    return editstamp > checkstamp
+
+
+def check_modified_since_docs(searchpath: str, logpath: str) -> bool:
+    """check_modified_since_docs.
+
+    Parameters
+    ----------
+    logpath : str
+        logpath
+    htmlpath : str
+        htmlpath
+
+    Returns
+    -------
+    bool
+
+    """
+    _none, filelist = find_pyfiles(searchpath)
+    regex_docs = r"(\d\d-\d\d-\d\d \d\d:\d\d:\d\d).*Docs Location: (.*)"
+    results_docs = findall_infile(regex_docs, logpath)
+    print(results_docs)
+    if len(results_docs) == 0:
+        return True
+    doctime = results_docs[0][0]
+    for filepath in filelist:
+        if check_modified(filepath, doctime):
+            return True
+    return False
+
+
+def findall_infile(regex: str, filepath: str) -> list:
+    """findall_infile.
+
+    Parameters
+    ----------
+    regex : str
+        regex
+    filepath : str
+        filepath
+
+    Returns
+    -------
+    list
+
+    """
+    with open(filepath, "r", encoding="ascii") as file:
+        filelines = file.readlines()
+    filetext = "".join(filelines)
+    results = findall(regex, filetext)
+    return results
+
+
 def get_clean_pyfiles(logpath: str) -> list[str]:
     """get_clean_pyfiles.
 
@@ -114,17 +185,11 @@ def get_clean_pyfiles(logpath: str) -> list[str]:
     list[str]
 
     """
-    with open(logpath, "r", encoding="ascii") as logfile:
-        loglines = logfile.readlines()
-    logtext = "".join(loglines)
     clean_pyfiles = []
     regex = r"(\d\d-\d\d-\d\d \d\d:\d\d:\d\d).*File is Clean: (.*)"
-    results = findall(regex, logtext)
+    results = findall_infile(regex, logpath)
     for result in results:
-        cleantime = datetime.strptime(result[0], "%d-%m-%y %H:%M:%S")
-        cleanstamp = datetime.timestamp(cleantime)
-        editstamp = path.getmtime(result[1])
-        if editstamp < cleanstamp:
+        if not check_modified(result[1], result[0]):
             clean_pyfiles.append(result[1])
     return clean_pyfiles
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cleandoc.helper &mdash; cleandoc 0.0.36 documentation</title>
+  <title>cleandoc.helper &mdash; cleandoc 0.0.3 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             cleandoc
           </a>
               <div class="version">
-                0.0.36
+                0.0.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -176,6 +176,77 @@
     <span class="k">return</span> <span class="n">pathlist</span><span class="p">,</span> <span class="n">filelist</span></div>
 
 
+<div class="viewcode-block" id="check_modified"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.helper.check_modified">[docs]</a><span class="k">def</span> <span class="nf">check_modified</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timestr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;check_modified.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filepath : str</span>
+<span class="sd">        filepath</span>
+<span class="sd">    timestr : str</span>
+<span class="sd">        timestr</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">checktime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">timestr</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-%m-%y %H:%M:%S&quot;</span><span class="p">)</span>
+    <span class="n">checkstamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timestamp</span><span class="p">(</span><span class="n">checktime</span><span class="p">)</span>
+    <span class="n">editstamp</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">editstamp</span> <span class="o">&gt;</span> <span class="n">checkstamp</span></div>
+
+
+<div class="viewcode-block" id="check_modified_since_docs"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.helper.check_modified_since_docs">[docs]</a><span class="k">def</span> <span class="nf">check_modified_since_docs</span><span class="p">(</span><span class="n">searchpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">logpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;check_modified_since_docs.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    logpath : str</span>
+<span class="sd">        logpath</span>
+<span class="sd">    htmlpath : str</span>
+<span class="sd">        htmlpath</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_none</span><span class="p">,</span> <span class="n">filelist</span> <span class="o">=</span> <span class="n">find_pyfiles</span><span class="p">(</span><span class="n">searchpath</span><span class="p">)</span>
+    <span class="n">regex_docs</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(\d\d-\d\d-\d\d \d\d:\d\d:\d\d).*Docs Location: (.*)&quot;</span>
+    <span class="n">results_docs</span> <span class="o">=</span> <span class="n">findall_infile</span><span class="p">(</span><span class="n">regex_docs</span><span class="p">,</span> <span class="n">logpath</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">results_docs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results_docs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="n">doctime</span> <span class="o">=</span> <span class="n">results_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="n">filelist</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">check_modified</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">doctime</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="findall_infile"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.helper.findall_infile">[docs]</a><span class="k">def</span> <span class="nf">findall_infile</span><span class="p">(</span><span class="n">regex</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;findall_infile.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    regex : str</span>
+<span class="sd">        regex</span>
+<span class="sd">    filepath : str</span>
+<span class="sd">        filepath</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">filelines</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
+    <span class="n">filetext</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">filelines</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">findall</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">filetext</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
 <div class="viewcode-block" id="get_clean_pyfiles"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.helper.get_clean_pyfiles">[docs]</a><span class="k">def</span> <span class="nf">get_clean_pyfiles</span><span class="p">(</span><span class="n">logpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;get_clean_pyfiles.</span>
 
@@ -189,17 +260,11 @@
 <span class="sd">    list[str]</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">logpath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">logfile</span><span class="p">:</span>
-        <span class="n">loglines</span> <span class="o">=</span> <span class="n">logfile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
-    <span class="n">logtext</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">loglines</span><span class="p">)</span>
     <span class="n">clean_pyfiles</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(\d\d-\d\d-\d\d \d\d:\d\d:\d\d).*File is Clean: (.*)&quot;</span>
-    <span class="n">results</span> <span class="o">=</span> <span class="n">findall</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">logtext</span><span class="p">)</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">findall_infile</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">logpath</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
-        <span class="n">cleantime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-%m-%y %H:%M:%S&quot;</span><span class="p">)</span>
-        <span class="n">cleanstamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timestamp</span><span class="p">(</span><span class="n">cleantime</span><span class="p">)</span>
-        <span class="n">editstamp</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="k">if</span> <span class="n">editstamp</span> <span class="o">&lt;</span> <span class="n">cleanstamp</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_modified</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
             <span class="n">clean_pyfiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
     <span class="k">return</span> <span class="n">clean_pyfiles</span></div>
 
