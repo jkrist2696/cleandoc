@@ -12,4 +12,4 @@ pip install cleandoc
 
 ## Copyright:
 
-Jason Krist
+(c) 2023, Jason Krist

@@ -14,8 +14,8 @@ project = 'cleandoc'
 copyright = '2023, jkris'
 author = 'jkris'
 
-version = '0.0.5'
-release = '0.0.5'
+version = '0.0.36'
+release = '0.0.36'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

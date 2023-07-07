@@ -9,7 +9,11 @@ from subprocess import run
 from math import floor, ceil
 from importlib.util import find_spec
 from typing import Tuple
-from os import path, walk
+from os import path, walk, remove
+from datetime import datetime
+from re import findall
+import logging
+from sys import stdout
 
 
 def check_for_pkg(packagename: str):
@@ -97,8 +101,63 @@ def find_pyfiles(searchpath: str) -> Tuple[list[str], list[str]]:
     return pathlist, filelist
 
 
-# def read_log(logpath):
-#    getmtime(pypath)
-#    return goodfileslist
+def get_clean_pyfiles(logpath: str) -> list[str]:
+    """get_clean_pyfiles.
+
+    Parameters
+    ----------
+    logpath : str
+        logpath
+
+    Returns
+    -------
+    list[str]
+
+    """
+    with open(logpath, "r", encoding="ascii") as logfile:
+        loglines = logfile.readlines()
+    logtext = "".join(loglines)
+    clean_pyfiles = []
+    regex = r"(\d\d-\d\d-\d\d \d\d:\d\d:\d\d).*File is Clean: (.*)"
+    results = findall(regex, logtext)
+    for result in results:
+        cleantime = datetime.strptime(result[0], "%d-%m-%y %H:%M:%S")
+        cleanstamp = datetime.timestamp(cleantime)
+        editstamp = path.getmtime(result[1])
+        if editstamp < cleanstamp:
+            clean_pyfiles.append(result[1])
+    return clean_pyfiles
+
+
+def config_log(logpath: str, logname: str = "cleandoc"):
+    """config_log.
+
+    Parameters
+    ----------
+    logpath : str
+        logpath
+    logname : str
+        logname
+
+    Returns
+    -------
+    Tuple[Any,bool]
+
+    """
+    if logging.getLogger(logname).hasHandlers():
+        return logging.getLogger(logname)
+    if path.exists(logpath):
+        remove(logpath)
+    logging.basicConfig(
+        filename=logpath,
+        filemode="a",
+        format="%(asctime)s %(name)s %(levelname)s %(message)s",
+        datefmt="%d-%m-%y %H:%M:%S",
+        level=logging.INFO,
+    )
+    logger = logging.getLogger(logname)
+    logger.addHandler(logging.StreamHandler(stdout))
+    return logger
+
 
 # if __name__ == "__main__":
