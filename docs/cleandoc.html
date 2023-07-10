@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cleandoc package &mdash; cleandoc 0.0.3 documentation</title>
+  <title>cleandoc package &mdash; cleandoc 0.0.4 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -34,7 +34,7 @@
             cleandoc
           </a>
               <div class="version">
-                0.0.3
+                0.0.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -59,6 +59,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cleandoc.doq">cleandoc.doq module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.doq.check_docstrings"><code class="docutils literal notranslate"><span class="pre">check_docstrings()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cleandoc.doq.run_doq"><code class="docutils literal notranslate"><span class="pre">run_doq()</span></code></a></li>
 </ul>
 </li>
@@ -120,13 +121,16 @@
 <p>&#64;author: jkris</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.clean_all">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.</span></span><span class="sig-name descname"><span class="pre">clean_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searchpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc.html#clean_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.clean_all" title="Permalink to this definition"></a></dt>
-<dd><p>clean_all.</p>
+<span class="sig-prename descclassname"><span class="pre">cleandoc.</span></span><span class="sig-name descname"><span class="pre">clean_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searchpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc.html#clean_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.clean_all" title="Permalink to this definition"></a></dt>
+<dd><p>Run clean_pyfile function on all .py files in searchpath.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>searchpath</strong> (<em>str</em>) -- searchpath</p></li>
-<li><p><strong>ignore</strong> (<em>bool</em>) -- ignore</p></li>
+<li><p><strong>searchpath</strong> (<em>str</em>) -- Directory to search in all nested folders for .py files</p></li>
+<li><p><strong>ignore</strong> (<em>bool</em>) -- True to ignore Syntax warnings found, False to raise them</p></li>
+<li><p><strong>write</strong> (<em>bool</em>) -- keyword argument passed to clean_pyfile function</p></li>
+<li><p><strong>skip</strong> (<em>Union</em><em>[</em><em>bool</em><em>, </em><em>List</em><em>[</em><em>str</em><em>]</em><em>]</em>) -- List of .py files to skip cleaning.
+Or True to find list of clean pyfiles within function.</p></li>
 </ul>
 </dd>
 </dl>
@@ -134,11 +138,18 @@
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.clean_pyfile">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.</span></span><span class="sig-name descname"><span class="pre">clean_pyfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pyfilepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc.html#clean_pyfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.clean_pyfile" title="Permalink to this definition"></a></dt>
-<dd><p>clean_pyfile.</p>
+<span class="sig-prename descclassname"><span class="pre">cleandoc.</span></span><span class="sig-name descname"><span class="pre">clean_pyfile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pyfilepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc.html#clean_pyfile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.clean_pyfile" title="Permalink to this definition"></a></dt>
+<dd><p>Clean a .py file by checking docstrings then running doq, black,
+pylint, and mypy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>pyfilepath</strong> (<em>str</em>) -- pyfilepath</p>
+<dd class="field-odd"><p><strong>pyfilepath</strong> (<em>str</em>) -- Full path of python (.py) file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Summary of all command outputs concatenated together</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -146,12 +157,14 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.cleandoc_all">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.</span></span><span class="sig-name descname"><span class="pre">cleandoc_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searchpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">openhtml</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc.html#cleandoc_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cleandoc_all" title="Permalink to this definition"></a></dt>
-<dd><p>cleandoc.</p>
+<dd><p>Run clean_all and gen_docs functions. Check modified files since last
+document generation to skip checking of some files. Open docs in browser
+after creation or checking.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>searchpath</strong> (<em>str</em>) -- searchpath</p></li>
-<li><p><strong>ignore</strong> (<em>bool</em>) -- ignore</p></li>
+<li><p><strong>searchpath</strong> (<em>str</em>) -- directory of python package (nested dirs of modules)</p></li>
+<li><p><strong>ignore</strong> (<em>bool</em>) -- keyword argument passed to clean_all function</p></li>
 </ul>
 </dd>
 </dl>
@@ -160,10 +173,20 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.gen_docs">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.</span></span><span class="sig-name descname"><span class="pre">gen_docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkgpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc.html#gen_docs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.gen_docs" title="Permalink to this definition"></a></dt>
-<dd><p>gen_docs.</p>
+<dd><p>Auto-generate sphinx html documentation for a python package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>pkgpath</strong> (<em>str</em>) -- pkgpath</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pkgpath</strong> (<em>str</em>) -- Full path to directory containing all python modules to document.
+Directory name will be used as package name.</p></li>
+<li><p><strong>create</strong> (<em>bool</em>) -- True to create docs or False to skip and log their location</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Path of index.html file, the home page of the sphinx docs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -178,13 +201,20 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.clean.run_black">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.clean.</span></span><span class="sig-name descname"><span class="pre">run_black</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pyfilepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/clean.html#run_black"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.clean.run_black" title="Permalink to this definition"></a></dt>
-<dd><p>run_black.</p>
+<dd><p>Run &quot;black&quot; command on .py file via subprocess and check output.
+Black is a python package which auto-formats python code according to PEP8.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pyfilepath</strong> (<em>str</em>) -- pyfilepath</p></li>
-<li><p><strong>write</strong> (<em>bool</em>) -- write</p></li>
+<li><p><strong>pyfilepath</strong> (<em>str</em>) -- Full path to python (.py) file</p></li>
+<li><p><strong>write</strong> (<em>bool</em>) -- True = write the auto-formatted code in-place</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Summary of command outputs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -192,10 +222,18 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.clean.run_mypy">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.clean.</span></span><span class="sig-name descname"><span class="pre">run_mypy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pyfilepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/clean.html#run_mypy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.clean.run_mypy" title="Permalink to this definition"></a></dt>
-<dd><p>run_mypy.</p>
+<dd><p>Run &quot;mypy&quot; command on .py file via subprocess and check output.
+Mypy is a python package which staticly checks variable types
+according to type hints.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>pyfilepath</strong> (<em>str</em>) -- pyfilepath</p>
+<dd class="field-odd"><p><strong>pyfilepath</strong> (<em>str</em>) -- Full path to python (.py) file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Summary of command outputs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -203,10 +241,17 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.clean.run_pylint">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.clean.</span></span><span class="sig-name descname"><span class="pre">run_pylint</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pyfilepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/clean.html#run_pylint"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.clean.run_pylint" title="Permalink to this definition"></a></dt>
-<dd><p>run_pylint.</p>
+<dd><p>Run &quot;pylint&quot; command on .py file via subprocess and check output.
+Pylint is a python package which checks for code cleanliness.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>pyfilepath</strong> (<em>str</em>) -- pyfilepath</p>
+<dd class="field-odd"><p><strong>pyfilepath</strong> (<em>str</em>) -- Full path to python (.py) file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Summary of command outputs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -217,15 +262,40 @@
 <p>Created on Sun Jul  2 12:18:08 2023</p>
 <p>&#64;author: jkris</p>
 <dl class="py function">
+<dt class="sig sig-object py" id="cleandoc.doq.check_docstrings">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.doq.</span></span><span class="sig-name descname"><span class="pre">check_docstrings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pyfilepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/doq.html#check_docstrings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.doq.check_docstrings" title="Permalink to this definition"></a></dt>
+<dd><p>Check if Docstrings were not edited after being auto-generated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pyfilepath</strong> (<em>str</em>) -- Full path of python (.py) file</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Summary of command outputs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.doq.run_doq">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.doq.</span></span><span class="sig-name descname"><span class="pre">run_doq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pyfilepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'numpy'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/doq.html#run_doq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.doq.run_doq" title="Permalink to this definition"></a></dt>
-<dd><p>run_doq.</p>
+<span class="sig-prename descclassname"><span class="pre">cleandoc.doq.</span></span><span class="sig-name descname"><span class="pre">run_doq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pyfilepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">formatter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'numpy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/doq.html#run_doq"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.doq.run_doq" title="Permalink to this definition"></a></dt>
+<dd><p>Auto-Generate Docstrings with doq (py-doq) package. Doq command is
+executed via subprocess command to create docstrings where missing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pyfilepath</strong> (<em>str</em>) -- pyfilepath</p></li>
-<li><p><strong>formatter</strong> (<em>str</em>) -- formatter</p></li>
+<li><p><strong>pyfilepath</strong> (<em>str</em>) -- Full path to python (.py) file</p></li>
+<li><p><strong>formatter</strong> (<em>str</em>) -- [&quot;numpy&quot;,&quot;google&quot;,&quot;sphinx&quot;] : See doq documentation for formatting options</p></li>
+<li><p><strong>write</strong> (<em>bool</em>) -- True = write the auto-gen docstrings in-place</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Summary of command outputs</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -238,10 +308,10 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.helper.check_for_pkg">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.helper.</span></span><span class="sig-name descname"><span class="pre">check_for_pkg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">packagename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/helper.html#check_for_pkg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.helper.check_for_pkg" title="Permalink to this definition"></a></dt>
-<dd><p>check_for_pkg.</p>
+<dd><p>Use importlib find_spec function to check if package is installed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>packagename</strong> (<em>str</em>) -- packagename</p>
+<dd class="field-odd"><p><strong>packagename</strong> (<em>str</em>) -- Name of python package to check for</p>
 </dd>
 </dl>
 </dd></dl>
@@ -249,16 +319,19 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.helper.check_modified">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.helper.</span></span><span class="sig-name descname"><span class="pre">check_modified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/cleandoc/helper.html#check_modified"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.helper.check_modified" title="Permalink to this definition"></a></dt>
-<dd><p>check_modified.</p>
+<dd><p>Check if a file was modified since a certain date and time.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>filepath</strong> (<em>str</em>) -- filepath</p></li>
-<li><p><strong>timestr</strong> (<em>str</em>) -- timestr</p></li>
+<li><p><strong>filepath</strong> (<em>str</em>) -- Full path of file to check</p></li>
+<li><p><strong>timestr</strong> (<em>str</em>) -- String of time to check against, formatted as &quot;%d-%m-%y %H:%M:%S&quot;</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if the file has been modified since the timestring.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -266,16 +339,20 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.helper.check_modified_since_docs">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.helper.</span></span><span class="sig-name descname"><span class="pre">check_modified_since_docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searchpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/cleandoc/helper.html#check_modified_since_docs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.helper.check_modified_since_docs" title="Permalink to this definition"></a></dt>
-<dd><p>check_modified_since_docs.</p>
+<dd><p>Check if any python files in nested directory were modified since
+html documents were created.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>logpath</strong> (<em>str</em>) -- logpath</p></li>
-<li><p><strong>htmlpath</strong> (<em>str</em>) -- htmlpath</p></li>
+<li><p><strong>logpath</strong> (<em>str</em>) -- Full path of previous log file output by cleandoc</p></li>
+<li><p><strong>htmlpath</strong> (<em>str</em>) -- Full path to directory containing previously generated html docs</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>True if modifed since doc creation</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -283,16 +360,16 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.helper.config_log">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.helper.</span></span><span class="sig-name descname"><span class="pre">config_log</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">logname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'cleandoc'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/helper.html#config_log"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.helper.config_log" title="Permalink to this definition"></a></dt>
-<dd><p>config_log.</p>
+<dd><p>Configure log file using logging module</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>logpath</strong> (<em>str</em>) -- logpath</p></li>
-<li><p><strong>logname</strong> (<em>str</em>) -- logname</p></li>
+<li><p><strong>logpath</strong> (<em>str</em>) -- Path of cleandoc log file to create</p></li>
+<li><p><strong>logname</strong> (<em>str</em>) -- Name for logger</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Tuple[Any,bool]</p>
+<dd class="field-even"><p>logger object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -300,30 +377,38 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.helper.find_pyfiles">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.helper.</span></span><span class="sig-name descname"><span class="pre">find_pyfiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searchpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cleandoc/helper.html#find_pyfiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.helper.find_pyfiles" title="Permalink to this definition"></a></dt>
-<dd><p>find_pyfiles.</p>
+<dd><p>Find all .py files in nested directories.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>searchpath</strong> (<em>str</em>) -- searchpath</p>
+<dd class="field-odd"><p><strong>searchpath</strong> (<em>str</em>) -- Full path to search through for .py files</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Tuple[list[str], list[str]]</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>pathlist</strong> (<em>list[str]</em>) -- List of full paths to all directories containing .py files directly</p></li>
+<li><p><strong>filelist</strong> (<em>list[str]</em>) -- List of full paths to all .py files found</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.helper.findall_infile">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.helper.</span></span><span class="sig-name descname"><span class="pre">findall_infile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/cleandoc/helper.html#findall_infile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.helper.findall_infile" title="Permalink to this definition"></a></dt>
-<dd><p>findall_infile.</p>
+<span class="sig-prename descclassname"><span class="pre">cleandoc.helper.</span></span><span class="sig-name descname"><span class="pre">findall_infile</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">skip_exist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="reference internal" href="_modules/cleandoc/helper.html#findall_infile"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.helper.findall_infile" title="Permalink to this definition"></a></dt>
+<dd><p>Open ascii file for reading and get results of re.findall</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>regex</strong> (<em>str</em>) -- regex</p></li>
-<li><p><strong>filepath</strong> (<em>str</em>) -- filepath</p></li>
+<li><p><strong>regex</strong> (<em>str</em>) -- Regular expression</p></li>
+<li><p><strong>filepath</strong> (<em>str</em>) -- Path of ascii text file to search</p></li>
+<li><p><strong>skip_exist</strong> (<em>bool</em>) -- True to skip searching through a file that doesnt exist</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Results from re.findall function</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -331,17 +416,20 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.helper.format_header">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.helper.</span></span><span class="sig-name descname"><span class="pre">format_header</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">repeat_char</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'-'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">linelen</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">68</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/helper.html#format_header"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.helper.format_header" title="Permalink to this definition"></a></dt>
-<dd><p>format_header.</p>
+<dd><p>Format a string header for printing or logging.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) -- name</p></li>
-<li><p><strong>repeat_char</strong> (<em>str</em>) -- repeat_char</p></li>
-<li><p><strong>linelen</strong> (<em>int</em>) -- linelen</p></li>
+<li><p><strong>name</strong> (<em>str</em>) -- String to include in middle of header</p></li>
+<li><p><strong>repeat_char</strong> (<em>str</em>) -- Character to repeat before and after name</p></li>
+<li><p><strong>linelen</strong> (<em>int</em>) -- Total length of string to create</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>header</strong> -- Full line string with name between repeated characters</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -349,13 +437,17 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.helper.get_clean_pyfiles">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.helper.</span></span><span class="sig-name descname"><span class="pre">get_clean_pyfiles</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cleandoc/helper.html#get_clean_pyfiles"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.helper.get_clean_pyfiles" title="Permalink to this definition"></a></dt>
-<dd><p>get_clean_pyfiles.</p>
+<dd><p>Get a list of already cleaned .py files from previous cleandoc run so
+cleaning functions can be skipped.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>logpath</strong> (<em>str</em>) -- logpath</p>
+<dd class="field-odd"><p><strong>logpath</strong> (<em>str</em>) -- Full path of previous log file output by cleandoc</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list[str]</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>List of .py files in nested directory which are still clean</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list[str]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -363,13 +455,20 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.helper.run_capture_out">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.helper.</span></span><span class="sig-name descname"><span class="pre">run_capture_out</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cmd</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shell</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cleandoc/helper.html#run_capture_out"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.helper.run_capture_out" title="Permalink to this definition"></a></dt>
-<dd><p>run_capture_out.</p>
+<dd><p>Run subprocess command and return the stdout and stderr.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cmd</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- cmd</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cmd</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- Pass list of shell commands to subprocess.run</p></li>
+<li><p><strong>shell</strong> (<em>bool</em>) -- Pass shell keyword argument to subprocess.run</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Tuple[str, str]</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>stdout</strong> (<em>str</em>) -- Standard Output returned from shell</p></li>
+<li><p><strong>stderr</strong> (<em>str</em>) -- Standard Error returned from shell</p></li>
+</ul>
+</p>
 </dd>
 </dl>
 </dd></dl>
@@ -382,13 +481,20 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.sphinx.add_conf_paths">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">add_conf_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conflines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pathlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/sphinx.html#add_conf_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.add_conf_paths" title="Permalink to this definition"></a></dt>
-<dd><p>add_conf_paths.</p>
+<dd><p>Add path.insert() lines into beginning of conf.py file
+so all modules can be found by sphinx.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>conflines</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- conflines</p></li>
-<li><p><strong>pathlist</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- pathlist</p></li>
+<li><p><strong>conflines</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- List of text file lines in conf.py file (from readlines)</p></li>
+<li><p><strong>pathlist</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- List of paths to append to the system path</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>conflines after inserting path.insert lines</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -396,13 +502,16 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.sphinx.add_conf_settings">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">add_conf_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conftext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinx.html#add_conf_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.add_conf_settings" title="Permalink to this definition"></a></dt>
-<dd><p>add_conf_settings.</p>
+<dd><p>Add extensions and Napoleon settings to sphinx conf.py file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>conftext</strong> (<em>str</em>) -- conftext</p>
+<dd class="field-odd"><p><strong>conftext</strong> (<em>str</em>) -- Full text contents of sphinx conf.py file.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Edited text contents of conf.py file.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -410,12 +519,13 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.sphinx.edit_conf">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">edit_conf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pathlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/sphinx.html#edit_conf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.edit_conf" title="Permalink to this definition"></a></dt>
-<dd><p>edit_conf.</p>
+<dd><p>Edit sphinx conf.py file by running add_conf_paths and then
+add_conf_settings function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>confpath</strong> (<em>str</em>) -- confpath</p></li>
-<li><p><strong>pathlist</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- pathlist</p></li>
+<li><p><strong>confpath</strong> (<em>str</em>) -- Full path to sphinx conf.py file</p></li>
+<li><p><strong>pathlist</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- List of full paths to add to conf.py file so all modules can be found.</p></li>
 </ul>
 </dd>
 </dl>
@@ -424,10 +534,10 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.sphinx.edit_index">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">edit_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkgname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/sphinx.html#edit_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.edit_index" title="Permalink to this definition"></a></dt>
-<dd><p>edit_index.</p>
+<dd><p>Edit index.rst file which controls the main page of html docs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>srcpath</strong> (<em>str</em>) -- srcpath</p>
+<dd class="field-odd"><p><strong>srcpath</strong> (<em>str</em>) -- Full path of sphinx &quot;source&quot; directory (created from sphinx-quickstart)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -435,27 +545,40 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.sphinx.get_release">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">get_release</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinx.html#get_release"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.get_release" title="Permalink to this definition"></a></dt>
-<dd><p>get_release.</p>
+<dd><p>Get the previous release number from last sphinx conf.py file.
+If no conf.py file is found, release &quot;0.0.1&quot; is returned.
+If previuos release is found, &quot;0.0.+1&quot; is returned.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>confpath</strong> (<em>str</em>) -- confpath</p>
+<dd class="field-odd"><p><strong>confpath</strong> (<em>str</em>) -- Full path to sphinx conf.py file</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>str</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>release</strong> -- Release number of package for current sphinx documentation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.sphinx.run_apidoc">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">run_apidoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pathlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinx.html#run_apidoc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.run_apidoc" title="Permalink to this definition"></a></dt>
-<dd><p>run_apidoc.</p>
+<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">run_apidoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkgpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinx.html#run_apidoc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.run_apidoc" title="Permalink to this definition"></a></dt>
+<dd><p>Run &quot;sphinx-apidoc&quot; command via subprocess and check output.
+Creates an .rst file for each .py file found in nested directories.
+RST files can be later used to create an html page for each module.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>srcpath</strong> (<em>str</em>) -- srcpath</p></li>
-<li><p><strong>pathlist</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- pathlist</p></li>
+<li><p><strong>srcpath</strong> (<em>str</em>) -- Full path of sphinx &quot;source&quot; directory (created from sphinx-quickstart)</p></li>
+<li><p><strong>pkgpath</strong> (<em>str</em>) -- Full path to directory containing all python modules to document.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Shell output from &quot;sphinx-apidoc&quot; command</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -463,10 +586,17 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.sphinx.run_make">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">run_make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinx.html#run_make"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.run_make" title="Permalink to this definition"></a></dt>
-<dd><p>run_make.</p>
+<dd><p>Run &quot;make html&quot; command via subprocess and check output.
+Creates html documents from sphinx .rst files.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>docpath</strong> (<em>str</em>) -- docpath</p>
+<dd class="field-odd"><p><strong>docpath</strong> (<em>str</em>) -- Full path to directory where sphinx docs will be created</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Shell output from &quot;make html&quot; command</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -474,14 +604,21 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.sphinx.run_quickstart">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">run_quickstart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkgname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinx.html#run_quickstart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.run_quickstart" title="Permalink to this definition"></a></dt>
-<dd><p>run_quickstart.</p>
+<dd><p>Run &quot;sphinx-quickstart&quot; command via subprocess and check output.
+Creates files to begin sphinx documentation.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>docpath</strong> (<em>str</em>) -- docpath</p></li>
-<li><p><strong>pkgname</strong> (<em>str</em>) -- pkgname</p></li>
-<li><p><strong>release</strong> (<em>str</em>) -- release</p></li>
+<li><p><strong>docpath</strong> (<em>str</em>) -- Full path to directory where sphinx docs will be created</p></li>
+<li><p><strong>pkgname</strong> (<em>str</em>) -- Name of python package to document</p></li>
+<li><p><strong>release</strong> (<em>str</em>) -- Release number (version) of package</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Shell output from &quot;sphinx-quickstart&quot; command</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -489,14 +626,17 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.sphinx.run_sphinx_all">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">run_sphinx_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkgpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/sphinx.html#run_sphinx_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.run_sphinx_all" title="Permalink to this definition"></a></dt>
-<dd><p>run_sphinx_all.</p>
+<dd><p>Run 4 functions sequentially in sphinx module including run_apidoc,
+edit_conf, edit_index, and run_make. Automakes creation of sphinx html documents for
+a python package (aka nested folder structure of python modules.)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>docpath</strong> (<em>str</em>) -- docpath</p></li>
-<li><p><strong>confpath</strong> (<em>str</em>) -- confpath</p></li>
-<li><p><strong>pkgpath</strong> (<em>str</em>) -- pkgpath</p></li>
-<li><p><strong>release</strong> (<em>str</em>) -- release</p></li>
+<li><p><strong>docpath</strong> (<em>str</em>) -- Full path to directory where sphinx docs will be created</p></li>
+<li><p><strong>confpath</strong> (<em>str</em>) -- Full path to sphinx conf.py file</p></li>
+<li><p><strong>pkgpath</strong> (<em>str</em>) -- Full path to directory containing all python modules to document.
+Directory name will be used as package name.</p></li>
+<li><p><strong>release</strong> (<em>str</em>) -- Release number (version) of package</p></li>
 </ul>
 </dd>
 </dl>

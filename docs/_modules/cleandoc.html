@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cleandoc &mdash; cleandoc 0.0.3 documentation</title>
+  <title>cleandoc &mdash; cleandoc 0.0.4 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             cleandoc
           </a>
               <div class="version">
-                0.0.3
+                0.0.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -86,7 +86,7 @@
 <span class="kn">import</span> <span class="nn">webbrowser</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">from</span> <span class="nn">.clean</span> <span class="kn">import</span> <span class="n">run_black</span><span class="p">,</span> <span class="n">run_pylint</span><span class="p">,</span> <span class="n">run_mypy</span>
-<span class="kn">from</span> <span class="nn">.doq</span> <span class="kn">import</span> <span class="n">run_doq</span>
+<span class="kn">from</span> <span class="nn">.doq</span> <span class="kn">import</span> <span class="n">run_doq</span><span class="p">,</span> <span class="n">check_docstrings</span>
 <span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">format_header</span><span class="p">,</span> <span class="n">find_pyfiles</span><span class="p">,</span> <span class="n">get_clean_pyfiles</span><span class="p">,</span> <span class="n">config_log</span>
 <span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">check_modified_since_docs</span>
 <span class="kn">from</span> <span class="nn">.sphinx</span> <span class="kn">import</span> <span class="n">run_sphinx_all</span><span class="p">,</span> <span class="n">get_release</span>
@@ -95,14 +95,16 @@
 
 
 <div class="viewcode-block" id="cleandoc_all"><a class="viewcode-back" href="../cleandoc.html#cleandoc.cleandoc_all">[docs]</a><span class="k">def</span> <span class="nf">cleandoc_all</span><span class="p">(</span><span class="n">searchpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">openhtml</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;cleandoc.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run clean_all and gen_docs functions. Check modified files since last</span>
+<span class="sd">    document generation to skip checking of some files. Open docs in browser</span>
+<span class="sd">    after creation or checking.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    searchpath : str</span>
-<span class="sd">        searchpath</span>
+<span class="sd">        directory of python package (nested dirs of modules)</span>
 <span class="sd">    ignore : bool</span>
-<span class="sd">        ignore</span>
+<span class="sd">        keyword argument passed to clean_all function</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">skiplist</span> <span class="o">=</span> <span class="n">get_clean_pyfiles</span><span class="p">(</span><span class="s2">&quot;cleandoc_log.txt&quot;</span><span class="p">)</span>
     <span class="n">createdocs</span> <span class="o">=</span> <span class="n">check_modified_since_docs</span><span class="p">(</span><span class="n">searchpath</span><span class="p">,</span> <span class="s2">&quot;cleandoc_log.txt&quot;</span><span class="p">)</span>
@@ -115,16 +117,24 @@
 
 
 <div class="viewcode-block" id="clean_all"><a class="viewcode-back" href="../cleandoc.html#cleandoc.clean_all">[docs]</a><span class="k">def</span> <span class="nf">clean_all</span><span class="p">(</span>
-    <span class="n">searchpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">ignore</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">skip</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">searchpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">ignore</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">skip</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">bool</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
 <span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;clean_all.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run clean_pyfile function on all .py files in searchpath.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    searchpath : str</span>
-<span class="sd">        searchpath</span>
+<span class="sd">        Directory to search in all nested folders for .py files</span>
 <span class="sd">    ignore : bool</span>
-<span class="sd">        ignore</span>
+<span class="sd">        True to ignore Syntax warnings found, False to raise them</span>
+<span class="sd">    write : bool</span>
+<span class="sd">        keyword argument passed to clean_pyfile function</span>
+<span class="sd">    skip : Union[bool, List[str]]</span>
+<span class="sd">        List of .py files to skip cleaning.</span>
+<span class="sd">        Or True to find list of clean pyfiles within function.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">skip</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
         <span class="n">skip</span> <span class="o">=</span> <span class="n">get_clean_pyfiles</span><span class="p">(</span><span class="s2">&quot;cleandoc_log.txt&quot;</span><span class="p">)</span>
@@ -143,7 +153,7 @@
         <span class="n">header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Checking File (</span><span class="si">{</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pyfilelist</span><span class="p">)</span><span class="si">}</span><span class="s2">): </span><span class="si">{</span><span class="n">pyname</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="n">headerstr</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">format_header</span><span class="p">(</span><span class="n">header</span><span class="p">,</span><span class="w"> </span><span class="n">repeat_char</span><span class="o">=</span><span class="s1">&#39;o&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
         <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">headerstr</span><span class="p">)</span>
-        <span class="n">summary</span> <span class="o">=</span> <span class="n">clean_pyfile</span><span class="p">(</span><span class="n">pyfile</span><span class="p">)</span>
+        <span class="n">summary</span> <span class="o">=</span> <span class="n">clean_pyfile</span><span class="p">(</span><span class="n">pyfile</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="n">write</span><span class="p">)</span>
         <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">ignore</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pyfile</span><span class="p">)</span>
             <span class="n">logging</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span>
@@ -152,30 +162,43 @@
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;File is Clean: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pyfile</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="clean_pyfile"><a class="viewcode-back" href="../cleandoc.html#cleandoc.clean_pyfile">[docs]</a><span class="k">def</span> <span class="nf">clean_pyfile</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;clean_pyfile.</span>
+<div class="viewcode-block" id="clean_pyfile"><a class="viewcode-back" href="../cleandoc.html#cleandoc.clean_pyfile">[docs]</a><span class="k">def</span> <span class="nf">clean_pyfile</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Clean a .py file by checking docstrings then running doq, black,</span>
+<span class="sd">    pylint, and mypy.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pyfilepath : str</span>
-<span class="sd">        pyfilepath</span>
+<span class="sd">        Full path of python (.py) file</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Summary of all command outputs concatenated together</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">config_log</span><span class="p">(</span><span class="s2">&quot;cleandoc_log.txt&quot;</span><span class="p">)</span>
     <span class="n">realpath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">)</span>
-    <span class="n">summary</span> <span class="o">=</span> <span class="n">run_doq</span><span class="p">(</span><span class="n">realpath</span><span class="p">)</span>
-    <span class="n">summary</span> <span class="o">+=</span> <span class="n">run_black</span><span class="p">(</span><span class="n">realpath</span><span class="p">)</span>
+    <span class="n">summary</span> <span class="o">=</span> <span class="n">check_docstrings</span><span class="p">(</span><span class="n">realpath</span><span class="p">)</span>
+    <span class="n">summary</span> <span class="o">+=</span> <span class="n">run_doq</span><span class="p">(</span><span class="n">realpath</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="n">write</span><span class="p">)</span>
+    <span class="n">summary</span> <span class="o">+=</span> <span class="n">run_black</span><span class="p">(</span><span class="n">realpath</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="n">write</span><span class="p">)</span>
     <span class="n">summary</span> <span class="o">+=</span> <span class="n">run_pylint</span><span class="p">(</span><span class="n">realpath</span><span class="p">)</span>
     <span class="n">summary</span> <span class="o">+=</span> <span class="n">run_mypy</span><span class="p">(</span><span class="n">realpath</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">summary</span></div>
 
 
 <div class="viewcode-block" id="gen_docs"><a class="viewcode-back" href="../cleandoc.html#cleandoc.gen_docs">[docs]</a><span class="k">def</span> <span class="nf">gen_docs</span><span class="p">(</span><span class="n">pkgpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">create</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;gen_docs.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Auto-generate sphinx html documentation for a python package.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pkgpath : str</span>
-<span class="sd">        pkgpath</span>
+<span class="sd">        Full path to directory containing all python modules to document.</span>
+<span class="sd">        Directory name will be used as package name.</span>
+<span class="sd">    create : bool</span>
+<span class="sd">        True to create docs or False to skip and log their location</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Path of index.html file, the home page of the sphinx docs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">config_log</span><span class="p">(</span><span class="s2">&quot;cleandoc_log.txt&quot;</span><span class="p">)</span>
     <span class="n">basepath</span><span class="p">,</span> <span class="n">pkgname</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">pkgpath</span><span class="p">)</span>

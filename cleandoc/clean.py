@@ -8,19 +8,25 @@ Created on Sun Jul  2 12:18:08 2023
 import logging
 from .helper import run_capture_out, format_header, check_for_pkg
 
+# check for packages called in subprocess commands in this module
 for pkg in ["black", "pylint", "mypy"]:
     check_for_pkg(pkg)
 
 
 def run_black(pyfilepath: str, write: bool = True):
-    """run_black.
+    """Run "black" command on .py file via subprocess and check output.
+    Black is a python package which auto-formats python code according to PEP8.
 
     Parameters
     ----------
     pyfilepath : str
-        pyfilepath
+        Full path to python (.py) file
     write : bool
-        write
+        True = write the auto-formatted code in-place
+    Returns
+    -------
+    str
+        Summary of command outputs
     """
     # Auto-format code with black
     black_out, black_err = run_capture_out(["black", pyfilepath, "--diff"])
@@ -35,12 +41,17 @@ def run_black(pyfilepath: str, write: bool = True):
 
 
 def run_pylint(pyfilepath: str):
-    """run_pylint.
+    """Run "pylint" command on .py file via subprocess and check output.
+    Pylint is a python package which checks for code cleanliness.
 
     Parameters
     ----------
     pyfilepath : str
-        pyfilepath
+        Full path to python (.py) file
+    Returns
+    -------
+    str
+        Summary of command outputs
     """
     # Check code cleanliness with pylint
     pylint_out, pylint_err = run_capture_out(["pylint", pyfilepath])
@@ -53,12 +64,18 @@ def run_pylint(pyfilepath: str):
 
 
 def run_mypy(pyfilepath: str):
-    """run_mypy.
+    """Run "mypy" command on .py file via subprocess and check output.
+    Mypy is a python package which staticly checks variable types
+    according to type hints.
 
     Parameters
     ----------
     pyfilepath : str
-        pyfilepath
+        Full path to python (.py) file
+    Returns
+    -------
+    str
+        Summary of command outputs
     """
     # Check variable type hints with mypy
     mypy_args = ["mypy", pyfilepath, "--check-untyped-defs", "--ignore-missing-imports"]

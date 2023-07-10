@@ -17,12 +17,12 @@ from sys import stdout
 
 
 def check_for_pkg(packagename: str):
-    """check_for_pkg.
+    """Use importlib find_spec function to check if package is installed.
 
     Parameters
     ----------
     packagename : str
-        packagename
+        Name of python package to check for
     """
     spec = find_spec(packagename)
     if spec is None:
@@ -34,16 +34,21 @@ def check_for_pkg(packagename: str):
 
 
 def run_capture_out(cmd: list[str], shell: bool = False) -> Tuple[str, str]:
-    """run_capture_out.
+    """Run subprocess command and return the stdout and stderr.
 
     Parameters
     ----------
     cmd : list[str]
-        cmd
+        Pass list of shell commands to subprocess.run
+    shell : bool
+        Pass shell keyword argument to subprocess.run
 
     Returns
     -------
-    Tuple[str, str]
+    stdout  : str
+        Standard Output returned from shell
+    stderr : str
+        Standard Error returned from shell
 
     """
     proc = run(cmd, capture_output=True, encoding="utf-8", check=False, shell=shell)
@@ -51,20 +56,21 @@ def run_capture_out(cmd: list[str], shell: bool = False) -> Tuple[str, str]:
 
 
 def format_header(name: str, repeat_char: str = "-", linelen: int = 68) -> str:
-    """format_header.
+    """Format a string header for printing or logging.
 
     Parameters
     ----------
     name : str
-        name
+        String to include in middle of header
     repeat_char : str
-        repeat_char
+        Character to repeat before and after name
     linelen : int
-        linelen
+        Total length of string to create
 
     Returns
     -------
-    str
+    header : str
+        Full line string with name between repeated characters
 
     """
     start = repeat_char * floor((linelen - len(name) - 2) / 2)
@@ -74,16 +80,19 @@ def format_header(name: str, repeat_char: str = "-", linelen: int = 68) -> str:
 
 
 def find_pyfiles(searchpath: str) -> Tuple[list[str], list[str]]:
-    """find_pyfiles.
+    """Find all .py files in nested directories.
 
     Parameters
     ----------
     searchpath : str
-        searchpath
+        Full path to search through for .py files
 
     Returns
     -------
-    Tuple[list[str], list[str]]
+    pathlist : list[str]
+        List of full paths to all directories containing .py files directly
+    filelist : list[str]
+        List of full paths to all .py files found
 
     """
     pathlist = []
@@ -102,18 +111,19 @@ def find_pyfiles(searchpath: str) -> Tuple[list[str], list[str]]:
 
 
 def check_modified(filepath: str, timestr: str) -> bool:
-    """check_modified.
+    """Check if a file was modified since a certain date and time.
 
     Parameters
     ----------
     filepath : str
-        filepath
+        Full path of file to check
     timestr : str
-        timestr
+        String of time to check against, formatted as "%d-%m-%y %H:%M:%S"
 
     Returns
     -------
     bool
+        True if the file has been modified since the timestring.
 
     """
     checktime = datetime.strptime(timestr, "%d-%m-%y %H:%M:%S")
@@ -123,24 +133,25 @@ def check_modified(filepath: str, timestr: str) -> bool:
 
 
 def check_modified_since_docs(searchpath: str, logpath: str) -> bool:
-    """check_modified_since_docs.
+    """Check if any python files in nested directory were modified since
+    html documents were created.
 
     Parameters
     ----------
     logpath : str
-        logpath
+        Full path of previous log file output by cleandoc
     htmlpath : str
-        htmlpath
+        Full path to directory containing previously generated html docs
 
     Returns
     -------
     bool
+        True if modifed since doc creation
 
     """
     _none, filelist = find_pyfiles(searchpath)
     regex_docs = r"(\d\d-\d\d-\d\d \d\d:\d\d:\d\d).*Docs Location: (.*)"
-    results_docs = findall_infile(regex_docs, logpath)
-    print(results_docs)
+    results_docs = findall_infile(regex_docs, logpath, skip_exist=True)
     if len(results_docs) == 0:
         return True
     doctime = results_docs[0][0]
@@ -150,44 +161,47 @@ def check_modified_since_docs(searchpath: str, logpath: str) -> bool:
     return False
 
 
-def findall_infile(regex: str, filepath: str) -> list:
-    """findall_infile.
+def findall_infile(regex: str, filepath: str, skip_exist: bool = False) -> list:
+    """Open ascii file for reading and get results of re.findall
 
     Parameters
     ----------
     regex : str
-        regex
+        Regular expression
     filepath : str
-        filepath
+        Path of ascii text file to search
+    skip_exist : bool
+        True to skip searching through a file that doesnt exist
 
     Returns
     -------
     list
-
+        Results from re.findall function
     """
+    if (not path.exists(filepath)) and skip_exist:
+        return []
     with open(filepath, "r", encoding="ascii") as file:
-        filelines = file.readlines()
-    filetext = "".join(filelines)
+        filetext = file.read()
     results = findall(regex, filetext)
     return results
 
 
 def get_clean_pyfiles(logpath: str) -> list[str]:
-    """get_clean_pyfiles.
+    """Get a list of already cleaned .py files from previous cleandoc run so
+    cleaning functions can be skipped.
 
     Parameters
     ----------
     logpath : str
-        logpath
-
+        Full path of previous log file output by cleandoc
     Returns
     -------
     list[str]
-
+        List of .py files in nested directory which are still clean
     """
     clean_pyfiles = []
     regex = r"(\d\d-\d\d-\d\d \d\d:\d\d:\d\d).*File is Clean: (.*)"
-    results = findall_infile(regex, logpath)
+    results = findall_infile(regex, logpath, skip_exist=True)
     for result in results:
         if not check_modified(result[1], result[0]):
             clean_pyfiles.append(result[1])
@@ -195,18 +209,18 @@ def get_clean_pyfiles(logpath: str) -> list[str]:
 
 
 def config_log(logpath: str, logname: str = "cleandoc"):
-    """config_log.
+    """Configure log file using logging module
 
     Parameters
     ----------
     logpath : str
-        logpath
+        Path of cleandoc log file to create
     logname : str
-        logname
+        Name for logger
 
     Returns
     -------
-    Tuple[Any,bool]
+    logger object
 
     """
     if logging.getLogger(logname).hasHandlers():

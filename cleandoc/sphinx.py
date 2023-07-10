@@ -10,23 +10,27 @@ from re import findall, sub
 import logging
 from .helper import check_for_pkg, find_pyfiles, run_capture_out, format_header
 
+# check for packages called in subprocess commands in this module
 for pkg in ["sphinx", "sphinx_rtd_theme"]:
     check_for_pkg(pkg)
 
 
 def run_sphinx_all(docpath: str, confpath: str, pkgpath: str, release: str):
-    """run_sphinx_all.
+    """Run 4 functions sequentially in sphinx module including run_apidoc,
+    edit_conf, edit_index, and run_make. Automakes creation of sphinx html documents for
+    a python package (aka nested folder structure of python modules.)
 
     Parameters
     ----------
     docpath : str
-        docpath
+        Full path to directory where sphinx docs will be created
     confpath : str
-        confpath
+        Full path to sphinx conf.py file
     pkgpath : str
-        pkgpath
+        Full path to directory containing all python modules to document.
+        Directory name will be used as package name.
     release : str
-        release
+        Release number (version) of package
     """
 
     basepath, pkgname = path.split(pkgpath)
@@ -40,7 +44,7 @@ def run_sphinx_all(docpath: str, confpath: str, pkgpath: str, release: str):
         if not path.exists(initpath):
             with open(initpath, "w", encoding="ascii") as initfile:
                 initfile.write("")
-    summary += run_apidoc(srcpath, [pkgpath])
+    summary += run_apidoc(srcpath, pkgpath)
     edit_conf(confpath, [basepath, pkgpath] + pathlist)
     edit_index(srcpath, pkgname)
     summary += run_make(docpath)
@@ -49,16 +53,21 @@ def run_sphinx_all(docpath: str, confpath: str, pkgpath: str, release: str):
 
 
 def run_quickstart(docpath: str, pkgname: str, release: str) -> str:
-    """run_quickstart.
+    """Run "sphinx-quickstart" command via subprocess and check output.
+    Creates files to begin sphinx documentation.
 
     Parameters
     ----------
     docpath : str
-        docpath
+        Full path to directory where sphinx docs will be created
     pkgname : str
-        pkgname
+        Name of python package to document
     release : str
-        release
+        Release number (version) of package
+    Returns
+    -------
+    str
+        Shell output from "sphinx-quickstart" command
     """
     qs_args = [
         "sphinx-quickstart",
@@ -85,17 +94,23 @@ def run_quickstart(docpath: str, pkgname: str, release: str) -> str:
     return ""
 
 
-def run_apidoc(srcpath: str, pathlist: list[str]) -> str:
-    """run_apidoc.
+def run_apidoc(srcpath: str, pkgpath: str) -> str:
+    """Run "sphinx-apidoc" command via subprocess and check output.
+    Creates an .rst file for each .py file found in nested directories.
+    RST files can be later used to create an html page for each module.
 
     Parameters
     ----------
     srcpath : str
-        srcpath
-    pathlist : list[str]
-        pathlist
+        Full path of sphinx "source" directory (created from sphinx-quickstart)
+    pkgpath : str
+        Full path to directory containing all python modules to document.
+    Returns
+    -------
+    str
+        Shell output from "sphinx-apidoc" command
     """
-    apidoc_args = ["sphinx-apidoc", "-M", "-o", srcpath] + pathlist
+    apidoc_args = ["sphinx-apidoc", "-M", "-o", srcpath, pkgpath]
     logger = logging.getLogger("cleandoc")
     logger.debug(" ".join(apidoc_args))
     apidoc_out, apidoc_err = run_capture_out(apidoc_args)
@@ -109,12 +124,17 @@ def run_apidoc(srcpath: str, pathlist: list[str]) -> str:
 
 
 def run_make(docpath: str) -> str:
-    """run_make.
+    """Run "make html" command via subprocess and check output.
+    Creates html documents from sphinx .rst files.
 
     Parameters
     ----------
     docpath : str
-        docpath
+        Full path to directory where sphinx docs will be created
+    Returns
+    -------
+    str
+        Shell output from "make html" command
     """
     make_args = ["cd", f"{docpath}", "&&", "make", "html"]
     logger = logging.getLogger("cleandoc")
@@ -128,17 +148,19 @@ def run_make(docpath: str) -> str:
 
 
 def get_release(confpath: str) -> str:
-    """get_release.
+    """Get the previous release number from last sphinx conf.py file.
+    If no conf.py file is found, release "0.0.1" is returned.
+    If previuos release is found, "0.0.+1" is returned.
 
     Parameters
     ----------
     confpath : str
-        confpath
+        Full path to sphinx conf.py file
 
     Returns
     -------
-    str
-
+    release : str
+        Release number of package for current sphinx documentation.
     """
 
     if not path.exists(confpath):
@@ -158,14 +180,15 @@ def get_release(confpath: str) -> str:
 
 
 def edit_conf(confpath: str, pathlist: list[str]):
-    """edit_conf.
+    """Edit sphinx conf.py file by running add_conf_paths and then
+    add_conf_settings function.
 
     Parameters
     ----------
     confpath : str
-        confpath
+        Full path to sphinx conf.py file
     pathlist : list[str]
-        pathlist
+        List of full paths to add to conf.py file so all modules can be found.
     """
     with open(confpath, "r", encoding="ascii") as conffile:
         conflines_orig = conffile.readlines()
@@ -177,14 +200,19 @@ def edit_conf(confpath: str, pathlist: list[str]):
 
 
 def add_conf_paths(conflines: list[str], pathlist: list[str]):
-    """add_conf_paths.
+    """Add path.insert() lines into beginning of conf.py file
+    so all modules can be found by sphinx.
 
     Parameters
     ----------
     conflines : list[str]
-        conflines
+        List of text file lines in conf.py file (from readlines)
     pathlist : list[str]
-        pathlist
+        List of paths to append to the system path
+    Returns
+    -------
+    str
+        conflines after inserting path.insert lines
     """
     importlines = ["from sys import path\n"]
     fixpaths = [dirpath.replace(sep, "/") for dirpath in pathlist]
@@ -194,16 +222,16 @@ def add_conf_paths(conflines: list[str], pathlist: list[str]):
 
 
 def add_conf_settings(conftext: str) -> str:
-    """add_conf_settings.
+    """Add extensions and Napoleon settings to sphinx conf.py file.
 
     Parameters
     ----------
     conftext : str
-        conftext
-
+        Full text contents of sphinx conf.py file.
     Returns
     -------
     str
+        Edited text contents of conf.py file.
 
     """
     sphinxexts = """
@@ -233,19 +261,19 @@ napoleon_use_param = True
 napoleon_use_rtype = True
 """
     conftext = sub(r"extensions = \[\]", sphinxexts, conftext)
-    conftext_out = sub(
+    conftext = sub(
         r"html_theme = 'alabaster'", "html_theme = 'sphinx_rtd_theme'", conftext
     )
-    return conftext_out
+    return conftext
 
 
 def edit_index(srcpath: str, pkgname: str):
-    """edit_index.
+    """Edit index.rst file which controls the main page of html docs.
 
     Parameters
     ----------
     srcpath : str
-        srcpath
+        Full path of sphinx "source" directory (created from sphinx-quickstart)
     """
     add_modules = f":caption: Contents:\n    \n   {pkgname}"
     indexpath = path.join(srcpath, "index.rst")

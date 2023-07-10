@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cleandoc.sphinx &mdash; cleandoc 0.0.3 documentation</title>
+  <title>cleandoc.sphinx &mdash; cleandoc 0.0.4 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             cleandoc
           </a>
               <div class="version">
-                0.0.3
+                0.0.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -85,23 +85,27 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">check_for_pkg</span><span class="p">,</span> <span class="n">find_pyfiles</span><span class="p">,</span> <span class="n">run_capture_out</span><span class="p">,</span> <span class="n">format_header</span>
 
+<span class="c1"># check for packages called in subprocess commands in this module</span>
 <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;sphinx&quot;</span><span class="p">,</span> <span class="s2">&quot;sphinx_rtd_theme&quot;</span><span class="p">]:</span>
     <span class="n">check_for_pkg</span><span class="p">(</span><span class="n">pkg</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="run_sphinx_all"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.sphinx.run_sphinx_all">[docs]</a><span class="k">def</span> <span class="nf">run_sphinx_all</span><span class="p">(</span><span class="n">docpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">confpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pkgpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">release</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;run_sphinx_all.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run 4 functions sequentially in sphinx module including run_apidoc,</span>
+<span class="sd">    edit_conf, edit_index, and run_make. Automakes creation of sphinx html documents for</span>
+<span class="sd">    a python package (aka nested folder structure of python modules.)</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    docpath : str</span>
-<span class="sd">        docpath</span>
+<span class="sd">        Full path to directory where sphinx docs will be created</span>
 <span class="sd">    confpath : str</span>
-<span class="sd">        confpath</span>
+<span class="sd">        Full path to sphinx conf.py file</span>
 <span class="sd">    pkgpath : str</span>
-<span class="sd">        pkgpath</span>
+<span class="sd">        Full path to directory containing all python modules to document.</span>
+<span class="sd">        Directory name will be used as package name.</span>
 <span class="sd">    release : str</span>
-<span class="sd">        release</span>
+<span class="sd">        Release number (version) of package</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">basepath</span><span class="p">,</span> <span class="n">pkgname</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">pkgpath</span><span class="p">)</span>
@@ -115,7 +119,7 @@
         <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">initpath</span><span class="p">):</span>
             <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">initpath</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">initfile</span><span class="p">:</span>
                 <span class="n">initfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
-    <span class="n">summary</span> <span class="o">+=</span> <span class="n">run_apidoc</span><span class="p">(</span><span class="n">srcpath</span><span class="p">,</span> <span class="p">[</span><span class="n">pkgpath</span><span class="p">])</span>
+    <span class="n">summary</span> <span class="o">+=</span> <span class="n">run_apidoc</span><span class="p">(</span><span class="n">srcpath</span><span class="p">,</span> <span class="n">pkgpath</span><span class="p">)</span>
     <span class="n">edit_conf</span><span class="p">(</span><span class="n">confpath</span><span class="p">,</span> <span class="p">[</span><span class="n">basepath</span><span class="p">,</span> <span class="n">pkgpath</span><span class="p">]</span> <span class="o">+</span> <span class="n">pathlist</span><span class="p">)</span>
     <span class="n">edit_index</span><span class="p">(</span><span class="n">srcpath</span><span class="p">,</span> <span class="n">pkgname</span><span class="p">)</span>
     <span class="n">summary</span> <span class="o">+=</span> <span class="n">run_make</span><span class="p">(</span><span class="n">docpath</span><span class="p">)</span>
@@ -124,16 +128,21 @@
 
 
 <div class="viewcode-block" id="run_quickstart"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.sphinx.run_quickstart">[docs]</a><span class="k">def</span> <span class="nf">run_quickstart</span><span class="p">(</span><span class="n">docpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pkgname</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">release</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;run_quickstart.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run &quot;sphinx-quickstart&quot; command via subprocess and check output.</span>
+<span class="sd">    Creates files to begin sphinx documentation.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    docpath : str</span>
-<span class="sd">        docpath</span>
+<span class="sd">        Full path to directory where sphinx docs will be created</span>
 <span class="sd">    pkgname : str</span>
-<span class="sd">        pkgname</span>
+<span class="sd">        Name of python package to document</span>
 <span class="sd">    release : str</span>
-<span class="sd">        release</span>
+<span class="sd">        Release number (version) of package</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Shell output from &quot;sphinx-quickstart&quot; command</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">qs_args</span> <span class="o">=</span> <span class="p">[</span>
         <span class="s2">&quot;sphinx-quickstart&quot;</span><span class="p">,</span>
@@ -160,17 +169,23 @@
     <span class="k">return</span> <span class="s2">&quot;&quot;</span></div>
 
 
-<div class="viewcode-block" id="run_apidoc"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.sphinx.run_apidoc">[docs]</a><span class="k">def</span> <span class="nf">run_apidoc</span><span class="p">(</span><span class="n">srcpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pathlist</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;run_apidoc.</span>
+<div class="viewcode-block" id="run_apidoc"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.sphinx.run_apidoc">[docs]</a><span class="k">def</span> <span class="nf">run_apidoc</span><span class="p">(</span><span class="n">srcpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pkgpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run &quot;sphinx-apidoc&quot; command via subprocess and check output.</span>
+<span class="sd">    Creates an .rst file for each .py file found in nested directories.</span>
+<span class="sd">    RST files can be later used to create an html page for each module.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    srcpath : str</span>
-<span class="sd">        srcpath</span>
-<span class="sd">    pathlist : list[str]</span>
-<span class="sd">        pathlist</span>
+<span class="sd">        Full path of sphinx &quot;source&quot; directory (created from sphinx-quickstart)</span>
+<span class="sd">    pkgpath : str</span>
+<span class="sd">        Full path to directory containing all python modules to document.</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Shell output from &quot;sphinx-apidoc&quot; command</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">apidoc_args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sphinx-apidoc&quot;</span><span class="p">,</span> <span class="s2">&quot;-M&quot;</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">srcpath</span><span class="p">]</span> <span class="o">+</span> <span class="n">pathlist</span>
+    <span class="n">apidoc_args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;sphinx-apidoc&quot;</span><span class="p">,</span> <span class="s2">&quot;-M&quot;</span><span class="p">,</span> <span class="s2">&quot;-o&quot;</span><span class="p">,</span> <span class="n">srcpath</span><span class="p">,</span> <span class="n">pkgpath</span><span class="p">]</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;cleandoc&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">apidoc_args</span><span class="p">))</span>
     <span class="n">apidoc_out</span><span class="p">,</span> <span class="n">apidoc_err</span> <span class="o">=</span> <span class="n">run_capture_out</span><span class="p">(</span><span class="n">apidoc_args</span><span class="p">)</span>
@@ -184,12 +199,17 @@
 
 
 <div class="viewcode-block" id="run_make"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.sphinx.run_make">[docs]</a><span class="k">def</span> <span class="nf">run_make</span><span class="p">(</span><span class="n">docpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;run_make.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run &quot;make html&quot; command via subprocess and check output.</span>
+<span class="sd">    Creates html documents from sphinx .rst files.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    docpath : str</span>
-<span class="sd">        docpath</span>
+<span class="sd">        Full path to directory where sphinx docs will be created</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Shell output from &quot;make html&quot; command</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">make_args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cd&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">docpath</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="s2">&quot;&amp;&amp;&quot;</span><span class="p">,</span> <span class="s2">&quot;make&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">]</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;cleandoc&quot;</span><span class="p">)</span>
@@ -203,17 +223,19 @@
 
 
 <div class="viewcode-block" id="get_release"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.sphinx.get_release">[docs]</a><span class="k">def</span> <span class="nf">get_release</span><span class="p">(</span><span class="n">confpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;get_release.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get the previous release number from last sphinx conf.py file.</span>
+<span class="sd">    If no conf.py file is found, release &quot;0.0.1&quot; is returned.</span>
+<span class="sd">    If previuos release is found, &quot;0.0.+1&quot; is returned.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    confpath : str</span>
-<span class="sd">        confpath</span>
+<span class="sd">        Full path to sphinx conf.py file</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    str</span>
-
+<span class="sd">    release : str</span>
+<span class="sd">        Release number of package for current sphinx documentation.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">confpath</span><span class="p">):</span>
@@ -233,14 +255,15 @@
 
 
 <div class="viewcode-block" id="edit_conf"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.sphinx.edit_conf">[docs]</a><span class="k">def</span> <span class="nf">edit_conf</span><span class="p">(</span><span class="n">confpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pathlist</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;edit_conf.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Edit sphinx conf.py file by running add_conf_paths and then</span>
+<span class="sd">    add_conf_settings function.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    confpath : str</span>
-<span class="sd">        confpath</span>
+<span class="sd">        Full path to sphinx conf.py file</span>
 <span class="sd">    pathlist : list[str]</span>
-<span class="sd">        pathlist</span>
+<span class="sd">        List of full paths to add to conf.py file so all modules can be found.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">confpath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;ascii&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">conffile</span><span class="p">:</span>
         <span class="n">conflines_orig</span> <span class="o">=</span> <span class="n">conffile</span><span class="o">.</span><span class="n">readlines</span><span class="p">()</span>
@@ -252,14 +275,19 @@
 
 
 <div class="viewcode-block" id="add_conf_paths"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.sphinx.add_conf_paths">[docs]</a><span class="k">def</span> <span class="nf">add_conf_paths</span><span class="p">(</span><span class="n">conflines</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">pathlist</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;add_conf_paths.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add path.insert() lines into beginning of conf.py file</span>
+<span class="sd">    so all modules can be found by sphinx.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    conflines : list[str]</span>
-<span class="sd">        conflines</span>
+<span class="sd">        List of text file lines in conf.py file (from readlines)</span>
 <span class="sd">    pathlist : list[str]</span>
-<span class="sd">        pathlist</span>
+<span class="sd">        List of paths to append to the system path</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        conflines after inserting path.insert lines</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">importlines</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;from sys import path</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">]</span>
     <span class="n">fixpaths</span> <span class="o">=</span> <span class="p">[</span><span class="n">dirpath</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">sep</span><span class="p">,</span> <span class="s2">&quot;/&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">dirpath</span> <span class="ow">in</span> <span class="n">pathlist</span><span class="p">]</span>
@@ -269,16 +297,16 @@
 
 
 <div class="viewcode-block" id="add_conf_settings"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.sphinx.add_conf_settings">[docs]</a><span class="k">def</span> <span class="nf">add_conf_settings</span><span class="p">(</span><span class="n">conftext</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;add_conf_settings.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Add extensions and Napoleon settings to sphinx conf.py file.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    conftext : str</span>
-<span class="sd">        conftext</span>
-
+<span class="sd">        Full text contents of sphinx conf.py file.</span>
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    str</span>
+<span class="sd">        Edited text contents of conf.py file.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">sphinxexts</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
@@ -308,19 +336,19 @@
 <span class="s2">napoleon_use_rtype = True</span>
 <span class="s2">&quot;&quot;&quot;</span>
     <span class="n">conftext</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;extensions = \[\]&quot;</span><span class="p">,</span> <span class="n">sphinxexts</span><span class="p">,</span> <span class="n">conftext</span><span class="p">)</span>
-    <span class="n">conftext_out</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span>
+    <span class="n">conftext</span> <span class="o">=</span> <span class="n">sub</span><span class="p">(</span>
         <span class="sa">r</span><span class="s2">&quot;html_theme = &#39;alabaster&#39;&quot;</span><span class="p">,</span> <span class="s2">&quot;html_theme = &#39;sphinx_rtd_theme&#39;&quot;</span><span class="p">,</span> <span class="n">conftext</span>
     <span class="p">)</span>
-    <span class="k">return</span> <span class="n">conftext_out</span></div>
+    <span class="k">return</span> <span class="n">conftext</span></div>
 
 
 <div class="viewcode-block" id="edit_index"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.sphinx.edit_index">[docs]</a><span class="k">def</span> <span class="nf">edit_index</span><span class="p">(</span><span class="n">srcpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pkgname</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;edit_index.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Edit index.rst file which controls the main page of html docs.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    srcpath : str</span>
-<span class="sd">        srcpath</span>
+<span class="sd">        Full path of sphinx &quot;source&quot; directory (created from sphinx-quickstart)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">add_modules</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;:caption: Contents:</span><span class="se">\n</span><span class="s2">    </span><span class="se">\n</span><span class="s2">   </span><span class="si">{</span><span class="n">pkgname</span><span class="si">}</span><span class="s2">&quot;</span>
     <span class="n">indexpath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">srcpath</span><span class="p">,</span> <span class="s2">&quot;index.rst&quot;</span><span class="p">)</span>

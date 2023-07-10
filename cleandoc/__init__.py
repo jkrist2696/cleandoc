@@ -12,7 +12,7 @@ from importlib import reload
 import webbrowser
 from typing import Union, List
 from .clean import run_black, run_pylint, run_mypy
-from .doq import run_doq
+from .doq import run_doq, check_docstrings
 from .helper import format_header, find_pyfiles, get_clean_pyfiles, config_log
 from .helper import check_modified_since_docs
 from .sphinx import run_sphinx_all, get_release
@@ -21,14 +21,16 @@ reload(logging)
 
 
 def cleandoc_all(searchpath: str, ignore: bool = False, openhtml: bool = True):
-    """cleandoc.
+    """Run clean_all and gen_docs functions. Check modified files since last
+    document generation to skip checking of some files. Open docs in browser
+    after creation or checking.
 
     Parameters
     ----------
     searchpath : str
-        searchpath
+        directory of python package (nested dirs of modules)
     ignore : bool
-        ignore
+        keyword argument passed to clean_all function
     """
     skiplist = get_clean_pyfiles("cleandoc_log.txt")
     createdocs = check_modified_since_docs(searchpath, "cleandoc_log.txt")
@@ -41,16 +43,24 @@ def cleandoc_all(searchpath: str, ignore: bool = False, openhtml: bool = True):
 
 
 def clean_all(
-    searchpath: str, ignore: bool = False, skip: Union[bool, List[str]] = False
+    searchpath: str,
+    ignore: bool = False,
+    write: bool = True,
+    skip: Union[bool, List[str]] = False,
 ):
-    """clean_all.
+    """Run clean_pyfile function on all .py files in searchpath.
 
     Parameters
     ----------
     searchpath : str
-        searchpath
+        Directory to search in all nested folders for .py files
     ignore : bool
-        ignore
+        True to ignore Syntax warnings found, False to raise them
+    write : bool
+        keyword argument passed to clean_pyfile function
+    skip : Union[bool, List[str]]
+        List of .py files to skip cleaning.
+        Or True to find list of clean pyfiles within function.
     """
     if skip is True:
         skip = get_clean_pyfiles("cleandoc_log.txt")
@@ -69,7 +79,7 @@ def clean_all(
         header = f"Checking File ({i+1}/{len(pyfilelist)}): {pyname}"
         headerstr = f"{format_header(header, repeat_char='o')}\n"
         logger.info(headerstr)
-        summary = clean_pyfile(pyfile)
+        summary = clean_pyfile(pyfile, write=write)
         if (not ignore) and (len(summary) > 0):
             logger.error("%s\n", pyfile)
             logging.shutdown()
@@ -78,30 +88,43 @@ def clean_all(
             logger.info("File is Clean: %s\n", pyfile)
 
 
-def clean_pyfile(pyfilepath: str):
-    """clean_pyfile.
+def clean_pyfile(pyfilepath: str, write: bool = True):
+    """Clean a .py file by checking docstrings then running doq, black,
+    pylint, and mypy.
 
     Parameters
     ----------
     pyfilepath : str
-        pyfilepath
+        Full path of python (.py) file
+    Returns
+    -------
+    str
+        Summary of all command outputs concatenated together
     """
     config_log("cleandoc_log.txt")
     realpath = path.realpath(pyfilepath)
-    summary = run_doq(realpath)
-    summary += run_black(realpath)
+    summary = check_docstrings(realpath)
+    summary += run_doq(realpath, write=write)
+    summary += run_black(realpath, write=write)
     summary += run_pylint(realpath)
     summary += run_mypy(realpath)
     return summary
 
 
 def gen_docs(pkgpath: str, create: bool = True):
-    """gen_docs.
+    """Auto-generate sphinx html documentation for a python package.
 
     Parameters
     ----------
     pkgpath : str
-        pkgpath
+        Full path to directory containing all python modules to document.
+        Directory name will be used as package name.
+    create : bool
+        True to create docs or False to skip and log their location
+    Returns
+    -------
+    str
+        Path of index.html file, the home page of the sphinx docs
     """
     logger = config_log("cleandoc_log.txt")
     basepath, pkgname = path.split(pkgpath)

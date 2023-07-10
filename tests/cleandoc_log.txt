@@ -1,24 +1,24 @@
-06-07-23 22:20:12 cleandoc INFO oooooooooooooooooo Skipping File (1/5): clean.py ooooooooooooooooooo
+10-07-23 00:54:04 cleandoc INFO oooooooooooooooooo Skipping File (1/5): clean.py ooooooooooooooooooo
 
-06-07-23 22:20:12 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\cleandoc\cleandoc\clean.py
+10-07-23 00:54:04 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\cleandoc\cleandoc\clean.py
 
-06-07-23 22:20:12 cleandoc INFO ooooooooooooooooooo Skipping File (2/5): doq.py oooooooooooooooooooo
+10-07-23 00:54:04 cleandoc INFO ooooooooooooooooooo Skipping File (2/5): doq.py oooooooooooooooooooo
 
-06-07-23 22:20:12 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\cleandoc\cleandoc\doq.py
+10-07-23 00:54:04 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\cleandoc\cleandoc\doq.py
 
-06-07-23 22:20:12 cleandoc INFO oooooooooooooooooo Skipping File (3/5): helper.py oooooooooooooooooo
+10-07-23 00:54:04 cleandoc INFO oooooooooooooooooo Skipping File (3/5): helper.py oooooooooooooooooo
 
-06-07-23 22:20:12 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\cleandoc\cleandoc\helper.py
+10-07-23 00:54:04 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\cleandoc\cleandoc\helper.py
 
-06-07-23 22:20:12 cleandoc INFO oooooooooooooooooo Skipping File (4/5): sphinx.py oooooooooooooooooo
+10-07-23 00:54:04 cleandoc INFO oooooooooooooooooo Skipping File (4/5): sphinx.py oooooooooooooooooo
 
-06-07-23 22:20:12 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\cleandoc\cleandoc\sphinx.py
+10-07-23 00:54:04 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\cleandoc\cleandoc\sphinx.py
 
-06-07-23 22:20:12 cleandoc INFO ooooooooooooooooo Skipping File (5/5): __init__.py ooooooooooooooooo
+10-07-23 00:54:04 cleandoc INFO ooooooooooooooooo Checking File (5/5): __init__.py ooooooooooooooooo
 
-06-07-23 22:20:12 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\cleandoc\cleandoc\__init__.py
+10-07-23 00:54:07 cleandoc INFO File is Clean: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\cleandoc\cleandoc\__init__.py
 
-06-07-23 22:20:12 cleandoc INFO oooooooooooooooooooooooo Skipping Gen Docs ooooooooooooooooooooooooo
+10-07-23 00:54:07 cleandoc INFO ooooooooooooooooooooooooo Gen Docs Output oooooooooooooooooooooooooo
 
-06-07-23 22:20:12 cleandoc INFO Docs Location: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\cleandoc\docs
+10-07-23 00:54:12 cleandoc INFO Docs Location: C:\Users\jkris\OneDrive\2022_onward\2023\python\myrepo\generic\cleandoc\docs
 

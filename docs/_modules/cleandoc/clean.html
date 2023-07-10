@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cleandoc.clean &mdash; cleandoc 0.0.3 documentation</title>
+  <title>cleandoc.clean &mdash; cleandoc 0.0.4 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             cleandoc
           </a>
               <div class="version">
-                0.0.3
+                0.0.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -83,19 +83,25 @@
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">run_capture_out</span><span class="p">,</span> <span class="n">format_header</span><span class="p">,</span> <span class="n">check_for_pkg</span>
 
+<span class="c1"># check for packages called in subprocess commands in this module</span>
 <span class="k">for</span> <span class="n">pkg</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="s2">&quot;pylint&quot;</span><span class="p">,</span> <span class="s2">&quot;mypy&quot;</span><span class="p">]:</span>
     <span class="n">check_for_pkg</span><span class="p">(</span><span class="n">pkg</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="run_black"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.clean.run_black">[docs]</a><span class="k">def</span> <span class="nf">run_black</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;run_black.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run &quot;black&quot; command on .py file via subprocess and check output.</span>
+<span class="sd">    Black is a python package which auto-formats python code according to PEP8.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pyfilepath : str</span>
-<span class="sd">        pyfilepath</span>
+<span class="sd">        Full path to python (.py) file</span>
 <span class="sd">    write : bool</span>
-<span class="sd">        write</span>
+<span class="sd">        True = write the auto-formatted code in-place</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Summary of command outputs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Auto-format code with black</span>
     <span class="n">black_out</span><span class="p">,</span> <span class="n">black_err</span> <span class="o">=</span> <span class="n">run_capture_out</span><span class="p">([</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">pyfilepath</span><span class="p">,</span> <span class="s2">&quot;--diff&quot;</span><span class="p">])</span>
@@ -110,12 +116,17 @@
 
 
 <div class="viewcode-block" id="run_pylint"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.clean.run_pylint">[docs]</a><span class="k">def</span> <span class="nf">run_pylint</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;run_pylint.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run &quot;pylint&quot; command on .py file via subprocess and check output.</span>
+<span class="sd">    Pylint is a python package which checks for code cleanliness.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pyfilepath : str</span>
-<span class="sd">        pyfilepath</span>
+<span class="sd">        Full path to python (.py) file</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Summary of command outputs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Check code cleanliness with pylint</span>
     <span class="n">pylint_out</span><span class="p">,</span> <span class="n">pylint_err</span> <span class="o">=</span> <span class="n">run_capture_out</span><span class="p">([</span><span class="s2">&quot;pylint&quot;</span><span class="p">,</span> <span class="n">pyfilepath</span><span class="p">])</span>
@@ -128,12 +139,18 @@
 
 
 <div class="viewcode-block" id="run_mypy"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.clean.run_mypy">[docs]</a><span class="k">def</span> <span class="nf">run_mypy</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;run_mypy.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run &quot;mypy&quot; command on .py file via subprocess and check output.</span>
+<span class="sd">    Mypy is a python package which staticly checks variable types</span>
+<span class="sd">    according to type hints.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pyfilepath : str</span>
-<span class="sd">        pyfilepath</span>
+<span class="sd">        Full path to python (.py) file</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Summary of command outputs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Check variable type hints with mypy</span>
     <span class="n">mypy_args</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;mypy&quot;</span><span class="p">,</span> <span class="n">pyfilepath</span><span class="p">,</span> <span class="s2">&quot;--check-untyped-defs&quot;</span><span class="p">,</span> <span class="s2">&quot;--ignore-missing-imports&quot;</span><span class="p">]</span>
