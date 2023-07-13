@@ -5,18 +5,20 @@ Created on Sun Jul  2 12:18:08 2023
 @author: jkris
 """
 
-from os import path
+from os import path, system
 import sys
 from importlib import import_module
 
-# sys.path.insert(0, path.abspath("../"))
-# from cleandoc import cleandoc_all  # noqa: E402 # pylint: disable=C0413
-sys.path.insert(0, path.abspath("../"))
+scriptdir, scriptname = path.split(__file__)
+testdir, _none = path.split(path.abspath(__file__))
+mainpath, _none = path.split(testdir)
+cdpath = path.join(mainpath, "cleandoc")
+sys.path.insert(0, mainpath)
 cd = import_module("cleandoc")
 
-scriptdir, scriptname = path.split(__file__)
-cleandoc_path = path.join(path.abspath("../"), "cleandoc")
-# clean_all(cleandoc_path, ignore = True, skip=True)
-# gen_docs(cleandoc_path)
-# logging.shutdown()
-cd.cleandoc_all(cleandoc_path)
+clipath = path.join(cdpath, "cli.py")
+clitest = f"python {clipath} -f {__file__} -w"
+print(f"\nCommand Line Test Command:\n{clitest}\n")
+out = system(clitest)
+print(f"\nCommand Line Test Output:\n{out}\n")
+cd.cleandoc_all(cdpath)

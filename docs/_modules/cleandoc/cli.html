@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cleandoc.cli &mdash; cleandoc 0.0.7 documentation</title>
+  <title>cleandoc.cli &mdash; cleandoc 0.0.11 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             cleandoc
           </a>
               <div class="version">
-                0.0.7
+                0.0.11
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -85,7 +85,6 @@
 <span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">import_module</span>
 
 <span class="n">cleandocdir</span><span class="p">,</span> <span class="n">_none</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">cleandocdir</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">cleandocdir</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">cd</span> <span class="o">=</span> <span class="n">import_module</span><span class="p">(</span><span class="s2">&quot;cleandoc&quot;</span><span class="p">)</span>
 
@@ -145,7 +144,8 @@
         <span class="n">cd</span><span class="o">.</span><span class="n">clean_all</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="n">write</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dirpath</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">noclean</span><span class="p">:</span>
         <span class="n">cd</span><span class="o">.</span><span class="n">gen_docs</span><span class="p">(</span><span class="n">dirpath</span><span class="p">)</span>
-    <span class="n">cd</span><span class="o">.</span><span class="n">cleandoc_all</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="n">write</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">)</span></div>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">dirpath</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">cd</span><span class="o">.</span><span class="n">cleandoc_all</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="n">write</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="main"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.cli.main">[docs]</a><span class="k">def</span> <span class="nf">main</span><span class="p">():</span>

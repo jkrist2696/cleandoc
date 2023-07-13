@@ -10,7 +10,6 @@ import sys
 from importlib import import_module
 
 cleandocdir, _none = path.split(path.abspath(__file__))
-print(path.split(cleandocdir)[0])
 sys.path.insert(0, path.split(cleandocdir)[0])
 cd = import_module("cleandoc")
 
@@ -70,7 +69,8 @@ def cli_dir(dirpath: str, write: bool, ignore: bool, noclean: bool, nodoc: bool)
         cd.clean_all(dirpath, write=write, ignore=ignore)
     if len(dirpath) > 0 and noclean:
         cd.gen_docs(dirpath)
-    cd.cleandoc_all(dirpath, write=write, ignore=ignore)
+    if len(dirpath) > 0:
+        cd.cleandoc_all(dirpath, write=write, ignore=ignore)
 
 
 def main():
