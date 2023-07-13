@@ -17,6 +17,14 @@ cleandoc.clean module
    :undoc-members:
    :show-inheritance:
 
+cleandoc.cli module
+-------------------
+
+.. automodule:: cleandoc.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 cleandoc.doq module
 -------------------
 

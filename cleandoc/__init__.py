@@ -20,7 +20,9 @@ from .sphinx import run_sphinx_all, get_release
 reload(logging)
 
 
-def cleandoc_all(searchpath: str, ignore: bool = False, openhtml: bool = True):
+def cleandoc_all(
+    searchpath: str, ignore: bool = False, write: bool = True, openhtml: bool = True
+):
     """Run clean_all and gen_docs functions. Check modified files since last
     document generation to skip checking of some files. Open docs in browser
     after creation or checking.
@@ -32,10 +34,11 @@ def cleandoc_all(searchpath: str, ignore: bool = False, openhtml: bool = True):
     ignore : bool
         keyword argument passed to clean_all function
     """
+    searchpath = path.abspath(searchpath)
     skiplist = get_clean_pyfiles("cleandoc_log.txt")
     createdocs = check_modified_since_docs(searchpath, "cleandoc_log.txt")
     config_log("cleandoc_log.txt")
-    clean_all(searchpath, ignore=ignore, skip=skiplist)
+    clean_all(searchpath, ignore=ignore, write=write, skip=skiplist)
     mainpage = gen_docs(searchpath, create=createdocs)
     if openhtml is True:
         webbrowser.open(mainpage)
@@ -62,6 +65,7 @@ def clean_all(
         List of .py files to skip cleaning.
         Or True to find list of clean pyfiles within function.
     """
+    searchpath = path.abspath(searchpath)
     if skip is True:
         skip = get_clean_pyfiles("cleandoc_log.txt")
     elif skip is False:
@@ -102,6 +106,7 @@ def clean_pyfile(pyfilepath: str, write: bool = True):
         Summary of all command outputs concatenated together
     """
     config_log("cleandoc_log.txt")
+    pyfilepath = path.abspath(pyfilepath)
     realpath = path.realpath(pyfilepath)
     summary = check_docstrings(realpath)
     summary += run_doq(realpath, write=write)
@@ -126,6 +131,7 @@ def gen_docs(pkgpath: str, create: bool = True):
     str
         Path of index.html file, the home page of the sphinx docs
     """
+    pkgpath = path.abspath(pkgpath)
     logger = config_log("cleandoc_log.txt")
     basepath, pkgname = path.split(pkgpath)
     docs = path.join(basepath, "docs")

@@ -5,7 +5,8 @@ Created on Sun Jul  2 12:18:08 2023
 @author: jkris
 """
 
-from os import getlogin, path, sep, remove
+from os import path, sep, remove
+from getpass import getuser
 from re import findall, sub
 import logging
 from .helper import check_for_pkg, find_pyfiles, run_capture_out, format_header
@@ -76,7 +77,7 @@ def run_quickstart(docpath: str, pkgname: str, release: str) -> str:
         "-p",
         pkgname,
         "-a",
-        getlogin(),
+        getuser(),
         "-r",
         release,
         "-v",
@@ -87,7 +88,7 @@ def run_quickstart(docpath: str, pkgname: str, release: str) -> str:
     logger = logging.getLogger("cleandoc")
     logger.debug(" ".join(qs_args))
     qs_out, qs_err = run_capture_out(qs_args)
-    qs_str = f"\n{format_header('Sphinx Quickstart Output')}\n{qs_out}\n{qs_err}"
+    qs_str = f"{format_header('Sphinx Quickstart Output')}\n{qs_out}\n{qs_err}\n"
     if ("error" in qs_str.lower()) or ("warning" in qs_str.lower()):
         logger.info(qs_str)
         return qs_str
@@ -115,7 +116,7 @@ def run_apidoc(srcpath: str, pkgpath: str) -> str:
     logger.debug(" ".join(apidoc_args))
     apidoc_out, apidoc_err = run_capture_out(apidoc_args)
     apidoc_str = (
-        f"\n{format_header('Sphinx Apidoc Output')}\n{apidoc_out}\n{apidoc_err}"
+        f"{format_header('Sphinx Apidoc Output')}\n{apidoc_out}\n{apidoc_err}\n"
     )
     if ("error" in apidoc_str.lower()) or ("warning" in apidoc_str.lower()):
         logger.info(apidoc_str)
@@ -140,7 +141,7 @@ def run_make(docpath: str) -> str:
     logger = logging.getLogger("cleandoc")
     logger.debug(" ".join(make_args))
     make_out, make_err = run_capture_out(make_args, shell=True)
-    make_str = f"\n{format_header('Sphinx Make Output')}\n{make_out}\n{make_err}"
+    make_str = f"{format_header('Sphinx Make Output')}\n{make_out}\n{make_err}\n"
     if ("error" in make_str.lower()) or ("warning" in make_str.lower()):
         logger.info(make_str)
         return make_str

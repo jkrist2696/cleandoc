@@ -126,6 +126,8 @@ def check_modified(filepath: str, timestr: str) -> bool:
         True if the file has been modified since the timestring.
 
     """
+    if not path.exists(filepath):
+        return False
     checktime = datetime.strptime(timestr, "%d-%m-%y %H:%M:%S")
     checkstamp = datetime.timestamp(checktime)
     editstamp = path.getmtime(filepath)
@@ -180,8 +182,16 @@ def findall_infile(regex: str, filepath: str, skip_exist: bool = False) -> list:
     """
     if (not path.exists(filepath)) and skip_exist:
         return []
-    with open(filepath, "r", encoding="ascii") as file:
-        filetext = file.read()
+    try:
+        with open(filepath, "r", encoding="utf-8") as file:
+            filetext = file.read()
+    except UnicodeDecodeError:
+        pass
+    try:
+        with open(filepath, "r", encoding="ascii") as file:
+            filetext = file.read()
+    except UnicodeDecodeError as error:
+        raise IOError from error
     results = findall(regex, filetext)
     return results
 

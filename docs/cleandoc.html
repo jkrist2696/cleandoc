@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cleandoc package &mdash; cleandoc 0.0.4 documentation</title>
+  <title>cleandoc package &mdash; cleandoc 0.0.7 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -34,7 +34,7 @@
             cleandoc
           </a>
               <div class="version">
-                0.0.4
+                0.0.7
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -56,6 +56,13 @@
 <li class="toctree-l3"><a class="reference internal" href="#cleandoc.clean.run_black"><code class="docutils literal notranslate"><span class="pre">run_black()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cleandoc.clean.run_mypy"><code class="docutils literal notranslate"><span class="pre">run_mypy()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cleandoc.clean.run_pylint"><code class="docutils literal notranslate"><span class="pre">run_pylint()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cleandoc.cli">cleandoc.cli module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.cli.cli_checks"><code class="docutils literal notranslate"><span class="pre">cli_checks()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.cli.cli_dir"><code class="docutils literal notranslate"><span class="pre">cli_dir()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.cli.cli_file"><code class="docutils literal notranslate"><span class="pre">cli_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cleandoc.doq">cleandoc.doq module</a><ul>
@@ -156,7 +163,7 @@ pylint, and mypy.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.cleandoc_all">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.</span></span><span class="sig-name descname"><span class="pre">cleandoc_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searchpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">openhtml</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc.html#cleandoc_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cleandoc_all" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cleandoc.</span></span><span class="sig-name descname"><span class="pre">cleandoc_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searchpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">openhtml</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc.html#cleandoc_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cleandoc_all" title="Permalink to this definition"></a></dt>
 <dd><p>Run clean_all and gen_docs functions. Check modified files since last
 document generation to skip checking of some files. Open docs in browser
 after creation or checking.</p>
@@ -254,6 +261,65 @@ Pylint is a python package which checks for code cleanliness.</p>
 <dd class="field-odd"><p>str</p>
 </dd>
 </dl>
+</dd></dl>
+
+</section>
+<section id="module-cleandoc.cli">
+<span id="cleandoc-cli-module"></span><h2>cleandoc.cli module<a class="headerlink" href="#module-cleandoc.cli" title="Permalink to this heading"></a></h2>
+<p>Created on Sun Jul  2 12:18:08 2023</p>
+<p>&#64;author: jkris</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="cleandoc.cli.cli_checks">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.cli.</span></span><span class="sig-name descname"><span class="pre">cli_checks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pypath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dirpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noclean</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodoc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/cli.html#cli_checks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cli.cli_checks" title="Permalink to this definition"></a></dt>
+<dd><p>Check that command line args are compatible</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pypath</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>dirpath</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>noclean</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>nodoc</strong> (<em>bool</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cleandoc.cli.cli_dir">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.cli.</span></span><span class="sig-name descname"><span class="pre">cli_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noclean</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodoc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/cli.html#cli_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cli.cli_dir" title="Permalink to this definition"></a></dt>
+<dd><p>Run clean_all, gen_docs, or cleandoc_all depending on args.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dirpath</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>ignore</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>write</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>noclean</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>nodoc</strong> (<em>bool</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cleandoc.cli.cli_file">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.cli.</span></span><span class="sig-name descname"><span class="pre">cli_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pypath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/cli.html#cli_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cli.cli_file" title="Permalink to this definition"></a></dt>
+<dd><p>Run clean_pyfile</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pypath</strong> (<em>str</em>) -- _description_</p></li>
+<li><p><strong>write</strong> (<em>bool</em>) -- _description_</p></li>
+<li><p><strong>ignore</strong> (<em>bool</em>) -- _description_</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cleandoc.cli.main">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.cli.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/cli.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cli.main" title="Permalink to this definition"></a></dt>
+<dd><p>Run full command line process</p>
 </dd></dl>
 
 </section>
