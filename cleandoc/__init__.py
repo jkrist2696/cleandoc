@@ -74,7 +74,7 @@ def clean_all(
     logger = config_log("cleandoc_log.txt")
     for i, pyfile in enumerate(pyfilelist):
         _none2, pyname = path.split(pyfile)
-        if pyfile in skip:
+        if pyfile in skip:  # type: ignore
             header = f"Skipping File ({i+1}/{len(pyfilelist)}): {pyname}"
             headerstr = f"{format_header(header, repeat_char='o')}\n"
             logger.info(headerstr)
