@@ -51,7 +51,14 @@ def run_capture_out(cmd: list[str], shell: bool = False) -> Tuple[str, str]:
         Standard Error returned from shell
 
     """
-    proc = run(cmd, capture_output=True, encoding="utf-8", check=False, shell=shell)
+    proc = run(
+        cmd,
+        capture_output=True,
+        encoding="utf-8",
+        check=False,
+        shell=shell,
+        errors="ignore",
+    )
     return proc.stdout, proc.stderr
 
 
@@ -184,11 +191,6 @@ def findall_infile(regex: str, filepath: str, skip_exist: bool = False) -> list:
         return []
     try:
         with open(filepath, "r", encoding="utf-8") as file:
-            filetext = file.read()
-    except UnicodeDecodeError:
-        pass
-    try:
-        with open(filepath, "r", encoding="ascii") as file:
             filetext = file.read()
     except UnicodeDecodeError as error:
         raise IOError from error

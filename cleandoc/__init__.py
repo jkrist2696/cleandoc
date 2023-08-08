@@ -13,8 +13,7 @@ import webbrowser
 from typing import Union, List
 from .clean import run_black, run_pylint, run_mypy
 from .doq import run_doq, check_docstrings
-from .helper import format_header, find_pyfiles, get_clean_pyfiles, config_log
-from .helper import check_modified_since_docs
+from . import helper as ch
 from .sphinx import run_sphinx_all, get_release
 
 reload(logging)
@@ -35,9 +34,9 @@ def cleandoc_all(
         keyword argument passed to clean_all function
     """
     searchpath = path.abspath(searchpath)
-    skiplist = get_clean_pyfiles("cleandoc_log.txt")
-    createdocs = check_modified_since_docs(searchpath, "cleandoc_log.txt")
-    config_log("cleandoc_log.txt")
+    skiplist = ch.get_clean_pyfiles("cleandoc_log.txt")
+    createdocs = ch.check_modified_since_docs(searchpath, "cleandoc_log.txt")
+    ch.config_log("cleandoc_log.txt")
     clean_all(searchpath, ignore=ignore, write=write, skip=skiplist)
     mainpage = gen_docs(searchpath, create=createdocs)
     if openhtml is True:
@@ -66,22 +65,24 @@ def clean_all(
         Or True to find list of clean pyfiles within function.
     """
     searchpath = path.abspath(searchpath)
+    if not path.isdir(searchpath):
+        raise FileNotFoundError("Searchpath does not exist: " + str(searchpath))
     if skip is True:
-        skip = get_clean_pyfiles("cleandoc_log.txt")
+        skip = ch.get_clean_pyfiles("cleandoc_log.txt")
     elif skip is False:
         skip = []
-    _none1, pyfilelist = find_pyfiles(searchpath)
-    logger = config_log("cleandoc_log.txt")
+    _none1, pyfilelist = ch.find_pyfiles(searchpath)
+    logger = ch.config_log("cleandoc_log.txt")
     for i, pyfile in enumerate(pyfilelist):
         _none2, pyname = path.split(pyfile)
         if pyfile in skip:  # type: ignore
             header = f"Skipping File ({i+1}/{len(pyfilelist)}): {pyname}"
-            headerstr = f"{format_header(header, repeat_char='o')}\n"
+            headerstr = f"{ch.format_header(header, repeat_char='o')}\n"
             logger.info(headerstr)
             logger.info("File is Clean: %s\n", pyfile)
             continue
         header = f"Checking File ({i+1}/{len(pyfilelist)}): {pyname}"
-        headerstr = f"{format_header(header, repeat_char='o')}\n"
+        headerstr = f"{ch.format_header(header, repeat_char='o')}\n"
         logger.info(headerstr)
         summary = clean_pyfile(pyfile, write=write)
         if (not ignore) and (len(summary) > 0):
@@ -105,7 +106,9 @@ def clean_pyfile(pyfilepath: str, write: bool = True):
     str
         Summary of all command outputs concatenated together
     """
-    config_log("cleandoc_log.txt")
+    if not path.isfile(pyfilepath):
+        raise FileNotFoundError("Pyfilepath does not exist: " + str(pyfilepath))
+    ch.config_log("cleandoc_log.txt")
     pyfilepath = path.abspath(pyfilepath)
     realpath = path.realpath(pyfilepath)
     summary = check_docstrings(realpath)
@@ -132,15 +135,17 @@ def gen_docs(pkgpath: str, create: bool = True):
         Path of index.html file, the home page of the sphinx docs
     """
     pkgpath = path.abspath(pkgpath)
-    logger = config_log("cleandoc_log.txt")
+    if not path.isdir(pkgpath):
+        raise FileNotFoundError("Pkgpath does not exist: " + str(pkgpath))
+    logger = ch.config_log("cleandoc_log.txt")
     basepath, pkgname = path.split(pkgpath)
     docs = path.join(basepath, "docs")
     indexpath = path.join(docs, "index.html")
     if create is False:
-        logger.info("%s\n", format_header("Skipping Gen Docs", repeat_char="o"))
+        logger.info("%s\n", ch.format_header("Skipping Gen Docs", repeat_char="o"))
         logger.info("Docs Location: %s\n", docs)
         return indexpath
-    logger.info("%s\n", format_header("Gen Docs Output", repeat_char="o"))
+    logger.info("%s\n", ch.format_header("Gen Docs Output", repeat_char="o"))
     logger.debug("    pkgpath: %s", pkgpath)
     docpath = path.join(basepath, f"_{pkgname}_working_docs")
     confpath = path.join(docpath, "source", "conf.py")

@@ -33,11 +33,11 @@ def run_black(pyfilepath: str, write: bool = True):
     if write:
         black_out, black_err = run_capture_out(["black", pyfilepath])
     black_str = f"{format_header('Black Output')}\n{black_out}\n{black_err}\n"
-    if "1 file left unchanged." not in black_str:
-        logger = logging.getLogger("cleandoc")
-        logger.info(black_str)
-        return black_str
-    return ""
+    if "1 file" in black_str and "left unchanged" in black_str:
+        return ""
+    logger = logging.getLogger("cleandoc")
+    logger.info(black_str)
+    return black_str
 
 
 def run_pylint(pyfilepath: str):
@@ -55,12 +55,12 @@ def run_pylint(pyfilepath: str):
     """
     # Check code cleanliness with pylint
     pylint_out, pylint_err = run_capture_out(["pylint", pyfilepath])
-    pylint_str = f"{format_header('Pylint Output')}\n{pylint_out}\n{pylint_err}\n"
-    if "Your code has been rated at 10.00/10" not in pylint_str:
-        logger = logging.getLogger("cleandoc")
-        logger.info(pylint_str)
-        return pylint_str
-    return ""
+    pylint_str = f"{format_header('Pylint Output')}\n{pylint_out}\n{pylint_err}"
+    if "Your code has been rated at 10.00/10" in pylint_str:
+        return ""
+    logger = logging.getLogger("cleandoc")
+    logger.info(pylint_str)
+    return pylint_str
 
 
 def run_mypy(pyfilepath: str):
@@ -80,12 +80,12 @@ def run_mypy(pyfilepath: str):
     # Check variable type hints with mypy
     mypy_args = ["mypy", pyfilepath, "--check-untyped-defs", "--ignore-missing-imports"]
     mypy_out, mypy_err = run_capture_out(mypy_args)
-    mypy_str = f"{format_header('Mypy Output')}\n{mypy_out}\n{mypy_err}\n"
-    if "Success: no issues found" not in mypy_str:
-        logger = logging.getLogger("cleandoc")
-        logger.info(mypy_str)
-        return mypy_str
-    return ""
+    mypy_str = f"{format_header('Mypy Output')}\n{mypy_out}\n{mypy_err}"
+    if "Success: no issues found" in mypy_str:
+        return ""
+    logger = logging.getLogger("cleandoc")
+    logger.info(mypy_str)
+    return mypy_str
 
 
 # if __name__ == "__main__":

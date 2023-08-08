@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cleandoc.doq &mdash; cleandoc 0.0.11 documentation</title>
+  <title>cleandoc.doq &mdash; cleandoc 0.0.21 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             cleandoc
           </a>
               <div class="version">
-                0.0.11
+                0.0.21
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -116,7 +116,7 @@
     <span class="k">if</span> <span class="n">write</span><span class="p">:</span>
         <span class="n">run</span><span class="p">([</span><span class="s2">&quot;doq&quot;</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">pyfilepath</span><span class="p">,</span> <span class="s2">&quot;-w&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--formatter=</span><span class="si">{</span><span class="n">formatter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="n">doq_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">format_header</span><span class="p">(</span><span class="s1">&#39;Doq Output&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n\</span>
-<span class="s2">            Simple Docstrings Added. Please Complete Them!</span><span class="se">\n</span><span class="s2">&quot;</span>
+<span class="s2">            Simple Docstrings Added. Please Complete Them!</span><span class="se">\n\n</span><span class="s2">&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">results</span> <span class="o">=</span> <span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(&quot;&quot;&quot;(.|\n|\r)*?&quot;&quot;&quot;)&#39;</span><span class="p">,</span> <span class="n">doq_out</span> <span class="o">+</span> <span class="n">doq_err</span><span class="p">)</span>
         <span class="n">doq_strings</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">])</span>

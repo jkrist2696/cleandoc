@@ -41,7 +41,7 @@ def run_doq(pyfilepath: str, formatter: str = "numpy", write: bool = True):
     if write:
         run(["doq", "-f", pyfilepath, "-w", f"--formatter={formatter}"], check=True)
         doq_str = f"{format_header('Doq Output')}\n\n\
-            Simple Docstrings Added. Please Complete Them!\n"
+            Simple Docstrings Added. Please Complete Them!\n\n"
     else:
         results = findall(r'("""(.|\n|\r)*?""")', doq_out + doq_err)
         doq_strings = "\n".join([result[0] for result in results])

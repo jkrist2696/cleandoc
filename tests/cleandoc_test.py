@@ -20,5 +20,5 @@ clipath = path.join(cdpath, "cli.py")
 clitest = f"python {clipath} -f {__file__} -w"
 print(f"\nCommand Line Test Command:\n{clitest}\n")
 out = system(clitest)
-print(f"\nCommand Line Test Output:\n{out}\n")
+print(f"\nCommand Line Test Return Code: {out}\n")
 cd.cleandoc_all(cdpath)

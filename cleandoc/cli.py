@@ -77,7 +77,7 @@ def main():
     """Run full command line process"""
     desc = "Run automated cleaning and/or documentation of python code"
     fileh = "Python (.py) file to clean"
-    dirh = "Directory containing Python (.py) file to clean and/or document"
+    dirh = "Directory containing Python (.py) files to clean and/or document"
     writeh = "Flag to write changes to files in-place"
     ignoreh = "Flag to continue through warnings"
     nch = "Flag to prevent cleaning of py files"
