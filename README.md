@@ -2,6 +2,10 @@
 
 Python package leveraging doq, black, pylint, mypy and sphinx to automatically clean and document python code.
 
+## Install:
+
+pip install cleandoc
+
 # Usage
 
 cleandoc [-h] [-file FILE] [-dir DIR] [-write] [-ignore] [-noclean] [-nodoc]
@@ -17,11 +21,10 @@ optional arguments:
 
 ## Read The Docs:
 
+Download "docs" folder or check preview below.
+
 https://htmlpreview.github.io/?https://github.com/jkrist2696/cleandoc/blob/main/docs/index.html
 
-## Install:
-
-pip install cleandoc
 
 ## Contributing
 
@@ -29,8 +32,7 @@ Message me on Github.
 
 ## License
 
-[GNU GPLv3]
-(https://choosealicense.com/licenses/gpl-3.0/)
+[GNU GPLv3](https://choosealicense.com/licenses/gpl-3.0/)
 
 ## Copyright:
 
