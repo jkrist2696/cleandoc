@@ -3,15 +3,16 @@
 Created on Sun Jul  2 12:18:08 2023
 
 @author: jkris
-"""
-from argparse import ArgumentParser
 from os import path
 import sys
 from importlib import import_module
-
 cleandocdir, _none = path.split(path.abspath(__file__))
 sys.path.insert(0, path.split(cleandocdir)[0])
 cd = import_module("cleandoc")
+"""
+
+from argparse import ArgumentParser
+import cleandoc as cd
 
 
 def cli_checks(pypath: str, dirpath: str, noclean: bool, nodoc: bool):
