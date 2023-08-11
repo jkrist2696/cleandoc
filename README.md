@@ -2,11 +2,11 @@
 
 Python package leveraging doq, black, pylint, mypy and sphinx to automatically clean and document python code.
 
-## Install:
+## Install
 
 pip install cleandoc
 
-# Usage
+## Usage
 
 cleandoc [-h] [-file FILE] [-dir DIR] [-write] [-ignore] [-noclean] [-nodoc]
 
@@ -19,7 +19,7 @@ optional arguments:
   -noclean, -nc        Flag to prevent cleaning of py files  
   -nodoc, -nd          Flag to prevent html doc creation  
 
-## Read The Docs:
+## Read The Docs
 
 Download "docs" folder or check preview below.
 

@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="English" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cleandoc.helper &mdash; cleandoc 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            cleandoc
+          </a>
+              <div class="version">
+                0.0.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cleandoc.html">cleandoc package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">cleandoc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../cleandoc.html">cleandoc</a></li>
+      <li class="breadcrumb-item active">cleandoc.helper</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for cleandoc.helper</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Sun Jul  2 12:18:08 2023</span>
+
+<span class="sd">@author: jkris</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">run</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">floor</span><span class="p">,</span> <span class="n">ceil</span>
+<span class="kn">from</span> <span class="nn">importlib.util</span> <span class="kn">import</span> <span class="n">find_spec</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">walk</span><span class="p">,</span> <span class="n">remove</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="n">findall</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">stdout</span>
+
+
+<div class="viewcode-block" id="check_for_pkg"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.helper.check_for_pkg">[docs]</a><span class="k">def</span> <span class="nf">check_for_pkg</span><span class="p">(</span><span class="n">packagename</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Use importlib find_spec function to check if package is installed.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    packagename : str</span>
+<span class="sd">        Name of python package to check for</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">spec</span> <span class="o">=</span> <span class="n">find_spec</span><span class="p">(</span><span class="n">packagename</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">spec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">errorstr</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">packagename</span><span class="si">}</span><span class="s2"> is not installed! Please &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;install the package before rerunning the script.&quot;</span>
+        <span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ModuleNotFoundError</span><span class="p">(</span><span class="n">errorstr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="run_capture_out"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.helper.run_capture_out">[docs]</a><span class="k">def</span> <span class="nf">run_capture_out</span><span class="p">(</span><span class="n">cmd</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="n">shell</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Run subprocess command and return the stdout and stderr.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cmd : list[str]</span>
+<span class="sd">        Pass list of shell commands to subprocess.run</span>
+<span class="sd">    shell : bool</span>
+<span class="sd">        Pass shell keyword argument to subprocess.run</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    stdout  : str</span>
+<span class="sd">        Standard Output returned from shell</span>
+<span class="sd">    stderr : str</span>
+<span class="sd">        Standard Error returned from shell</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">proc</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span>
+        <span class="n">cmd</span><span class="p">,</span>
+        <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">,</span>
+        <span class="n">check</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">shell</span><span class="o">=</span><span class="n">shell</span><span class="p">,</span>
+        <span class="n">errors</span><span class="o">=</span><span class="s2">&quot;ignore&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">,</span> <span class="n">proc</span><span class="o">.</span><span class="n">stderr</span></div>
+
+
+<div class="viewcode-block" id="format_header"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.helper.format_header">[docs]</a><span class="k">def</span> <span class="nf">format_header</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">repeat_char</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="n">linelen</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">68</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Format a string header for printing or logging.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    name : str</span>
+<span class="sd">        String to include in middle of header</span>
+<span class="sd">    repeat_char : str</span>
+<span class="sd">        Character to repeat before and after name</span>
+<span class="sd">    linelen : int</span>
+<span class="sd">        Total length of string to create</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    header : str</span>
+<span class="sd">        Full line string with name between repeated characters</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="n">repeat_char</span> <span class="o">*</span> <span class="n">floor</span><span class="p">((</span><span class="n">linelen</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">end</span> <span class="o">=</span> <span class="n">repeat_char</span> <span class="o">*</span> <span class="n">ceil</span><span class="p">((</span><span class="n">linelen</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">header</span></div>
+
+
+<div class="viewcode-block" id="find_pyfiles"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.helper.find_pyfiles">[docs]</a><span class="k">def</span> <span class="nf">find_pyfiles</span><span class="p">(</span><span class="n">searchpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Find all .py files in nested directories.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    searchpath : str</span>
+<span class="sd">        Full path to search through for .py files</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pathlist : list[str]</span>
+<span class="sd">        List of full paths to all directories containing .py files directly</span>
+<span class="sd">    filelist : list[str]</span>
+<span class="sd">        List of full paths to all .py files found</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pathlist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">filelist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">root</span><span class="p">,</span> <span class="n">_none1</span><span class="p">,</span> <span class="n">files</span> <span class="ow">in</span> <span class="n">walk</span><span class="p">(</span><span class="n">searchpath</span><span class="p">):</span>
+        <span class="n">contains_py</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+            <span class="n">_none2</span><span class="p">,</span> <span class="n">fileext</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;.py&quot;</span> <span class="o">==</span> <span class="n">fileext</span><span class="p">:</span>
+                <span class="n">contains_py</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">filepath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+                <span class="n">filelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">contains_py</span><span class="p">:</span>
+            <span class="n">pathlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pathlist</span><span class="p">,</span> <span class="n">filelist</span></div>
+
+
+<div class="viewcode-block" id="check_modified"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.helper.check_modified">[docs]</a><span class="k">def</span> <span class="nf">check_modified</span><span class="p">(</span><span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">timestr</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if a file was modified since a certain date and time.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    filepath : str</span>
+<span class="sd">        Full path of file to check</span>
+<span class="sd">    timestr : str</span>
+<span class="sd">        String of time to check against, formatted as &quot;%d-%m-%y %H:%M:%S&quot;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if the file has been modified since the timestring.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filepath</span><span class="p">):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="n">checktime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">timestr</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-%m-%y %H:%M:%S&quot;</span><span class="p">)</span>
+    <span class="n">checkstamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timestamp</span><span class="p">(</span><span class="n">checktime</span><span class="p">)</span>
+    <span class="n">editstamp</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">editstamp</span> <span class="o">&gt;</span> <span class="n">checkstamp</span></div>
+
+
+<div class="viewcode-block" id="check_modified_since_docs"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.helper.check_modified_since_docs">[docs]</a><span class="k">def</span> <span class="nf">check_modified_since_docs</span><span class="p">(</span><span class="n">searchpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">logpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if any python files in nested directory were modified since</span>
+<span class="sd">    html documents were created.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    logpath : str</span>
+<span class="sd">        Full path of previous log file output by cleandoc</span>
+<span class="sd">    htmlpath : str</span>
+<span class="sd">        Full path to directory containing previously generated html docs</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    bool</span>
+<span class="sd">        True if modifed since doc creation</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_none</span><span class="p">,</span> <span class="n">filelist</span> <span class="o">=</span> <span class="n">find_pyfiles</span><span class="p">(</span><span class="n">searchpath</span><span class="p">)</span>
+    <span class="n">regex_docs</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(\d\d-\d\d-\d\d \d\d:\d\d:\d\d).*Docs Location: (.*)&quot;</span>
+    <span class="n">results_docs</span> <span class="o">=</span> <span class="n">findall_infile</span><span class="p">(</span><span class="n">regex_docs</span><span class="p">,</span> <span class="n">logpath</span><span class="p">,</span> <span class="n">skip_exist</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">results_docs</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="n">doctime</span> <span class="o">=</span> <span class="n">results_docs</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">filepath</span> <span class="ow">in</span> <span class="n">filelist</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">check_modified</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="n">doctime</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">return</span> <span class="kc">False</span></div>
+
+
+<div class="viewcode-block" id="findall_infile"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.helper.findall_infile">[docs]</a><span class="k">def</span> <span class="nf">findall_infile</span><span class="p">(</span><span class="n">regex</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">filepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">skip_exist</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Open ascii file for reading and get results of re.findall</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    regex : str</span>
+<span class="sd">        Regular expression</span>
+<span class="sd">    filepath : str</span>
+<span class="sd">        Path of ascii text file to search</span>
+<span class="sd">    skip_exist : bool</span>
+<span class="sd">        True to skip searching through a file that doesnt exist</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list</span>
+<span class="sd">        Results from re.findall function</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filepath</span><span class="p">))</span> <span class="ow">and</span> <span class="n">skip_exist</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filepath</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+            <span class="n">filetext</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">UnicodeDecodeError</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">IOError</span> <span class="kn">from</span> <span class="nn">error</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">findall</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">filetext</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">results</span></div>
+
+
+<div class="viewcode-block" id="get_clean_pyfiles"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.helper.get_clean_pyfiles">[docs]</a><span class="k">def</span> <span class="nf">get_clean_pyfiles</span><span class="p">(</span><span class="n">logpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Get a list of already cleaned .py files from previous cleandoc run so</span>
+<span class="sd">    cleaning functions can be skipped.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    logpath : str</span>
+<span class="sd">        Full path of previous log file output by cleandoc</span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list[str]</span>
+<span class="sd">        List of .py files in nested directory which are still clean</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">clean_pyfiles</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;(\d\d-\d\d-\d\d \d\d:\d\d:\d\d).*File is Clean: (.*)&quot;</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">findall_infile</span><span class="p">(</span><span class="n">regex</span><span class="p">,</span> <span class="n">logpath</span><span class="p">,</span> <span class="n">skip_exist</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">check_modified</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">clean_pyfiles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">clean_pyfiles</span></div>
+
+
+<div class="viewcode-block" id="config_log"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.helper.config_log">[docs]</a><span class="k">def</span> <span class="nf">config_log</span><span class="p">(</span><span class="n">logpath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">logname</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;cleandoc&quot;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Configure log file using logging module</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    logpath : str</span>
+<span class="sd">        Path of cleandoc log file to create</span>
+<span class="sd">    logname : str</span>
+<span class="sd">        Name for logger</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    logger object</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">logname</span><span class="p">)</span><span class="o">.</span><span class="n">hasHandlers</span><span class="p">():</span>
+        <span class="k">return</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">logname</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">logpath</span><span class="p">):</span>
+        <span class="n">remove</span><span class="p">(</span><span class="n">logpath</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span>
+        <span class="n">filename</span><span class="o">=</span><span class="n">logpath</span><span class="p">,</span>
+        <span class="n">filemode</span><span class="o">=</span><span class="s2">&quot;a&quot;</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%(asctime)s</span><span class="s2"> </span><span class="si">%(name)s</span><span class="s2"> </span><span class="si">%(levelname)s</span><span class="s2"> </span><span class="si">%(message)s</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">datefmt</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">-%m-%y %H:%M:%S&quot;</span><span class="p">,</span>
+        <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">INFO</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">logname</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">(</span><span class="n">stdout</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">logger</span></div>
+
+
+<span class="c1"># if __name__ == &quot;__main__&quot;:</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, jkris.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

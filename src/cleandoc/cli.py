@@ -15,47 +15,41 @@ from argparse import ArgumentParser
 import cleandoc as cd
 
 
-def cli_checks(pypath: str, dirpath: str, noclean: bool, nodoc: bool):
+def _cli_checks(parser, pypath: str, dirpath: str, noclean: bool, nodoc: bool):
     """Check that command line args are compatible
 
     Parameters
     ----------
+    parser: ArgumentParser object
     pypath : str
     dirpath : str
     noclean : bool
     nodoc : bool
     """
     if len(pypath) > 0 and len(dirpath) > 0:
-        raise SyntaxError("File and Directory were both specified. Only specify one.")
+        parser.error("File and Directory were both specified. Only specify one.")
     if len(pypath) == 0 and len(dirpath) == 0:
-        raise SyntaxError(
-            "Neither File or Directory were specified. Please specify one."
-        )
+        parser.error("Neither File or Directory were specified. Please specify one.")
     if len(pypath) > 0 and noclean:
-        raise SyntaxError("File was specified with -noclean so nothing occured.")
+        parser.error("File was specified with -noclean so nothing occured.")
     if noclean and nodoc:
-        raise SyntaxError(
-            "-noclean and -nodoc options were specified so nothing occured"
-        )
+        parser.error("-noclean and -nodoc options were specified so nothing occured")
 
 
-def cli_file(pypath: str, write: bool):
+def _cli_file(pypath: str, write: bool):
     """Run clean_pyfile
 
     Parameters
     ----------
     pypath : str
-        _description_
     write : bool
-        _description_
     ignore : bool
-        _description_
     """
     if len(pypath) > 0:
         cd.clean_pyfile(pypath, write=write)
 
 
-def cli_dir(dirpath: str, write: bool, ignore: bool, noclean: bool, nodoc: bool):
+def _cli_dir(dirpath: str, write: bool, ignore: bool, noclean: bool, nodoc: bool):
     """Run clean_all, gen_docs, or cleandoc_all depending on args.
 
     Parameters
@@ -96,9 +90,9 @@ def main():
     print(f"\nCommand Line Args:\n{args}\n")
     pypath, dirpath, write, ignore, noclean, nodoc = [args[key] for key in args.keys()]
 
-    cli_checks(pypath, dirpath, noclean, nodoc)
-    cli_file(pypath, write)
-    cli_dir(dirpath, write, ignore, noclean, nodoc)
+    _cli_checks(parser, pypath, dirpath, noclean, nodoc)
+    _cli_file(pypath, write)
+    _cli_dir(dirpath, write, ignore, noclean, nodoc)
 
 
 if __name__ == "__main__":

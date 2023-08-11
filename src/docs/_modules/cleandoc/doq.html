@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="English" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cleandoc.doq &mdash; cleandoc 0.0.2 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            cleandoc
+          </a>
+              <div class="version">
+                0.0.2
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../cleandoc.html">cleandoc package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">cleandoc</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../cleandoc.html">cleandoc</a></li>
+      <li class="breadcrumb-item active">cleandoc.doq</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for cleandoc.doq</h1><div class="highlight"><pre>
+<span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Sun Jul  2 12:18:08 2023</span>
+
+<span class="sd">@author: jkris</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">subprocess</span> <span class="kn">import</span> <span class="n">run</span>
+<span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="n">findall</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">run_capture_out</span><span class="p">,</span> <span class="n">format_header</span><span class="p">,</span> <span class="n">check_for_pkg</span><span class="p">,</span> <span class="n">findall_infile</span>
+
+<span class="c1"># check for packages called in subprocess commands in this module</span>
+<span class="n">check_for_pkg</span><span class="p">(</span><span class="s2">&quot;doq&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="run_doq"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.doq.run_doq">[docs]</a><span class="k">def</span> <span class="nf">run_doq</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">formatter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;numpy&quot;</span><span class="p">,</span> <span class="n">write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Auto-Generate Docstrings with doq (py-doq) package. Doq command is</span>
+<span class="sd">    executed via subprocess command to create docstrings where missing.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pyfilepath : str</span>
+<span class="sd">        Full path to python (.py) file</span>
+<span class="sd">    formatter : str</span>
+<span class="sd">        [&quot;numpy&quot;,&quot;google&quot;,&quot;sphinx&quot;] : See doq documentation for formatting options</span>
+<span class="sd">    write : bool</span>
+<span class="sd">        True = write the auto-gen docstrings in-place</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Summary of command outputs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Generate Simple Docstrings with doq where they dont exists</span>
+    <span class="n">doq_out</span><span class="p">,</span> <span class="n">doq_err</span> <span class="o">=</span> <span class="n">run_capture_out</span><span class="p">(</span>
+        <span class="p">[</span><span class="s2">&quot;doq&quot;</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">pyfilepath</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--formatter=</span><span class="si">{</span><span class="n">formatter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">doq_out</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">doq_err</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">write</span><span class="p">:</span>
+        <span class="n">run</span><span class="p">([</span><span class="s2">&quot;doq&quot;</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">pyfilepath</span><span class="p">,</span> <span class="s2">&quot;-w&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--formatter=</span><span class="si">{</span><span class="n">formatter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">],</span> <span class="n">check</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="n">doq_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">format_header</span><span class="p">(</span><span class="s1">&#39;Doq Output&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n\</span>
+<span class="s2">            Simple Docstrings Added. Please Complete Them!</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(&quot;&quot;&quot;(.|\n|\r)*?&quot;&quot;&quot;)&#39;</span><span class="p">,</span> <span class="n">doq_out</span> <span class="o">+</span> <span class="n">doq_err</span><span class="p">)</span>
+        <span class="n">doq_strings</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">])</span>
+        <span class="n">doq_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">format_header</span><span class="p">(</span><span class="s1">&#39;Doq Output&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">doq_strings</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;cleandoc&quot;</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">doq_str</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">doq_str</span></div>
+
+
+<div class="viewcode-block" id="check_docstrings"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.doq.check_docstrings">[docs]</a><span class="k">def</span> <span class="nf">check_docstrings</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Check if Docstrings were not edited after being auto-generated.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pyfilepath : str</span>
+<span class="sd">        Full path of python (.py) file</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    str</span>
+<span class="sd">        Summary of command outputs</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">desc_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;def ([^(]*).*\r*\n *(&quot;&quot;&quot;(.*?)(.|\n|\r)*?&quot;&quot;&quot;)&#39;</span>
+    <span class="n">var_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot; +([a-zA-Z0-9_]+) :.*\r*\n +([a-zA-Z0-9_]+)&quot;</span>
+    <span class="n">desc_search</span> <span class="o">=</span> <span class="n">findall_infile</span><span class="p">(</span><span class="n">desc_regex</span><span class="p">,</span> <span class="n">pyfilepath</span><span class="p">)</span>
+    <span class="n">check_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">desc_found</span> <span class="ow">in</span> <span class="n">desc_search</span><span class="p">:</span>
+        <span class="n">funname</span><span class="p">,</span> <span class="n">docstring</span><span class="p">,</span> <span class="n">desc</span> <span class="o">=</span> <span class="n">desc_found</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
+        <span class="n">check_sum</span> <span class="o">=</span> <span class="n">funname</span> <span class="o">==</span> <span class="p">(</span><span class="n">desc</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
+        <span class="n">var_search</span> <span class="o">=</span> <span class="n">findall</span><span class="p">(</span><span class="n">var_regex</span><span class="p">,</span> <span class="n">docstring</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">var_found</span> <span class="ow">in</span> <span class="n">var_search</span><span class="p">:</span>
+            <span class="n">check_sum</span> <span class="o">+=</span> <span class="n">var_found</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">var_found</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">check_sum</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">check_str</span> <span class="o">+=</span> <span class="n">docstring</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">check_str</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;cleandoc&quot;</span><span class="p">)</span>
+    <span class="n">check_str</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">format_header</span><span class="p">(</span><span class="s1">&#39;Check Docstring Output&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n\</span>
+<span class="s2">        Complete the following auto-generated docstrings!</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+        <span class="o">+</span> <span class="n">check_str</span>
+    <span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">check_str</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">check_str</span></div>
+
+
+<span class="c1"># if __name__ == &quot;__main__&quot;:</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, jkris.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

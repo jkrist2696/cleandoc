@@ -1,0 +1,50 @@
+cleandoc package
+================
+
+.. automodule:: cleandoc
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+cleandoc.clean module
+---------------------
+
+.. automodule:: cleandoc.clean
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+cleandoc.cli module
+-------------------
+
+.. automodule:: cleandoc.cli
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+cleandoc.doq module
+-------------------
+
+.. automodule:: cleandoc.doq
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+cleandoc.helper module
+----------------------
+
+.. automodule:: cleandoc.helper
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+cleandoc.sphinx module
+----------------------
+
+.. automodule:: cleandoc.sphinx
+   :members:
+   :undoc-members:
+   :show-inheritance:
