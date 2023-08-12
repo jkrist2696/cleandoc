@@ -5,13 +5,10 @@ Created on Sun Jul  2 12:18:08 2023
 @author: jkris
 """
 
-from subprocess import run
 from re import findall
 import logging
-from .helper import run_capture_out, format_header, check_for_pkg, findall_infile
-
-# check for packages called in subprocess commands in this module
-check_for_pkg("doq")
+import doq  # pylint: disable=W0611
+from .helper import run_capture_out, format_header, findall_infile
 
 
 def run_doq(pyfilepath: str, formatter: str = "numpy", write: bool = True):
@@ -39,9 +36,14 @@ def run_doq(pyfilepath: str, formatter: str = "numpy", write: bool = True):
     if (len(doq_out) + len(doq_err)) == 0:
         return ""
     if write:
-        run(["doq", "-f", pyfilepath, "-w", f"--formatter={formatter}"], check=True)
-        doq_str = f"{format_header('Doq Output')}\n\n\
-            Simple Docstrings Added. Please Complete Them!\n\n"
+        doq_out, doq_err = run_capture_out(
+            ["doq", "-f", pyfilepath, "-w", f"--formatter={formatter}"]
+        )
+        if len(doq_err) == 0:
+            doq_str = f"{format_header('Doq Output')}\n\n\
+                Simple Docstrings Added. Please Complete Them!\n\n"
+        else:
+            doq_str = f"{format_header('Doq Output')}\n{doq_err}\n"
     else:
         results = findall(r'("""(.|\n|\r)*?""")', doq_out + doq_err)
         doq_strings = "\n".join([result[0] for result in results])

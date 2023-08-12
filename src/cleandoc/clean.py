@@ -6,11 +6,10 @@ Created on Sun Jul  2 12:18:08 2023
 """
 
 import logging
-from .helper import run_capture_out, format_header, check_for_pkg
-
-# check for packages called in subprocess commands in this module
-for pkg in ["black", "pylint", "mypy"]:
-    check_for_pkg(pkg)
+import black  # pylint: disable=W0611
+import pylint  # pylint: disable=W0611
+import mypy  # pylint: disable=W0611
+from .helper import run_capture_out, format_header
 
 
 def run_black(pyfilepath: str, write: bool = True):

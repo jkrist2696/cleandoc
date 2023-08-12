@@ -20,7 +20,7 @@ reload(logging)
 
 
 def cleandoc_all(
-    searchpath: str, ignore: bool = False, write: bool = True, openhtml: bool = True
+    searchpath: str, ignore: bool = False, write: bool = True, release: str = ""
 ):
     """Run clean_all and gen_docs functions. Check modified files since last
     document generation to skip checking of some files. Open docs in browser
@@ -37,9 +37,9 @@ def cleandoc_all(
     skiplist = ch.get_clean_pyfiles("cleandoc_log.txt")
     createdocs = ch.check_modified_since_docs(searchpath, "cleandoc_log.txt")
     ch.config_log("cleandoc_log.txt")
-    clean_all(searchpath, ignore=ignore, write=write, skip=skiplist)
-    mainpage = gen_docs(searchpath, create=createdocs)
-    if openhtml is True:
+    summary = clean_all(searchpath, ignore=ignore, write=write, skip=skiplist)
+    if len(summary) == 0 or ignore:
+        mainpage = gen_docs(searchpath, create=createdocs, release=release)
         webbrowser.open(mainpage)
     logging.shutdown()
 
@@ -73,6 +73,7 @@ def clean_all(
         skip = []
     _none1, pyfilelist = ch.find_pyfiles(searchpath)
     logger = ch.config_log("cleandoc_log.txt")
+    summary_all = ""
     for i, pyfile in enumerate(pyfilelist):
         _none2, pyname = path.split(pyfile)
         if pyfile in skip:  # type: ignore
@@ -91,6 +92,8 @@ def clean_all(
             raise SyntaxWarning(f"{pyfile}\n{summary}")
         if len(summary) == 0:
             logger.info("File is Clean: %s\n", pyfile)
+        summary_all += summary
+    return summary_all
 
 
 def clean_pyfile(pyfilepath: str, write: bool = True):
@@ -119,7 +122,7 @@ def clean_pyfile(pyfilepath: str, write: bool = True):
     return summary
 
 
-def gen_docs(pkgpath: str, create: bool = True):
+def gen_docs(pkgpath: str, create: bool = True, release: str = ""):
     """Auto-generate sphinx html documentation for a python package.
 
     Parameters
@@ -150,7 +153,8 @@ def gen_docs(pkgpath: str, create: bool = True):
     docpath = path.join(basepath, f"_{pkgname}_working_docs")
     confpath = path.join(docpath, "source", "conf.py")
     confpath_old = path.join(docs, "conf.txt")
-    release = get_release(confpath_old)
+    if len(release) == 0:
+        release = get_release(confpath_old)
     if path.exists(docpath):
         rmtree(docpath)
     mkdir(docpath)

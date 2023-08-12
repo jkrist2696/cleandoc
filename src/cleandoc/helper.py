@@ -7,30 +7,12 @@ Created on Sun Jul  2 12:18:08 2023
 
 from subprocess import run
 from math import floor, ceil
-from importlib.util import find_spec
 from typing import Tuple
 from os import path, walk, remove
 from datetime import datetime
 from re import findall
 import logging
 from sys import stdout
-
-
-def check_for_pkg(packagename: str):
-    """Use importlib find_spec function to check if package is installed.
-
-    Parameters
-    ----------
-    packagename : str
-        Name of python package to check for
-    """
-    spec = find_spec(packagename)
-    if spec is None:
-        errorstr = (
-            f"{packagename} is not installed! Please "
-            f"install the package before rerunning the script."
-        )
-        raise ModuleNotFoundError(errorstr)
 
 
 def run_capture_out(cmd: list[str], shell: bool = False) -> Tuple[str, str]:

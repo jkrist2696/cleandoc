@@ -9,11 +9,9 @@ from os import path, sep, remove
 from getpass import getuser
 from re import findall, sub
 import logging
-from .helper import check_for_pkg, find_pyfiles, run_capture_out, format_header
-
-# check for packages called in subprocess commands in this module
-for pkg in ["sphinx", "sphinx_rtd_theme"]:
-    check_for_pkg(pkg)
+import sphinx_rtd_theme  # pylint: disable=W0611
+import sphinx  # pylint: disable=W0611
+from .helper import find_pyfiles, run_capture_out, format_header
 
 
 def run_sphinx_all(docpath: str, confpath: str, pkgpath: str, release: str):
@@ -34,7 +32,7 @@ def run_sphinx_all(docpath: str, confpath: str, pkgpath: str, release: str):
         Release number (version) of package
     """
 
-    basepath, pkgname = path.split(pkgpath)
+    _basepath, pkgname = path.split(pkgpath)
     summary = run_quickstart(docpath, pkgname, release)
     srcpath = path.join(docpath, "source")
     pathlist, _none2 = find_pyfiles(pkgpath)
@@ -43,10 +41,10 @@ def run_sphinx_all(docpath: str, confpath: str, pkgpath: str, release: str):
     for pypath in pathlist:
         initpath = path.join(pypath, "__init__.py")
         if not path.exists(initpath):
-            with open(initpath, "w", encoding="ascii") as initfile:
+            with open(initpath, "w", encoding="utf-8") as initfile:
                 initfile.write("")
     summary += run_apidoc(srcpath, pkgpath)
-    edit_conf(confpath, [basepath, pkgpath] + pathlist)
+    edit_conf(confpath, [pkgpath] + pathlist)  # basepath,
     edit_index(srcpath, pkgname)
     summary += run_make(docpath)
     if len(summary) > 0:
