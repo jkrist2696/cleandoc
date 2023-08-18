@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cleandoc package &mdash; cleandoc 0.0.1 documentation</title>
+  <title>cleandoc package &mdash; cleandoc 0.0.3 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,6 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="README" href="README.html" />
     <link rel="prev" title="Welcome to cleandoc&#39;s documentation!" href="index.html" /> 
 </head>
 
@@ -34,7 +35,7 @@
             cleandoc
           </a>
               <div class="version">
-                0.0.1
+                0.0.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -50,6 +51,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#cleandoc.clean_all"><code class="docutils literal notranslate"><span class="pre">clean_all()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cleandoc.clean_pyfile"><code class="docutils literal notranslate"><span class="pre">clean_pyfile()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cleandoc.cleandoc_all"><code class="docutils literal notranslate"><span class="pre">cleandoc_all()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cleandoc.cli_main"><code class="docutils literal notranslate"><span class="pre">cli_main()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#cleandoc.gen_docs"><code class="docutils literal notranslate"><span class="pre">gen_docs()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cleandoc.clean">cleandoc.clean module</a><ul>
@@ -59,10 +61,8 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cleandoc.cli">cleandoc.cli module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cleandoc.cli.cli_checks"><code class="docutils literal notranslate"><span class="pre">cli_checks()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cleandoc.cli.cli_dir"><code class="docutils literal notranslate"><span class="pre">cli_dir()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cleandoc.cli.cli_file"><code class="docutils literal notranslate"><span class="pre">cli_file()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cleandoc.cli.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.cli._cli_checks"><code class="docutils literal notranslate"><span class="pre">_cli_checks()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.cli.parse"><code class="docutils literal notranslate"><span class="pre">parse()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cleandoc.doq">cleandoc.doq module</a><ul>
@@ -71,7 +71,6 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cleandoc.helper">cleandoc.helper module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cleandoc.helper.check_for_pkg"><code class="docutils literal notranslate"><span class="pre">check_for_pkg()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cleandoc.helper.check_modified"><code class="docutils literal notranslate"><span class="pre">check_modified()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cleandoc.helper.check_modified_since_docs"><code class="docutils literal notranslate"><span class="pre">check_modified_since_docs()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="#cleandoc.helper.config_log"><code class="docutils literal notranslate"><span class="pre">config_log()</span></code></a></li>
@@ -82,20 +81,22 @@
 <li class="toctree-l3"><a class="reference internal" href="#cleandoc.helper.run_capture_out"><code class="docutils literal notranslate"><span class="pre">run_capture_out()</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#module-cleandoc.sphinx">cleandoc.sphinx module</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinx.add_conf_paths"><code class="docutils literal notranslate"><span class="pre">add_conf_paths()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinx.add_conf_settings"><code class="docutils literal notranslate"><span class="pre">add_conf_settings()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinx.edit_conf"><code class="docutils literal notranslate"><span class="pre">edit_conf()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinx.edit_index"><code class="docutils literal notranslate"><span class="pre">edit_index()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinx.get_release"><code class="docutils literal notranslate"><span class="pre">get_release()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinx.run_apidoc"><code class="docutils literal notranslate"><span class="pre">run_apidoc()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinx.run_make"><code class="docutils literal notranslate"><span class="pre">run_make()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinx.run_quickstart"><code class="docutils literal notranslate"><span class="pre">run_quickstart()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinx.run_sphinx_all"><code class="docutils literal notranslate"><span class="pre">run_sphinx_all()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cleandoc.sphinxdoc">cleandoc.sphinxdoc module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinxdoc.add_conf_paths"><code class="docutils literal notranslate"><span class="pre">add_conf_paths()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinxdoc.add_conf_settings"><code class="docutils literal notranslate"><span class="pre">add_conf_settings()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinxdoc.add_readme"><code class="docutils literal notranslate"><span class="pre">add_readme()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinxdoc.edit_conf"><code class="docutils literal notranslate"><span class="pre">edit_conf()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinxdoc.edit_index"><code class="docutils literal notranslate"><span class="pre">edit_index()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinxdoc.get_release"><code class="docutils literal notranslate"><span class="pre">get_release()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinxdoc.run_apidoc"><code class="docutils literal notranslate"><span class="pre">run_apidoc()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinxdoc.run_make"><code class="docutils literal notranslate"><span class="pre">run_make()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinxdoc.run_quickstart"><code class="docutils literal notranslate"><span class="pre">run_quickstart()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#cleandoc.sphinxdoc.run_sphinx_all"><code class="docutils literal notranslate"><span class="pre">run_sphinx_all()</span></code></a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="README.html">README</a></li>
 </ul>
 
         </div>
@@ -163,7 +164,7 @@ pylint, and mypy.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.cleandoc_all">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.</span></span><span class="sig-name descname"><span class="pre">cleandoc_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searchpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">openhtml</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc.html#cleandoc_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cleandoc_all" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cleandoc.</span></span><span class="sig-name descname"><span class="pre">cleandoc_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">searchpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc.html#cleandoc_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cleandoc_all" title="Permalink to this definition"></a></dt>
 <dd><p>Run clean_all and gen_docs functions. Check modified files since last
 document generation to skip checking of some files. Open docs in browser
 after creation or checking.</p>
@@ -172,21 +173,29 @@ after creation or checking.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>searchpath</strong> (<em>str</em>) -- directory of python package (nested dirs of modules)</p></li>
 <li><p><strong>ignore</strong> (<em>bool</em>) -- keyword argument passed to clean_all function</p></li>
+<li><p><strong>release</strong> (<em>str</em>) -- Version of docs formatted as &quot;X.Y.Z&quot; for Major, Minor, Patch</p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="cleandoc.cli_main">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.</span></span><span class="sig-name descname"><span class="pre">cli_main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc.html#cli_main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cli_main" title="Permalink to this definition"></a></dt>
+<dd><p>run main cli function</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.gen_docs">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.</span></span><span class="sig-name descname"><span class="pre">gen_docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkgpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">create</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc.html#gen_docs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.gen_docs" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">cleandoc.</span></span><span class="sig-name descname"><span class="pre">gen_docs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pkgpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">changed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc.html#gen_docs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.gen_docs" title="Permalink to this definition"></a></dt>
 <dd><p>Auto-generate sphinx html documentation for a python package.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pkgpath</strong> (<em>str</em>) -- Full path to directory containing all python modules to document.
 Directory name will be used as package name.</p></li>
-<li><p><strong>create</strong> (<em>bool</em>) -- True to create docs or False to skip and log their location</p></li>
+<li><p><strong>changed</strong> (<em>bool</em>) -- True if your source files have changed since you last created docs</p></li>
+<li><p><strong>release</strong> (<em>str</em>) -- Version of docs formatted as &quot;X.Y.Z&quot; for Major, Minor, Patch</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -267,64 +276,24 @@ Pylint is a python package which checks for code cleanliness.</p>
 <section id="module-cleandoc.cli">
 <span id="cleandoc-cli-module"></span><h2>cleandoc.cli module<a class="headerlink" href="#module-cleandoc.cli" title="Permalink to this heading"></a></h2>
 <p>Created on Sun Jul  2 12:18:08 2023</p>
-<p>&#64;author: jkris
-from os import path
-import sys
-from importlib import import_module
-cleandocdir, _none = path.split(path.abspath(__file__))
-sys.path.insert(0, path.split(cleandocdir)[0])
-cd = import_module(&quot;cleandoc&quot;)</p>
+<p>&#64;author: jkris</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="cleandoc.cli.cli_checks">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.cli.</span></span><span class="sig-name descname"><span class="pre">cli_checks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pypath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dirpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noclean</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodoc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/cli.html#cli_checks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cli.cli_checks" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cleandoc.cli._cli_checks">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.cli.</span></span><span class="sig-name descname"><span class="pre">_cli_checks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parser</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/cli.html#_cli_checks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cli._cli_checks" title="Permalink to this definition"></a></dt>
 <dd><p>Check that command line args are compatible</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pypath</strong> (<em>str</em>) -- </p></li>
-<li><p><strong>dirpath</strong> (<em>str</em>) -- </p></li>
-<li><p><strong>noclean</strong> (<em>bool</em>) -- </p></li>
-<li><p><strong>nodoc</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>parser</strong> (<em>ArgumentParser object</em>) -- </p></li>
+<li><p><strong>args</strong> (<em>dict</em>) -- </p></li>
 </ul>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cleandoc.cli.cli_dir">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.cli.</span></span><span class="sig-name descname"><span class="pre">cli_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dirpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ignore</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noclean</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nodoc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/cli.html#cli_dir"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cli.cli_dir" title="Permalink to this definition"></a></dt>
-<dd><p>Run clean_all, gen_docs, or cleandoc_all depending on args.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dirpath</strong> (<em>str</em>) -- </p></li>
-<li><p><strong>ignore</strong> (<em>bool</em>) -- </p></li>
-<li><p><strong>write</strong> (<em>bool</em>) -- </p></li>
-<li><p><strong>noclean</strong> (<em>bool</em>) -- </p></li>
-<li><p><strong>nodoc</strong> (<em>bool</em>) -- </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cleandoc.cli.cli_file">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.cli.</span></span><span class="sig-name descname"><span class="pre">cli_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pypath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">write</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/cli.html#cli_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cli.cli_file" title="Permalink to this definition"></a></dt>
-<dd><p>Run clean_pyfile</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>pypath</strong> (<em>str</em>) -- _description_</p></li>
-<li><p><strong>write</strong> (<em>bool</em>) -- _description_</p></li>
-<li><p><strong>ignore</strong> (<em>bool</em>) -- _description_</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="cleandoc.cli.main">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.cli.</span></span><span class="sig-name descname"><span class="pre">main</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/cli.html#main"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cli.main" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cleandoc.cli.parse">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.cli.</span></span><span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/cli.html#parse"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.cli.parse" title="Permalink to this definition"></a></dt>
 <dd><p>Run full command line process</p>
 </dd></dl>
 
@@ -377,17 +346,6 @@ executed via subprocess command to create docstrings where missing.</p>
 <span id="cleandoc-helper-module"></span><h2>cleandoc.helper module<a class="headerlink" href="#module-cleandoc.helper" title="Permalink to this heading"></a></h2>
 <p>Created on Sun Jul  2 12:18:08 2023</p>
 <p>&#64;author: jkris</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="cleandoc.helper.check_for_pkg">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.helper.</span></span><span class="sig-name descname"><span class="pre">check_for_pkg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">packagename</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/helper.html#check_for_pkg"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.helper.check_for_pkg" title="Permalink to this definition"></a></dt>
-<dd><p>Use importlib find_spec function to check if package is installed.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>packagename</strong> (<em>str</em>) -- Name of python package to check for</p>
-</dd>
-</dl>
-</dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="cleandoc.helper.check_modified">
 <span class="sig-prename descclassname"><span class="pre">cleandoc.helper.</span></span><span class="sig-name descname"><span class="pre">check_modified</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filepath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/cleandoc/helper.html#check_modified"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.helper.check_modified" title="Permalink to this definition"></a></dt>
@@ -546,13 +504,13 @@ cleaning functions can be skipped.</p>
 </dd></dl>
 
 </section>
-<section id="module-cleandoc.sphinx">
-<span id="cleandoc-sphinx-module"></span><h2>cleandoc.sphinx module<a class="headerlink" href="#module-cleandoc.sphinx" title="Permalink to this heading"></a></h2>
+<section id="module-cleandoc.sphinxdoc">
+<span id="cleandoc-sphinxdoc-module"></span><h2>cleandoc.sphinxdoc module<a class="headerlink" href="#module-cleandoc.sphinxdoc" title="Permalink to this heading"></a></h2>
 <p>Created on Sun Jul  2 12:18:08 2023</p>
 <p>&#64;author: jkris</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="cleandoc.sphinx.add_conf_paths">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">add_conf_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conflines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pathlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/sphinx.html#add_conf_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.add_conf_paths" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cleandoc.sphinxdoc.add_conf_paths">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinxdoc.</span></span><span class="sig-name descname"><span class="pre">add_conf_paths</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conflines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pathlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/sphinxdoc.html#add_conf_paths"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinxdoc.add_conf_paths" title="Permalink to this definition"></a></dt>
 <dd><p>Add path.insert() lines into beginning of conf.py file
 so all modules can be found by sphinx.</p>
 <dl class="field-list simple">
@@ -572,8 +530,8 @@ so all modules can be found by sphinx.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cleandoc.sphinx.add_conf_settings">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">add_conf_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conftext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinx.html#add_conf_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.add_conf_settings" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cleandoc.sphinxdoc.add_conf_settings">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinxdoc.</span></span><span class="sig-name descname"><span class="pre">add_conf_settings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">conftext</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinxdoc.html#add_conf_settings"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinxdoc.add_conf_settings" title="Permalink to this definition"></a></dt>
 <dd><p>Add extensions and Napoleon settings to sphinx conf.py file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -589,8 +547,19 @@ so all modules can be found by sphinx.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cleandoc.sphinx.edit_conf">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">edit_conf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pathlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/sphinx.html#edit_conf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.edit_conf" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cleandoc.sphinxdoc.add_readme">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinxdoc.</span></span><span class="sig-name descname"><span class="pre">add_readme</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/sphinxdoc.html#add_readme"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinxdoc.add_readme" title="Permalink to this definition"></a></dt>
+<dd><p>Create README page in sphinx docs</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>srcpath</strong> (<em>str</em>) -- Full path of sphinx &quot;source&quot; directory (created from sphinx-quickstart)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cleandoc.sphinxdoc.edit_conf">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinxdoc.</span></span><span class="sig-name descname"><span class="pre">edit_conf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pathlist</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/sphinxdoc.html#edit_conf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinxdoc.edit_conf" title="Permalink to this definition"></a></dt>
 <dd><p>Edit sphinx conf.py file by running add_conf_paths and then
 add_conf_settings function.</p>
 <dl class="field-list simple">
@@ -604,8 +573,8 @@ add_conf_settings function.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cleandoc.sphinx.edit_index">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">edit_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkgname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/sphinx.html#edit_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.edit_index" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cleandoc.sphinxdoc.edit_index">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinxdoc.</span></span><span class="sig-name descname"><span class="pre">edit_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkgname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/sphinxdoc.html#edit_index"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinxdoc.edit_index" title="Permalink to this definition"></a></dt>
 <dd><p>Edit index.rst file which controls the main page of html docs.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -615,8 +584,8 @@ add_conf_settings function.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cleandoc.sphinx.get_release">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">get_release</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinx.html#get_release"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.get_release" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cleandoc.sphinxdoc.get_release">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinxdoc.</span></span><span class="sig-name descname"><span class="pre">get_release</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">confpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinxdoc.html#get_release"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinxdoc.get_release" title="Permalink to this definition"></a></dt>
 <dd><p>Get the previous release number from last sphinx conf.py file.
 If no conf.py file is found, release &quot;0.0.1&quot; is returned.
 If previuos release is found, &quot;0.0.+1&quot; is returned.</p>
@@ -634,8 +603,8 @@ If previuos release is found, &quot;0.0.+1&quot; is returned.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cleandoc.sphinx.run_apidoc">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">run_apidoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkgpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinx.html#run_apidoc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.run_apidoc" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cleandoc.sphinxdoc.run_apidoc">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinxdoc.</span></span><span class="sig-name descname"><span class="pre">run_apidoc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">srcpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkgpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinxdoc.html#run_apidoc"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinxdoc.run_apidoc" title="Permalink to this definition"></a></dt>
 <dd><p>Run &quot;sphinx-apidoc&quot; command via subprocess and check output.
 Creates an .rst file for each .py file found in nested directories.
 RST files can be later used to create an html page for each module.</p>
@@ -656,8 +625,8 @@ RST files can be later used to create an html page for each module.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cleandoc.sphinx.run_make">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">run_make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinx.html#run_make"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.run_make" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cleandoc.sphinxdoc.run_make">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinxdoc.</span></span><span class="sig-name descname"><span class="pre">run_make</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinxdoc.html#run_make"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinxdoc.run_make" title="Permalink to this definition"></a></dt>
 <dd><p>Run &quot;make html&quot; command via subprocess and check output.
 Creates html documents from sphinx .rst files.</p>
 <dl class="field-list simple">
@@ -674,8 +643,8 @@ Creates html documents from sphinx .rst files.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cleandoc.sphinx.run_quickstart">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">run_quickstart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkgname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinx.html#run_quickstart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.run_quickstart" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cleandoc.sphinxdoc.run_quickstart">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinxdoc.</span></span><span class="sig-name descname"><span class="pre">run_quickstart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkgname</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="_modules/cleandoc/sphinxdoc.html#run_quickstart"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinxdoc.run_quickstart" title="Permalink to this definition"></a></dt>
 <dd><p>Run &quot;sphinx-quickstart&quot; command via subprocess and check output.
 Creates files to begin sphinx documentation.</p>
 <dl class="field-list simple">
@@ -696,8 +665,8 @@ Creates files to begin sphinx documentation.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cleandoc.sphinx.run_sphinx_all">
-<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinx.</span></span><span class="sig-name descname"><span class="pre">run_sphinx_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkgpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/sphinx.html#run_sphinx_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinx.run_sphinx_all" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="cleandoc.sphinxdoc.run_sphinx_all">
+<span class="sig-prename descclassname"><span class="pre">cleandoc.sphinxdoc.</span></span><span class="sig-name descname"><span class="pre">run_sphinx_all</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">docpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pkgpath</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">release</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cleandoc/sphinxdoc.html#run_sphinx_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cleandoc.sphinxdoc.run_sphinx_all" title="Permalink to this definition"></a></dt>
 <dd><p>Run 4 functions sequentially in sphinx module including run_apidoc,
 edit_conf, edit_index, and run_make. Automakes creation of sphinx html documents for
 a python package (aka nested folder structure of python modules.)</p>
@@ -722,6 +691,7 @@ Directory name will be used as package name.</p></li>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to cleandoc&#39;s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="README.html" class="btn btn-neutral float-right" title="README" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

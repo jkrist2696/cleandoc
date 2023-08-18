@@ -3,7 +3,12 @@
 build/
 cleandoc.egg-info/
 dist/
-tests/_cleandoc_test.py_working_docs/
-tests/.mypy_cache/
-tests/cleandoc_log.txt
 docs/conf.txt
+src/__pycache__
+test/__pycache__
+test/.mypy_cache/
+test/docs
+test/test_pkgs
+test/cleandoc_log.txt
+run_setup.cmd
+cleandoc_log.txt

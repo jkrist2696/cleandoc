@@ -41,10 +41,10 @@ cleandoc.helper module
    :undoc-members:
    :show-inheritance:
 
-cleandoc.sphinx module
-----------------------
+cleandoc.sphinxdoc module
+-------------------------
 
-.. automodule:: cleandoc.sphinx
+.. automodule:: cleandoc.sphinxdoc
    :members:
    :undoc-members:
    :show-inheritance:

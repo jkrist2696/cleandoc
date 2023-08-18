@@ -5,7 +5,7 @@ Created on Sun Jul  2 12:18:08 2023
 @author: jkris
 """
 
-from os import path, mkdir
+from os import path, mkdir, getcwd
 from shutil import rmtree, copytree, copyfile
 import logging
 from importlib import reload
@@ -14,7 +14,8 @@ from typing import Union, List
 from .clean import run_black, run_pylint, run_mypy
 from .doq import run_doq, check_docstrings
 from . import helper as ch
-from .sphinx import run_sphinx_all, get_release
+from .sphinxdoc import run_sphinx_all, get_release
+from . import cli
 
 reload(logging)
 
@@ -32,14 +33,16 @@ def cleandoc_all(
         directory of python package (nested dirs of modules)
     ignore : bool
         keyword argument passed to clean_all function
+    release : str
+        Version of docs formatted as "X.Y.Z" for Major, Minor, Patch
     """
     searchpath = path.abspath(searchpath)
     skiplist = ch.get_clean_pyfiles("cleandoc_log.txt")
-    createdocs = ch.check_modified_since_docs(searchpath, "cleandoc_log.txt")
+    src_changed = ch.check_modified_since_docs(searchpath, "cleandoc_log.txt")
     ch.config_log("cleandoc_log.txt")
     summary = clean_all(searchpath, ignore=ignore, write=write, skip=skiplist)
     if len(summary) == 0 or ignore:
-        mainpage = gen_docs(searchpath, create=createdocs, release=release)
+        mainpage = gen_docs(searchpath, changed=src_changed, release=release)
         webbrowser.open(mainpage)
     logging.shutdown()
 
@@ -71,11 +74,11 @@ def clean_all(
         skip = ch.get_clean_pyfiles("cleandoc_log.txt")
     elif skip is False:
         skip = []
-    _none1, pyfilelist = ch.find_pyfiles(searchpath)
+    pyfilelist = ch.find_pyfiles(searchpath)[1]
     logger = ch.config_log("cleandoc_log.txt")
     summary_all = ""
     for i, pyfile in enumerate(pyfilelist):
-        _none2, pyname = path.split(pyfile)
+        pyname = path.split(pyfile)[1]
         if pyfile in skip:  # type: ignore
             header = f"Skipping File ({i+1}/{len(pyfilelist)}): {pyname}"
             headerstr = f"{ch.format_header(header, repeat_char='o')}\n"
@@ -122,7 +125,7 @@ def clean_pyfile(pyfilepath: str, write: bool = True):
     return summary
 
 
-def gen_docs(pkgpath: str, create: bool = True, release: str = ""):
+def gen_docs(pkgpath: str, changed: bool = True, release: str = ""):
     """Auto-generate sphinx html documentation for a python package.
 
     Parameters
@@ -130,8 +133,10 @@ def gen_docs(pkgpath: str, create: bool = True, release: str = ""):
     pkgpath : str
         Full path to directory containing all python modules to document.
         Directory name will be used as package name.
-    create : bool
-        True to create docs or False to skip and log their location
+    changed : bool
+        True if your source files have changed since you last created docs
+    release : str
+        Version of docs formatted as "X.Y.Z" for Major, Minor, Patch
     Returns
     -------
     str
@@ -142,9 +147,9 @@ def gen_docs(pkgpath: str, create: bool = True, release: str = ""):
         raise FileNotFoundError("Pkgpath does not exist: " + str(pkgpath))
     logger = ch.config_log("cleandoc_log.txt")
     basepath, pkgname = path.split(pkgpath)
-    docs = path.join(basepath, "docs")
+    docs = path.join(path.split(basepath)[0], "docs")
     indexpath = path.join(docs, "index.html")
-    if create is False:
+    if changed is False and path.exists(docs) and len(release) == 0:
         logger.info("%s\n", ch.format_header("Skipping Gen Docs", repeat_char="o"))
         logger.info("Docs Location: %s\n", docs)
         return indexpath
@@ -169,6 +174,16 @@ def gen_docs(pkgpath: str, create: bool = True, release: str = ""):
     return indexpath
 
 
-# if __name__ == "__main__":
-#    scriptdir, scriptname = path.split(__file__)
-#    cleandoc_all(scriptdir)
+def cli_main():
+    """
+    run main cli function
+    """
+    pypath, dirpath, write, ignore, noclean, nodoc, release = cli.parse()
+    if len(pypath) > 0:
+        clean_pyfile(pypath, write=write)
+    if len(dirpath) > 0 and nodoc:
+        clean_all(dirpath, write=write, ignore=ignore)
+    if len(dirpath) > 0 and noclean:
+        gen_docs(dirpath, release=release)
+    if len(dirpath) > 0:
+        cleandoc_all(dirpath, write=write, ignore=ignore, release=release)

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cleandoc.doq &mdash; cleandoc 0.0.1 documentation</title>
+  <title>cleandoc.doq &mdash; cleandoc 0.0.3 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             cleandoc
           </a>
               <div class="version">
-                0.0.1
+                0.0.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -45,6 +45,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../cleandoc.html">cleandoc package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../README.html">README</a></li>
 </ul>
 
         </div>
@@ -82,10 +83,8 @@
 
 <span class="kn">from</span> <span class="nn">re</span> <span class="kn">import</span> <span class="n">findall</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">.helper</span> <span class="kn">import</span> <span class="n">run_capture_out</span><span class="p">,</span> <span class="n">format_header</span><span class="p">,</span> <span class="n">check_for_pkg</span><span class="p">,</span> <span class="n">findall_infile</span>
-
-<span class="c1"># check for packages called in subprocess commands in this module</span>
-<span class="n">check_for_pkg</span><span class="p">(</span><span class="s2">&quot;doq&quot;</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">doq</span>  <span class="c1"># pylint: disable=W0611</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">helper</span> <span class="k">as</span> <span class="n">ch</span>
 
 
 <div class="viewcode-block" id="run_doq"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.doq.run_doq">[docs]</a><span class="k">def</span> <span class="nf">run_doq</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">formatter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;numpy&quot;</span><span class="p">,</span> <span class="n">write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
@@ -107,22 +106,24 @@
 <span class="sd">        Summary of command outputs</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Generate Simple Docstrings with doq where they dont exists</span>
-    <span class="n">doq_out</span><span class="p">,</span> <span class="n">doq_err</span> <span class="o">=</span> <span class="n">run_capture_out</span><span class="p">(</span>
+    <span class="n">doq_out</span><span class="p">,</span> <span class="n">doq_err</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">run_capture_out</span><span class="p">(</span>
         <span class="p">[</span><span class="s2">&quot;doq&quot;</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">pyfilepath</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--formatter=</span><span class="si">{</span><span class="n">formatter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
     <span class="p">)</span>
     <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">doq_out</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">doq_err</span><span class="p">))</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
     <span class="k">if</span> <span class="n">write</span><span class="p">:</span>
-        <span class="n">doq_out</span><span class="p">,</span> <span class="n">doq_err</span> <span class="o">=</span> <span class="n">run_capture_out</span><span class="p">([</span><span class="s2">&quot;doq&quot;</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">pyfilepath</span><span class="p">,</span> <span class="s2">&quot;-w&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--formatter=</span><span class="si">{</span><span class="n">formatter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">])</span>
+        <span class="n">doq_out</span><span class="p">,</span> <span class="n">doq_err</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">run_capture_out</span><span class="p">(</span>
+            <span class="p">[</span><span class="s2">&quot;doq&quot;</span><span class="p">,</span> <span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="n">pyfilepath</span><span class="p">,</span> <span class="s2">&quot;-w&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;--formatter=</span><span class="si">{</span><span class="n">formatter</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+        <span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">doq_err</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="n">doq_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">format_header</span><span class="p">(</span><span class="s1">&#39;Doq Output&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n\</span>
+            <span class="n">doq_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ch</span><span class="o">.</span><span class="n">format_header</span><span class="p">(</span><span class="s1">&#39;Doq Output&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n\</span>
 <span class="s2">                Simple Docstrings Added. Please Complete Them!</span><span class="se">\n\n</span><span class="s2">&quot;</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">doq_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">format_header</span><span class="p">(</span><span class="s1">&#39;Doq Output&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">doq_err</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="n">doq_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ch</span><span class="o">.</span><span class="n">format_header</span><span class="p">(</span><span class="s1">&#39;Doq Output&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">doq_err</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">results</span> <span class="o">=</span> <span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(&quot;&quot;&quot;(.|\n|\r)*?&quot;&quot;&quot;)&#39;</span><span class="p">,</span> <span class="n">doq_out</span> <span class="o">+</span> <span class="n">doq_err</span><span class="p">)</span>
         <span class="n">doq_strings</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">results</span><span class="p">])</span>
-        <span class="n">doq_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">format_header</span><span class="p">(</span><span class="s1">&#39;Doq Output&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">doq_strings</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+        <span class="n">doq_str</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ch</span><span class="o">.</span><span class="n">format_header</span><span class="p">(</span><span class="s1">&#39;Doq Output&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">doq_strings</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;cleandoc&quot;</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">doq_str</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">doq_str</span></div>
@@ -143,12 +144,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">desc_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;def ([^(]*).*\r*\n *(&quot;&quot;&quot;(.*?)(.|\n|\r)*?&quot;&quot;&quot;)&#39;</span>
     <span class="n">var_regex</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot; +([a-zA-Z0-9_]+) :.*\r*\n +([a-zA-Z0-9_]+)&quot;</span>
-    <span class="n">desc_search</span> <span class="o">=</span> <span class="n">findall_infile</span><span class="p">(</span><span class="n">desc_regex</span><span class="p">,</span> <span class="n">pyfilepath</span><span class="p">)</span>
+    <span class="n">desc_search</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">findall_infile</span><span class="p">(</span><span class="n">desc_regex</span><span class="p">,</span> <span class="n">pyfilepath</span><span class="p">)</span>
     <span class="n">check_str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
     <span class="k">for</span> <span class="n">desc_found</span> <span class="ow">in</span> <span class="n">desc_search</span><span class="p">:</span>
         <span class="n">funname</span><span class="p">,</span> <span class="n">docstring</span><span class="p">,</span> <span class="n">desc</span> <span class="o">=</span> <span class="n">desc_found</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
         <span class="n">check_sum</span> <span class="o">=</span> <span class="n">funname</span> <span class="o">==</span> <span class="p">(</span><span class="n">desc</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span><span class="p">)</span>
-        <span class="n">var_search</span> <span class="o">=</span> <span class="n">findall</span><span class="p">(</span><span class="n">var_regex</span><span class="p">,</span> <span class="n">docstring</span><span class="p">)</span>
+        <span class="n">var_search</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">var_regex</span><span class="p">,</span> <span class="n">docstring</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">var_found</span> <span class="ow">in</span> <span class="n">var_search</span><span class="p">:</span>
             <span class="n">check_sum</span> <span class="o">+=</span> <span class="n">var_found</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">var_found</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">check_sum</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -157,7 +158,7 @@
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;cleandoc&quot;</span><span class="p">)</span>
     <span class="n">check_str</span> <span class="o">=</span> <span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">format_header</span><span class="p">(</span><span class="s1">&#39;Check Docstring Output&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n\</span>
+        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">ch</span><span class="o">.</span><span class="n">format_header</span><span class="p">(</span><span class="s1">&#39;Check Docstring Output&#39;</span><span class="p">)</span><span class="si">}</span><span class="se">\n\n\</span>
 <span class="s2">        Complete the following auto-generated docstrings!</span><span class="se">\n\n</span><span class="s2">&quot;</span>
         <span class="o">+</span> <span class="n">check_str</span>
     <span class="p">)</span>

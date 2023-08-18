@@ -8,7 +8,7 @@ Created on Sun Jul  2 12:18:08 2023
 from re import findall
 import logging
 import doq  # pylint: disable=W0611
-from .helper import run_capture_out, format_header, findall_infile
+from . import helper as ch
 
 
 def run_doq(pyfilepath: str, formatter: str = "numpy", write: bool = True):
@@ -30,24 +30,24 @@ def run_doq(pyfilepath: str, formatter: str = "numpy", write: bool = True):
         Summary of command outputs
     """
     # Generate Simple Docstrings with doq where they dont exists
-    doq_out, doq_err = run_capture_out(
+    doq_out, doq_err = ch.run_capture_out(
         ["doq", "-f", pyfilepath, f"--formatter={formatter}"]
     )
     if (len(doq_out) + len(doq_err)) == 0:
         return ""
     if write:
-        doq_out, doq_err = run_capture_out(
+        doq_out, doq_err = ch.run_capture_out(
             ["doq", "-f", pyfilepath, "-w", f"--formatter={formatter}"]
         )
         if len(doq_err) == 0:
-            doq_str = f"{format_header('Doq Output')}\n\n\
+            doq_str = f"{ch.format_header('Doq Output')}\n\n\
                 Simple Docstrings Added. Please Complete Them!\n\n"
         else:
-            doq_str = f"{format_header('Doq Output')}\n{doq_err}\n"
+            doq_str = f"{ch.format_header('Doq Output')}\n{doq_err}\n"
     else:
         results = findall(r'("""(.|\n|\r)*?""")', doq_out + doq_err)
         doq_strings = "\n".join([result[0] for result in results])
-        doq_str = f"{format_header('Doq Output')}\n{doq_strings}\n"
+        doq_str = f"{ch.format_header('Doq Output')}\n{doq_strings}\n"
     logger = logging.getLogger("cleandoc")
     logger.info(doq_str)
     return doq_str
@@ -68,12 +68,12 @@ def check_docstrings(pyfilepath: str):
     """
     desc_regex = r'def ([^(]*).*\r*\n *("""(.*?)(.|\n|\r)*?""")'
     var_regex = r" +([a-zA-Z0-9_]+) :.*\r*\n +([a-zA-Z0-9_]+)"
-    desc_search = findall_infile(desc_regex, pyfilepath)
+    desc_search = ch.findall_infile(desc_regex, pyfilepath)
     check_str = ""
     for desc_found in desc_search:
         funname, docstring, desc = desc_found[0:3]
         check_sum = funname == (desc + ".")
-        var_search = findall(var_regex, docstring)
+        var_search = ch.findall(var_regex, docstring)
         for var_found in var_search:
             check_sum += var_found[0] == var_found[1]
         if check_sum > 0:
@@ -82,7 +82,7 @@ def check_docstrings(pyfilepath: str):
         return ""
     logger = logging.getLogger("cleandoc")
     check_str = (
-        f"{format_header('Check Docstring Output')}\n\n\
+        f"{ch.format_header('Check Docstring Output')}\n\n\
         Complete the following auto-generated docstrings!\n\n"
         + check_str
     )

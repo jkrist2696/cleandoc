@@ -11,7 +11,7 @@ from re import findall, sub
 import logging
 import sphinx_rtd_theme  # pylint: disable=W0611
 import sphinx  # pylint: disable=W0611
-from .helper import find_pyfiles, run_capture_out, format_header
+from . import helper as ch
 
 
 def run_sphinx_all(docpath: str, confpath: str, pkgpath: str, release: str):
@@ -32,10 +32,10 @@ def run_sphinx_all(docpath: str, confpath: str, pkgpath: str, release: str):
         Release number (version) of package
     """
 
-    _basepath, pkgname = path.split(pkgpath)
+    basepath, pkgname = path.split(pkgpath)
     summary = run_quickstart(docpath, pkgname, release)
     srcpath = path.join(docpath, "source")
-    pathlist, _none2 = find_pyfiles(pkgpath)
+    pathlist = ch.find_pyfiles(pkgpath)[0]
     logger = logging.getLogger("cleandoc")
     logger.debug("    pathlist: %s", pathlist)
     for pypath in pathlist:
@@ -44,7 +44,10 @@ def run_sphinx_all(docpath: str, confpath: str, pkgpath: str, release: str):
             with open(initpath, "w", encoding="utf-8") as initfile:
                 initfile.write("")
     summary += run_apidoc(srcpath, pkgpath)
-    edit_conf(confpath, [pkgpath] + pathlist)  # basepath,
+    if len(pathlist) > 1:
+        edit_conf(confpath, [basepath] + pathlist)
+    else:
+        edit_conf(confpath, [basepath])
     edit_index(srcpath, pkgname)
     summary += run_make(docpath)
     if len(summary) > 0:
@@ -85,8 +88,8 @@ def run_quickstart(docpath: str, pkgname: str, release: str) -> str:
     ]
     logger = logging.getLogger("cleandoc")
     logger.debug(" ".join(qs_args))
-    qs_out, qs_err = run_capture_out(qs_args)
-    qs_str = f"{format_header('Sphinx Quickstart Output')}\n{qs_out}\n{qs_err}\n"
+    qs_out, qs_err = ch.run_capture_out(qs_args)
+    qs_str = f"{ch.format_header('Sphinx Quickstart Output')}\n{qs_out}\n{qs_err}\n"
     if ("error" in qs_str.lower()) or ("warning" in qs_str.lower()):
         logger.info(qs_str)
         return qs_str
@@ -112,9 +115,9 @@ def run_apidoc(srcpath: str, pkgpath: str) -> str:
     apidoc_args = ["sphinx-apidoc", "-M", "-o", srcpath, pkgpath]
     logger = logging.getLogger("cleandoc")
     logger.debug(" ".join(apidoc_args))
-    apidoc_out, apidoc_err = run_capture_out(apidoc_args)
+    apidoc_out, apidoc_err = ch.run_capture_out(apidoc_args)
     apidoc_str = (
-        f"{format_header('Sphinx Apidoc Output')}\n{apidoc_out}\n{apidoc_err}\n"
+        f"{ch.format_header('Sphinx Apidoc Output')}\n{apidoc_out}\n{apidoc_err}\n"
     )
     if ("error" in apidoc_str.lower()) or ("warning" in apidoc_str.lower()):
         logger.info(apidoc_str)
@@ -138,8 +141,8 @@ def run_make(docpath: str) -> str:
     make_args = ["cd", f"{docpath}", "&&", "make", "html"]
     logger = logging.getLogger("cleandoc")
     logger.debug(" ".join(make_args))
-    make_out, make_err = run_capture_out(make_args, shell=True)
-    make_str = f"{format_header('Sphinx Make Output')}\n{make_out}\n{make_err}\n"
+    make_out, make_err = ch.run_capture_out(make_args, shell=True)
+    make_str = f"{ch.format_header('Sphinx Make Output')}\n{make_out}\n{make_err}\n"
     if ("error" in make_str.lower()) or ("warning" in make_str.lower()):
         logger.info(make_str)
         return make_str
@@ -189,12 +192,12 @@ def edit_conf(confpath: str, pathlist: list[str]):
     pathlist : list[str]
         List of full paths to add to conf.py file so all modules can be found.
     """
-    with open(confpath, "r", encoding="ascii") as conffile:
+    with open(confpath, "r", encoding="utf-8") as conffile:
         conflines_orig = conffile.readlines()
     conflines = add_conf_paths(conflines_orig, pathlist)
     conftext_orig = "".join(conflines)
     conftext = add_conf_settings(conftext_orig)
-    with open(confpath, "w", encoding="ascii") as conffile:
+    with open(confpath, "w", encoding="utf-8") as conffile:
         conffile.write(conftext)
 
 
@@ -244,7 +247,8 @@ extensions = ['sphinx.ext.autodoc',
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
     'sphinx.ext.napoleon',
-    'sphinx_rtd_theme',]
+    'sphinx_rtd_theme',
+    'm2r2']
 
 # Napoleon settings
 napoleon_google_docstring = True
@@ -274,18 +278,34 @@ def edit_index(srcpath: str, pkgname: str):
     srcpath : str
         Full path of sphinx "source" directory (created from sphinx-quickstart)
     """
-    add_modules = f":caption: Contents:\n    \n   {pkgname}"
+    add_modules = f":caption: Contents:\n    \n   README\n   {pkgname}"
+    add_readme(srcpath)
     indexpath = path.join(srcpath, "index.rst")
     modulespath = path.join(srcpath, "modules.rst")
     if path.exists(modulespath):
         remove(modulespath)
-    with open(indexpath, "r", encoding="ascii") as indexfile:
+    with open(indexpath, "r", encoding="utf-8") as indexfile:
         indexlines = indexfile.readlines()
     indextext = "".join(indexlines)
     indextext = sub(r":caption: Contents:", add_modules, indextext)
     indextext = sub(r":maxdepth: 4", ":maxdepth: 10", indextext)
-    with open(indexpath, "w", encoding="ascii") as indexfile:
+    with open(indexpath, "w", encoding="utf-8") as indexfile:
         indexfile.write(indextext)
 
 
-# if __name__ == "__main__":
+def add_readme(srcpath: str):
+    """Create README page in sphinx docs
+
+    Parameters
+    ----------
+    srcpath : str
+        Full path of sphinx "source" directory (created from sphinx-quickstart)
+    """
+    readme_src = path.join(srcpath, "../../../README.md")
+    readme_rst = path.join(srcpath, "README.rst")
+    if path.exists(readme_src):
+        rst_str = f"README\n******\n\n.. mdinclude:: {readme_src}"
+    else:
+        rst_str = f"README not found : {readme_src}"
+    with open(readme_rst, "w", encoding="utf-8") as readmefile:
+        readmefile.write(rst_str)
