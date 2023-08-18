@@ -278,8 +278,8 @@ def edit_index(srcpath: str, pkgname: str):
     srcpath : str
         Full path of sphinx "source" directory (created from sphinx-quickstart)
     """
-    add_modules = f":caption: Contents:\n    \n   README\n   {pkgname}"
-    add_readme(srcpath)
+    readme_add = add_readme(srcpath)
+    add_modules = f":caption: Contents:\n    {readme_add}\n   {pkgname}"
     indexpath = path.join(srcpath, "index.rst")
     modulespath = path.join(srcpath, "modules.rst")
     if path.exists(modulespath):
@@ -305,7 +305,10 @@ def add_readme(srcpath: str):
     readme_rst = path.join(srcpath, "README.rst")
     if path.exists(readme_src):
         rst_str = f"README\n******\n\n.. mdinclude:: {readme_src}"
+        toc_str = "\n   README"
+        with open(readme_rst, "w", encoding="utf-8") as readmefile:
+            readmefile.write(rst_str)
     else:
         rst_str = f"README not found : {readme_src}"
-    with open(readme_rst, "w", encoding="utf-8") as readmefile:
-        readmefile.write(rst_str)
+        toc_str = ""
+    return toc_str
