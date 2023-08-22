@@ -27,7 +27,7 @@ def _cli_checks(parser, args: dict):
 
 
 def parse():
-    """Run full command line process"""
+    """Run command line parsing"""
     desc = "Run automated cleaning and/or documentation of python code"
     fileh = "Python (.py) file to clean"
     dirh = "Directory containing Python (.py) files to clean and/or document"

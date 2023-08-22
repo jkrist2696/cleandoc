@@ -175,9 +175,7 @@ def gen_docs(pkgpath: str, changed: bool = True, release: str = ""):
 
 
 def cli_main():
-    """
-    run main cli function
-    """
+    """run main cli function"""
     pypath, dirpath, write, ignore, noclean, nodoc, release = cli.parse()
     if len(pypath) > 0:
         clean_pyfile(pypath, write=write)

@@ -4,7 +4,7 @@ build/
 cleandoc.egg-info/
 dist/
 docs/conf.txt
-src/__pycache__
+src/cleandoc/__pycache__
 test/__pycache__
 test/.mypy_cache/
 test/docs

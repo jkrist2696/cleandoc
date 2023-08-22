@@ -34,7 +34,7 @@ kwargs["description"] = (
 kwargs["python_requires"] = ">=3.9"
 kwargs["install_requires"] = ["black>=23.3.0", "Sphinx>=6.2.1", "doq>=0.9.1", "m2r2"]
 kwargs["entry_points"] = {"console_scripts": [f"{pkgname}={pkgname}:cli_main"]}
-kwargs["packages"] = []  # ["codenav.assets"]
+kwargs["packages"] = []  # ["pkg.assets"]
 # kwargs["package_data"] = ({f"{pkgname}": ["assets/*"]},)
 # kwargs["include_package_data"] = True
 
