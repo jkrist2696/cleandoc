@@ -4,7 +4,9 @@ Python package leveraging [doq](https://pypi.org/project/doq/), [black](https://
 
 ## Install
 
+```
 pip install cleandoc
+```
 
 ## Usage
 
