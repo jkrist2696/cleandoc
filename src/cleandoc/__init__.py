@@ -8,7 +8,6 @@ Created on Sun Jul  2 12:18:08 2023
 from os import path, mkdir, getcwd
 from shutil import rmtree, copytree, copyfile
 import logging
-from importlib import reload
 import webbrowser
 from typing import Union, List
 from .clean import run_black, run_pylint, run_mypy
@@ -16,8 +15,6 @@ from .doq import run_doq, check_docstrings
 from . import helper as ch
 from .sphinxdoc import run_sphinx_all, get_release
 from . import cli
-
-reload(logging)
 
 
 def cleandoc_all(
@@ -39,12 +36,13 @@ def cleandoc_all(
     searchpath = path.abspath(searchpath)
     skiplist = ch.get_clean_pyfiles("cleandoc_log.txt")
     src_changed = ch.check_modified_since_docs(searchpath, "cleandoc_log.txt")
-    ch.config_log("cleandoc_log.txt")
+    logger = ch.config_log("cleandoc_log.txt")
     summary = clean_all(searchpath, ignore=ignore, write=write, skip=skiplist)
     if len(summary) == 0 or ignore:
         mainpage = gen_docs(searchpath, changed=src_changed, release=release)
         webbrowser.open(mainpage)
-    logging.shutdown()
+    for handle in logger.handlers:
+        handle.close()
 
 
 def clean_all(
@@ -96,6 +94,8 @@ def clean_all(
         if len(summary) == 0:
             logger.info("File is Clean: %s\n", pyfile)
         summary_all += summary
+    for handle in logger.handlers:
+        handle.close()
     return summary_all
 
 
@@ -114,7 +114,7 @@ def clean_pyfile(pyfilepath: str, write: bool = True):
     """
     if not path.isfile(pyfilepath):
         raise FileNotFoundError("Pyfilepath does not exist: " + str(pyfilepath))
-    ch.config_log("cleandoc_log.txt")
+    logger = ch.config_log("cleandoc_log.txt")
     pyfilepath = path.abspath(pyfilepath)
     realpath = path.realpath(pyfilepath)
     summary = check_docstrings(realpath)
@@ -122,6 +122,8 @@ def clean_pyfile(pyfilepath: str, write: bool = True):
     summary += run_black(realpath, write=write)
     summary += run_pylint(realpath)
     summary += run_mypy(realpath)
+    for handle in logger.handlers:
+        handle.close()
     return summary
 
 
@@ -171,6 +173,8 @@ def gen_docs(pkgpath: str, changed: bool = True, release: str = ""):
     copyfile(confpath, confpath_old)
     rmtree(docpath)
     logger.info("Docs Location: %s\n", docs)
+    for handle in logger.handlers:
+        handle.close()
     return indexpath
 
 

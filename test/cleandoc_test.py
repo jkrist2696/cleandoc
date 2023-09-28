@@ -28,6 +28,12 @@ out = system(clitest)
 print(f"\nCommand Line Test Exit Code: {out}\n")
 cd.cleandoc_all(cleandoc_path, write=False)
 
+# Clean a file
+print("\nCleaning Single File:\n")
+appfilepath = path.join(mainpath, "../../dash/codenav/src/codenav/app.py")
+cd.clean_pyfile(appfilepath)
+print("\n")
+
 # Clean my other packages
 currentdir = getcwd()
 chdir("./test")

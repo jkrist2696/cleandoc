@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cleandoc &mdash; cleandoc 0.0.3 documentation</title>
+  <title>cleandoc &mdash; cleandoc 0.0.4 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -32,7 +32,7 @@
             cleandoc
           </a>
               <div class="version">
-                0.0.3
+                0.0.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -83,7 +83,6 @@
 <span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span><span class="p">,</span> <span class="n">mkdir</span><span class="p">,</span> <span class="n">getcwd</span>
 <span class="kn">from</span> <span class="nn">shutil</span> <span class="kn">import</span> <span class="n">rmtree</span><span class="p">,</span> <span class="n">copytree</span><span class="p">,</span> <span class="n">copyfile</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">from</span> <span class="nn">importlib</span> <span class="kn">import</span> <span class="n">reload</span>
 <span class="kn">import</span> <span class="nn">webbrowser</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">List</span>
 <span class="kn">from</span> <span class="nn">.clean</span> <span class="kn">import</span> <span class="n">run_black</span><span class="p">,</span> <span class="n">run_pylint</span><span class="p">,</span> <span class="n">run_mypy</span>
@@ -91,8 +90,6 @@
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">helper</span> <span class="k">as</span> <span class="n">ch</span>
 <span class="kn">from</span> <span class="nn">.sphinxdoc</span> <span class="kn">import</span> <span class="n">run_sphinx_all</span><span class="p">,</span> <span class="n">get_release</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">cli</span>
-
-<span class="n">reload</span><span class="p">(</span><span class="n">logging</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="cleandoc_all"><a class="viewcode-back" href="../cleandoc.html#cleandoc.cleandoc_all">[docs]</a><span class="k">def</span> <span class="nf">cleandoc_all</span><span class="p">(</span>
@@ -114,12 +111,13 @@
     <span class="n">searchpath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">searchpath</span><span class="p">)</span>
     <span class="n">skiplist</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">get_clean_pyfiles</span><span class="p">(</span><span class="s2">&quot;cleandoc_log.txt&quot;</span><span class="p">)</span>
     <span class="n">src_changed</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">check_modified_since_docs</span><span class="p">(</span><span class="n">searchpath</span><span class="p">,</span> <span class="s2">&quot;cleandoc_log.txt&quot;</span><span class="p">)</span>
-    <span class="n">ch</span><span class="o">.</span><span class="n">config_log</span><span class="p">(</span><span class="s2">&quot;cleandoc_log.txt&quot;</span><span class="p">)</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">config_log</span><span class="p">(</span><span class="s2">&quot;cleandoc_log.txt&quot;</span><span class="p">)</span>
     <span class="n">summary</span> <span class="o">=</span> <span class="n">clean_all</span><span class="p">(</span><span class="n">searchpath</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="n">ignore</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="n">write</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="n">skiplist</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">ignore</span><span class="p">:</span>
         <span class="n">mainpage</span> <span class="o">=</span> <span class="n">gen_docs</span><span class="p">(</span><span class="n">searchpath</span><span class="p">,</span> <span class="n">changed</span><span class="o">=</span><span class="n">src_changed</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="n">release</span><span class="p">)</span>
         <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">mainpage</span><span class="p">)</span>
-    <span class="n">logging</span><span class="o">.</span><span class="n">shutdown</span><span class="p">()</span></div>
+    <span class="k">for</span> <span class="n">handle</span> <span class="ow">in</span> <span class="n">logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">:</span>
+        <span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="clean_all"><a class="viewcode-back" href="../cleandoc.html#cleandoc.clean_all">[docs]</a><span class="k">def</span> <span class="nf">clean_all</span><span class="p">(</span>
@@ -171,6 +169,8 @@
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">summary</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;File is Clean: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">pyfile</span><span class="p">)</span>
         <span class="n">summary_all</span> <span class="o">+=</span> <span class="n">summary</span>
+    <span class="k">for</span> <span class="n">handle</span> <span class="ow">in</span> <span class="n">logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">:</span>
+        <span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">summary_all</span></div>
 
 
@@ -189,7 +189,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">FileNotFoundError</span><span class="p">(</span><span class="s2">&quot;Pyfilepath does not exist: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">))</span>
-    <span class="n">ch</span><span class="o">.</span><span class="n">config_log</span><span class="p">(</span><span class="s2">&quot;cleandoc_log.txt&quot;</span><span class="p">)</span>
+    <span class="n">logger</span> <span class="o">=</span> <span class="n">ch</span><span class="o">.</span><span class="n">config_log</span><span class="p">(</span><span class="s2">&quot;cleandoc_log.txt&quot;</span><span class="p">)</span>
     <span class="n">pyfilepath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">)</span>
     <span class="n">realpath</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">)</span>
     <span class="n">summary</span> <span class="o">=</span> <span class="n">check_docstrings</span><span class="p">(</span><span class="n">realpath</span><span class="p">)</span>
@@ -197,6 +197,8 @@
     <span class="n">summary</span> <span class="o">+=</span> <span class="n">run_black</span><span class="p">(</span><span class="n">realpath</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="n">write</span><span class="p">)</span>
     <span class="n">summary</span> <span class="o">+=</span> <span class="n">run_pylint</span><span class="p">(</span><span class="n">realpath</span><span class="p">)</span>
     <span class="n">summary</span> <span class="o">+=</span> <span class="n">run_mypy</span><span class="p">(</span><span class="n">realpath</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">handle</span> <span class="ow">in</span> <span class="n">logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">:</span>
+        <span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">summary</span></div>
 
 
@@ -246,13 +248,13 @@
     <span class="n">copyfile</span><span class="p">(</span><span class="n">confpath</span><span class="p">,</span> <span class="n">confpath_old</span><span class="p">)</span>
     <span class="n">rmtree</span><span class="p">(</span><span class="n">docpath</span><span class="p">)</span>
     <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;Docs Location: </span><span class="si">%s</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">docs</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">handle</span> <span class="ow">in</span> <span class="n">logger</span><span class="o">.</span><span class="n">handlers</span><span class="p">:</span>
+        <span class="n">handle</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">indexpath</span></div>
 
 
 <div class="viewcode-block" id="cli_main"><a class="viewcode-back" href="../cleandoc.html#cleandoc.cli_main">[docs]</a><span class="k">def</span> <span class="nf">cli_main</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    run main cli function</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;run main cli function&quot;&quot;&quot;</span>
     <span class="n">pypath</span><span class="p">,</span> <span class="n">dirpath</span><span class="p">,</span> <span class="n">write</span><span class="p">,</span> <span class="n">ignore</span><span class="p">,</span> <span class="n">noclean</span><span class="p">,</span> <span class="n">nodoc</span><span class="p">,</span> <span class="n">release</span> <span class="o">=</span> <span class="n">cli</span><span class="o">.</span><span class="n">parse</span><span class="p">()</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pypath</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">clean_pyfile</span><span class="p">(</span><span class="n">pypath</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="n">write</span><span class="p">)</span>

@@ -30,9 +30,13 @@ def run_doq(pyfilepath: str, formatter: str = "numpy", write: bool = True):
         Summary of command outputs
     """
     # Generate Simple Docstrings with doq where they dont exists
+    logger = logging.getLogger("cleandoc")
     doq_out, doq_err = ch.run_capture_out(
         ["doq", "-f", pyfilepath, f"--formatter={formatter}"]
     )
+    if "UnicodeDecodeError" in doq_err:
+        logger.error("    Script contains characters which DOQ does not support.")
+        return ""
     if (len(doq_out) + len(doq_err)) == 0:
         return ""
     if write:
@@ -48,7 +52,6 @@ def run_doq(pyfilepath: str, formatter: str = "numpy", write: bool = True):
         results = findall(r'("""(.|\n|\r)*?""")', doq_out + doq_err)
         doq_strings = "\n".join([result[0] for result in results])
         doq_str = f"{ch.format_header('Doq Output')}\n{doq_strings}\n"
-    logger = logging.getLogger("cleandoc")
     logger.info(doq_str)
     return doq_str
 

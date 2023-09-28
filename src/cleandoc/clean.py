@@ -79,7 +79,13 @@ def run_mypy(pyfilepath: str):
         Summary of command outputs
     """
     # Check variable type hints with mypy
-    mypy_args = ["mypy", pyfilepath, "--check-untyped-defs", "--ignore-missing-imports"]
+    mypy_args = [
+        "mypy",
+        pyfilepath,
+        "--check-untyped-defs",
+        "--ignore-missing-imports",
+        "--follow-imports=skip",
+    ]
     mypy_out, mypy_err = ch.run_capture_out(mypy_args)
     mypy_str = f"{ch.format_header('Mypy Output')}\n{mypy_out}\n{mypy_err}"
     if "Success: no issues found" in mypy_str:

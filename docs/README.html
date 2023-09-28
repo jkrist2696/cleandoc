@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>README &mdash; cleandoc 0.0.3 documentation</title>
+  <title>README &mdash; cleandoc 0.0.4 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -35,7 +35,7 @@
             cleandoc
           </a>
               <div class="version">
-                0.0.3
+                0.0.4
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -50,7 +50,11 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">README</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#cleandoc">cleandoc</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#install">Install</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#command-line-usage">Command Line Usage</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#python-in-line-usage">Python In-Line Usage</a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#read-the-docs">Read The Docs</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#contributing">Contributing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#license">License</a></li>
@@ -90,13 +94,17 @@
 <h1>README<a class="headerlink" href="#readme" title="Permalink to this heading"></a></h1>
 <section id="cleandoc">
 <h2>cleandoc<a class="headerlink" href="#cleandoc" title="Permalink to this heading"></a></h2>
-<p>Python package leveraging doq, black, pylint, mypy and sphinx to automatically clean and document python code.</p>
+<p>Python package leveraging <a class="reference external" href="https://pypi.org/project/doq/">doq</a>, <a class="reference external" href="https://pypi.org/project/black/">black</a>, <a class="reference external" href="https://pypi.org/project/pylint/">pylint</a>, <a class="reference external" href="https://pypi.org/project/mypy/">mypy</a> and <a class="reference external" href="https://pypi.org/project/Sphinx/">sphinx</a> to automatically clean and document python code.</p>
 <section id="install">
 <h3>Install<a class="headerlink" href="#install" title="Permalink to this heading"></a></h3>
-<p>pip install cleandoc</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">cleandoc</span>
+</pre></div>
+</div>
 </section>
 <section id="usage">
 <h3>Usage<a class="headerlink" href="#usage" title="Permalink to this heading"></a></h3>
+<section id="command-line-usage">
+<h4>Command Line Usage<a class="headerlink" href="#command-line-usage" title="Permalink to this heading"></a></h4>
 <p>cleandoc [-h] [-file FILE] [-dir DIR] [-write] [-ignore] [-noclean] [-nodoc] [-release]</p>
 <p>optional arguments:</p>
 <ul class="simple">
@@ -141,6 +149,66 @@
 </ul>
 </li>
 </ul>
+</section>
+<section id="python-in-line-usage">
+<h4>Python In-Line Usage<a class="headerlink" href="#python-in-line-usage" title="Permalink to this heading"></a></h4>
+<ul class="simple">
+<li><p>Example below can be ran as a standalone code example</p></li>
+<li><p>Example includes standard Python packages shutil, os, and webbrowser</p></li>
+<li><p>In-line usage of cleandoc is shown when calling &quot;cd.&quot;</p></li>
+<li><p>Recommended use case is running &quot;cleandoc_all&quot;  on your python module folders</p></li>
+</ul>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># Pylint will be mad because there is no script docstring</span>
+
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">webbrowser</span>
+<span class="kn">import</span> <span class="nn">cleandoc</span> <span class="k">as</span> <span class="nn">cd</span>
+<span class="kn">import</span> <span class="nn">os</span>  <span class="c1"># this import should be before cleandoc, pylint will complain</span>
+
+<span class="k">def</span> <span class="nf">example_fxn_1</span><span class="p">()</span><span class="o">-&gt;</span><span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set a variable that get flagged by Pylint</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ISSUE_2</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># pylint complains because variables in functions should be snake or lowercase</span>
+    <span class="n">ISSUE_2</span> <span class="o">=</span> <span class="s2">&quot;setting a previous int to a string now. Mypy will complain&quot;</span>
+    <span class="k">return</span> <span class="n">ISSUE_2</span>
+
+
+<span class="k">if</span> <span class="vm">__name__</span><span class="o">==</span><span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="c1"># Create nested source file folder and copy in this script</span>
+    <span class="n">maindir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+    <span class="n">srcpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">maindir</span><span class="p">,</span> <span class="s2">&quot;src&quot;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">srcpath</span><span class="p">)</span>
+    <span class="n">dirpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">srcpath</span><span class="p">,</span> <span class="s2">&quot;readme_test&quot;</span><span class="p">)</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">dirpath</span><span class="p">)</span>
+    <span class="n">scriptpath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">maindir</span><span class="p">,</span> <span class="s2">&quot;src&quot;</span><span class="p">,</span> <span class="s2">&quot;readme_test&quot;</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">basename</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)))</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copyfile</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">),</span> <span class="n">scriptpath</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&gt;&gt;&gt; Cleaning One Python File &lt;&lt;&lt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">cd</span><span class="o">.</span><span class="n">clean_pyfile</span><span class="p">(</span><span class="n">scriptpath</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&gt;&gt;&gt; Cleaning All Python Files in Directory &lt;&lt;&lt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">cd</span><span class="o">.</span><span class="n">clean_all</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">skip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&gt;&gt;&gt; Cleaning All and Generating HTML Docs &lt;&lt;&lt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="c1"># Below line runs clean_all and gen_docs functions</span>
+        <span class="c1"># Raises a syntax warnings because ignore=False, so docs are not generated</span>
+        <span class="n">cd</span><span class="o">.</span><span class="n">cleandoc_all</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">ignore</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">write</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="s2">&quot;0.0.1&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">SyntaxWarning</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;syntax warning:</span><span class="se">\n\n</span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n\n</span><span class="s2">&gt;&gt;&gt; Generating HTML Documents with Sphinx &lt;&lt;&lt;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">webpage</span> <span class="o">=</span> <span class="n">cd</span><span class="o">.</span><span class="n">gen_docs</span><span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">changed</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">release</span><span class="o">=</span><span class="s2">&quot;0.0.1&quot;</span><span class="p">)</span>
+
+    <span class="n">issue_1</span> <span class="o">=</span> <span class="s2">&quot;This string line is way too long. Why did you need to type this all in one line? Black is going to try to shorten this and pylint will complain. Pylint also complains because constaints in main script should be all uppercase.&quot;</span>
+    <span class="n">ISSUE_2</span> <span class="o">=</span> <span class="n">example_fxn_1</span><span class="p">()</span>
+    <span class="n">ISSUE_3</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;really&quot;</span><span class="p">,</span><span class="s2">&quot;long&quot;</span><span class="p">,</span><span class="s2">&quot;list&quot;</span><span class="p">,</span><span class="s2">&quot;so&quot;</span><span class="p">,</span><span class="s2">&quot;black&quot;</span><span class="p">,</span><span class="s2">&quot;reformats&quot;</span><span class="p">,</span><span class="s2">&quot;it&quot;</span><span class="p">,</span><span class="s2">&quot;and&quot;</span><span class="p">,</span><span class="s2">&quot;turns&quot;</span><span class="p">,</span><span class="s2">&quot;the&quot;</span><span class="p">,</span><span class="s2">&quot;one&quot;</span><span class="p">,</span><span class="s2">&quot;line&quot;</span><span class="p">,</span><span class="s2">&quot;list&quot;</span><span class="p">,</span><span class="s2">&quot;into&quot;</span><span class="p">,</span><span class="s2">&quot;multi&quot;</span><span class="p">,</span><span class="s2">&quot;line&quot;</span><span class="p">]</span>
+
+    <span class="c1"># Delete src folder created at begining of script</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">rmtree</span><span class="p">(</span><span class="n">srcpath</span><span class="p">)</span>
+    <span class="n">webbrowser</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">webpage</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
 </section>
 <section id="read-the-docs">
 <h3>Read The Docs<a class="headerlink" href="#read-the-docs" title="Permalink to this heading"></a></h3>
