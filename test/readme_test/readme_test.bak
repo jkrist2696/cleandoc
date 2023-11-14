@@ -1,0 +1,53 @@
+# -*- coding: utf-8 -*-
+# Pylint will be mad because there is no script docstring
+
+import cleandoc as cd
+import os  # this import should be before cleandoc, pylint will complain
+import shutil
+
+scriptpath = __file__
+scriptdir = os.path.dirname(os.path.abspath(scriptpath))
+# Backup current script
+bakpath = os.path.join(scriptdir, "readme_test.bak")
+shutil.copyfile(__file__, bakpath)
+
+# Clean a certain python file
+cd.clean_pyfile(__file__, write=True)
+# Clean all python files in a directory
+cd.clean_all(scriptdir, ignore=True, write=False, skip=True)
+try:
+    # Next line will error because ignore is false (raises syntax warnings)
+    cd.cleandoc_all(scriptdir, ignore=False, write=True, release="0.0.1")
+except SyntaxWarning as error:
+    print(f"syntax warning: {error}")
+# Generate html docs with Sphinx
+cd.gen_docs(scriptdir, changed=True, release="0.0.1")
+
+# Set some variables that get flagged
+issue_1 = "This string line is way too long. Why did you need to type this all in one line? Black is going to try to shorten this and pylint will complain."
+ISSUE_2 = 0
+ISSUE_2 = "setting a previous int to a string now. Mypy will complain"
+ISSUE_3 = [
+    "really",
+    "long",
+    "list",
+    "so",
+    "black",
+    "reformats",
+    "it",
+    "and",
+    "turns",
+    "the",
+    "one",
+    "line",
+    "list",
+    "into",
+    "multi",
+    "line",
+]
+
+# Delete changed script and rename backup to original name
+os.remove(scriptpath)
+shutil.copyfile(bakpath, scriptpath)
+os.remove(bakpath)
+os.remove(os.path.join(scriptdir, "__init__.py"))

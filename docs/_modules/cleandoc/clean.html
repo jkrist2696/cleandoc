@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cleandoc.clean &mdash; cleandoc 0.0.4 documentation</title>
+  <title>cleandoc.clean &mdash; cleandoc 0.0.27 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=7c35ed9f"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" /> 
@@ -32,7 +32,7 @@
             cleandoc
           </a>
               <div class="version">
-                0.0.4
+                0.0.27
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -82,13 +82,12 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">black</span>  <span class="c1"># pylint: disable=W0611</span>
-<span class="kn">import</span> <span class="nn">pylint</span>  <span class="c1"># pylint: disable=W0611</span>
-<span class="kn">import</span> <span class="nn">mypy</span>  <span class="c1"># pylint: disable=W0611</span>
 <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">helper</span> <span class="k">as</span> <span class="n">ch</span>
 
 
-<div class="viewcode-block" id="run_black"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.clean.run_black">[docs]</a><span class="k">def</span> <span class="nf">run_black</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="run_black">
+<a class="viewcode-back" href="../../cleandoc.html#cleandoc.clean.run_black">[docs]</a>
+<span class="k">def</span> <span class="nf">run_black</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">write</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run &quot;black&quot; command on .py file via subprocess and check output.</span>
 <span class="sd">    Black is a python package which auto-formats python code according to PEP8.</span>
 
@@ -111,11 +110,14 @@
     <span class="k">if</span> <span class="s2">&quot;1 file&quot;</span> <span class="ow">in</span> <span class="n">black_str</span> <span class="ow">and</span> <span class="s2">&quot;left unchanged&quot;</span> <span class="ow">in</span> <span class="n">black_str</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;cleandoc&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">black_str</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">black_str</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">black_str</span></div>
 
 
-<div class="viewcode-block" id="run_pylint"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.clean.run_pylint">[docs]</a><span class="k">def</span> <span class="nf">run_pylint</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+<div class="viewcode-block" id="run_pylint">
+<a class="viewcode-back" href="../../cleandoc.html#cleandoc.clean.run_pylint">[docs]</a>
+<span class="k">def</span> <span class="nf">run_pylint</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run &quot;pylint&quot; command on .py file via subprocess and check output.</span>
 <span class="sd">    Pylint is a python package which checks for code cleanliness.</span>
 
@@ -136,11 +138,14 @@
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pylint_out</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">pylint_err</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;cleandoc&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">pylint_str</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">pylint_str</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">pylint_str</span></div>
 
 
-<div class="viewcode-block" id="run_mypy"><a class="viewcode-back" href="../../cleandoc.html#cleandoc.clean.run_mypy">[docs]</a><span class="k">def</span> <span class="nf">run_mypy</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+
+<div class="viewcode-block" id="run_mypy">
+<a class="viewcode-back" href="../../cleandoc.html#cleandoc.clean.run_mypy">[docs]</a>
+<span class="k">def</span> <span class="nf">run_mypy</span><span class="p">(</span><span class="n">pyfilepath</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Run &quot;mypy&quot; command on .py file via subprocess and check output.</span>
 <span class="sd">    Mypy is a python package which staticly checks variable types</span>
 <span class="sd">    according to type hints.</span>
@@ -167,8 +172,9 @@
     <span class="k">if</span> <span class="s2">&quot;Success: no issues found&quot;</span> <span class="ow">in</span> <span class="n">mypy_str</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;&quot;</span>
     <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s2">&quot;cleandoc&quot;</span><span class="p">)</span>
-    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="n">mypy_str</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">mypy_str</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">mypy_str</span></div>
+
 
 
 <span class="c1"># if __name__ == &quot;__main__&quot;:</span>

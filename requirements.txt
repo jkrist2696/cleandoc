@@ -1,0 +1,7 @@
+black>=23.3.0
+Sphinx>=6.2.1
+doq>=0.9.1
+m2r2
+sphinx_rtd_theme
+pylint
+mypy

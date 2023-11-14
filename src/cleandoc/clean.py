@@ -6,9 +6,6 @@ Created on Sun Jul  2 12:18:08 2023
 """
 
 import logging
-import black  # pylint: disable=W0611
-import pylint  # pylint: disable=W0611
-import mypy  # pylint: disable=W0611
 from . import helper as ch
 
 
@@ -35,7 +32,7 @@ def run_black(pyfilepath: str, write: bool = True):
     if "1 file" in black_str and "left unchanged" in black_str:
         return ""
     logger = logging.getLogger("cleandoc")
-    logger.info(black_str)
+    logger.debug(black_str)
     return black_str
 
 
@@ -60,7 +57,7 @@ def run_pylint(pyfilepath: str):
     if len(pylint_out.strip()) + len(pylint_err.strip()) == 0:
         return ""
     logger = logging.getLogger("cleandoc")
-    logger.info(pylint_str)
+    logger.debug(pylint_str)
     return pylint_str
 
 
@@ -91,7 +88,7 @@ def run_mypy(pyfilepath: str):
     if "Success: no issues found" in mypy_str:
         return ""
     logger = logging.getLogger("cleandoc")
-    logger.info(mypy_str)
+    logger.debug(mypy_str)
     return mypy_str
 
 

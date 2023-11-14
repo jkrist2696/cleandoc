@@ -1,17 +1,17 @@
-.. cleandoc documentation master file, created by
-   sphinx-quickstart on Mon Nov 13 19:47:52 2023.
+.. readme_test documentation master file, created by
+   sphinx-quickstart on Wed Sep 27 23:34:57 2023.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to cleandoc's documentation!
-====================================
+Welcome to readme_test's documentation!
+=======================================
 
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
     
    README
-   cleandoc
+   readme_test
 
 
 

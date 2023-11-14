@@ -10,11 +10,11 @@ import sys
 from importlib import import_module
 
 scriptdir, scriptname = path.split(__file__)
-testdir = path.split(path.abspath(__file__))[0]
-mainpath = path.split(testdir)[0]
+testdir = path.dirname(path.abspath(__file__))
+mainpath = path.dirname(testdir)
 cleandoc_path = path.join(mainpath, "src", "cleandoc")
 try:
-    import cleandoc as cd
+    import cleandoc as cd  # type: ignore
 except ImportError:
     sys.path.insert(0, path.join(mainpath, "src"))
     cd = import_module("cleandoc")
@@ -26,17 +26,17 @@ clitest = (
 print(f"\nCommand Line Test Command:\n{clitest}\n")
 out = system(clitest)
 print(f"\nCommand Line Test Exit Code: {out}\n")
+currentdir = getcwd()
+chdir("./test")
 cd.cleandoc_all(cleandoc_path, write=False)
 
 # Clean a file
 print("\nCleaning Single File:\n")
-appfilepath = path.join(mainpath, "../../dash/codenav/src/codenav/app.py")
+appfilepath = path.join(mainpath, "../../../dash/codenav/src/codenav/app.py")
 cd.clean_pyfile(appfilepath)
 print("\n")
 
 # Clean my other packages
-currentdir = getcwd()
-chdir("./test")
 SNIPSEARCH = path.join(scriptdir, "../../snipsearch/src/snipsearch")
 cd.cleandoc_all(SNIPSEARCH, write=False)
 TEST = path.join(scriptdir, "./test_pkgs/fake_pkg_1")

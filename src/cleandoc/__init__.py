@@ -5,7 +5,7 @@ Created on Sun Jul  2 12:18:08 2023
 @author: jkris
 """
 
-from os import path, mkdir, getcwd
+from os import path, mkdir
 from shutil import rmtree, copytree, copyfile
 import logging
 import webbrowser
@@ -33,10 +33,10 @@ def cleandoc_all(
     release : str
         Version of docs formatted as "X.Y.Z" for Major, Minor, Patch
     """
-    searchpath = path.abspath(searchpath)
+    searchpath = path.realpath(searchpath)
     skiplist = ch.get_clean_pyfiles("cleandoc_log.txt")
     src_changed = ch.check_modified_since_docs(searchpath, "cleandoc_log.txt")
-    logger = ch.config_log("cleandoc_log.txt")
+    logger = ch.config_log(file="cleandoc_log.txt")
     summary = clean_all(searchpath, ignore=ignore, write=write, skip=skiplist)
     if len(summary) == 0 or ignore:
         mainpage = gen_docs(searchpath, changed=src_changed, release=release)
@@ -65,7 +65,7 @@ def clean_all(
         List of .py files to skip cleaning.
         Or True to find list of clean pyfiles within function.
     """
-    searchpath = path.abspath(searchpath)
+    searchpath = path.realpath(searchpath)
     if not path.isdir(searchpath):
         raise FileNotFoundError("Searchpath does not exist: " + str(searchpath))
     if skip is True:
@@ -73,18 +73,18 @@ def clean_all(
     elif skip is False:
         skip = []
     pyfilelist = ch.find_pyfiles(searchpath)[1]
-    logger = ch.config_log("cleandoc_log.txt")
+    logger = ch.config_log(file="cleandoc_log.txt")
     summary_all = ""
     for i, pyfile in enumerate(pyfilelist):
         pyname = path.split(pyfile)[1]
         if pyfile in skip:  # type: ignore
             header = f"Skipping File ({i+1}/{len(pyfilelist)}): {pyname}"
-            headerstr = f"{ch.format_header(header, repeat_char='o')}\n"
-            logger.info(headerstr)
-            logger.info("File is Clean: %s\n", pyfile)
+            headerstr = f"{ch.format_header(header, repeat_char='o')}"
+            logger.debug(headerstr)
+            logger.debug("File is Clean: %s", pyfile)
             continue
         header = f"Checking File ({i+1}/{len(pyfilelist)}): {pyname}"
-        headerstr = f"{ch.format_header(header, repeat_char='o')}\n"
+        headerstr = f"{ch.format_header(header, repeat_char='o')}"
         logger.info(headerstr)
         summary = clean_pyfile(pyfile, write=write)
         if (not ignore) and (len(summary) > 0):
@@ -92,7 +92,7 @@ def clean_all(
             logging.shutdown()
             raise SyntaxWarning(f"{pyfile}\n{summary}")
         if len(summary) == 0:
-            logger.info("File is Clean: %s\n", pyfile)
+            logger.info("File is Clean: %s", pyfile)
         summary_all += summary
     for handle in logger.handlers:
         handle.close()
@@ -114,8 +114,7 @@ def clean_pyfile(pyfilepath: str, write: bool = True):
     """
     if not path.isfile(pyfilepath):
         raise FileNotFoundError("Pyfilepath does not exist: " + str(pyfilepath))
-    logger = ch.config_log("cleandoc_log.txt")
-    pyfilepath = path.abspath(pyfilepath)
+    logger = ch.config_log(file="cleandoc_log.txt", newfile=False)
     realpath = path.realpath(pyfilepath)
     summary = check_docstrings(realpath)
     summary += run_doq(realpath, write=write)
@@ -144,18 +143,18 @@ def gen_docs(pkgpath: str, changed: bool = True, release: str = ""):
     str
         Path of index.html file, the home page of the sphinx docs
     """
-    pkgpath = path.abspath(pkgpath)
+    pkgpath = path.realpath(pkgpath)
     if not path.isdir(pkgpath):
         raise FileNotFoundError("Pkgpath does not exist: " + str(pkgpath))
-    logger = ch.config_log("cleandoc_log.txt")
+    logger = ch.config_log(file="cleandoc_log.txt", newfile=False)
     basepath, pkgname = path.split(pkgpath)
     docs = path.join(path.split(basepath)[0], "docs")
     indexpath = path.join(docs, "index.html")
     if changed is False and path.exists(docs) and len(release) == 0:
-        logger.info("%s\n", ch.format_header("Skipping Gen Docs", repeat_char="o"))
-        logger.info("Docs Location: %s\n", docs)
+        logger.info("%s", ch.format_header("Skipping Gen Docs", repeat_char="o"))
+        logger.info("Docs Location: %s", docs)
         return indexpath
-    logger.info("%s\n", ch.format_header("Gen Docs Output", repeat_char="o"))
+    logger.info("%s", ch.format_header("Gen Docs Output", repeat_char="o"))
     logger.debug("    pkgpath: %s", pkgpath)
     docpath = path.join(basepath, f"_{pkgname}_working_docs")
     confpath = path.join(docpath, "source", "conf.py")
@@ -172,7 +171,7 @@ def gen_docs(pkgpath: str, changed: bool = True, release: str = ""):
     copytree(htmlpath, docs)
     copyfile(confpath, confpath_old)
     rmtree(docpath)
-    logger.info("Docs Location: %s\n", docs)
+    logger.info("Docs Location: %s", docs)
     for handle in logger.handlers:
         handle.close()
     return indexpath

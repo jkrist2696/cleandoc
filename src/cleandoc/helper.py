@@ -12,10 +12,9 @@ from os import path, walk, remove
 from datetime import datetime
 from re import findall
 import logging
-from sys import stdout
 
 
-def run_capture_out(cmd: list[str], shell: bool = False) -> Tuple[str, str]:
+def run_capture_out(cmd: list[str], **kwargs) -> Tuple[str, str]:
     """Run subprocess command and return the stdout and stderr.
 
     Parameters
@@ -38,8 +37,8 @@ def run_capture_out(cmd: list[str], shell: bool = False) -> Tuple[str, str]:
         capture_output=True,
         encoding="utf-8",
         check=False,
-        shell=shell,
         errors="ignore",
+        **kwargs,
     )
     return proc.stdout, proc.stderr
 
@@ -117,7 +116,7 @@ def check_modified(filepath: str, timestr: str) -> bool:
     """
     if not path.exists(filepath):
         return False
-    checktime = datetime.strptime(timestr, "%d-%m-%y %H:%M:%S")
+    checktime = datetime.strptime(timestr, "%d-%m-%y | %H:%M:%S")
     checkstamp = datetime.timestamp(checktime)
     editstamp = path.getmtime(filepath)
     return editstamp > checkstamp
@@ -194,7 +193,7 @@ def get_clean_pyfiles(logpath: str) -> list[str]:
         List of .py files in nested directory which are still clean
     """
     clean_pyfiles = []
-    regex = r"(\d\d-\d\d-\d\d \d\d:\d\d:\d\d).*File is Clean: (.*)"
+    regex = r"(\d\d-\d\d-\d\d \| \d\d:\d\d:\d\d).*File is Clean: (.*)"
     results = findall_infile(regex, logpath, skip_exist=True)
     for result in results:
         if not check_modified(result[1], result[0]):
@@ -202,34 +201,52 @@ def get_clean_pyfiles(logpath: str) -> list[str]:
     return clean_pyfiles
 
 
-def config_log(logpath: str, logname: str = "cleandoc"):
+def config_log(file: str = "", newfile: bool = True):
     """Configure log file using logging module
 
     Parameters
     ----------
-    logpath : str
-        Path of cleandoc log file to create
-    logname : str
-        Name for logger
+    file : str = ""
+        Path to logfile to write
+    newfile : bool = True
+        Set to false to not overwrite existing log file
 
     Returns
     -------
     logger object
 
     """
-    if logging.getLogger(logname).hasHandlers():
-        return logging.getLogger(logname)
-    if path.exists(logpath):
-        remove(logpath)
-    logging.basicConfig(
-        filename=logpath,
-        filemode="a",
-        format="%(asctime)s %(name)s %(levelname)s %(message)s",
-        datefmt="%d-%m-%y %H:%M:%S",
-        level=logging.INFO,
-    )
+
+    logname = "cleandoc"
     logger = logging.getLogger(logname)
-    logger.addHandler(logging.StreamHandler(stdout))
+    if logger.hasHandlers():
+        for handler in logging.root.handlers[:]:
+            logging.root.removeHandler(handler)
+        return logger
+    fs = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
+    dfs = "%d-%m-%y | %H:%M:%S"
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
+    logging.basicConfig(level=logging.DEBUG)
+    for handler in logging.root.handlers[:]:
+        logging.root.removeHandler(handler)
+    # logging.getLogger().setLevel()
+    # logging.basicConfig(stream=None, format=fs, datefmt=dfs, level=logging.DEBUG)
+    # stream=stdout,, level=logging.WARN
+    logger.propagate = False
+    if len(file) > 0:
+        if path.exists(file) and newfile:
+            remove(file)
+        file_handler = logging.FileHandler(file)
+        print(f"\n{logname} logfile path: {path.realpath(file)}\n")
+        file_handler.setFormatter(logging.Formatter(fs, dfs, "%"))
+        file_handler.setLevel(logging.DEBUG)
+        logger.addHandler(file_handler)
+    stdout_handler = logging.StreamHandler()  # stdout
+    stdout_handler.setFormatter(logging.Formatter(fs, dfs, "%"))
+    stdout_handler.setLevel(logging.INFO)
+    logger.addHandler(stdout_handler)
+    # logger.propagate = False
     return logger
 
 

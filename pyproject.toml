@@ -1,0 +1,29 @@
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["**.__pycache__"]
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+[project]
+license = { text = "GPL-3.0-only" }
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    'Operating System :: Microsoft :: Windows',
+    'Operating System :: Unix',
+]
+
+name = "cleandoc"
+version = "0.0.13"
+authors = [{ name = "Jason Krist", email = "jkrist2696@gmail.com" }]
+description = ""
+requires-python = ">=3.12.0"
+dependencies = ["black>=23.3.0","Sphinx>=6.2.1","doq>=0.9.1","m2r2","sphinx_rtd_theme","pylint","mypy"]
+[tool.setuptools.package-data]
+cleandoc = ["*.typed", ".template"]
+[project.scripts]
+cleandoc="cleandoc:cli_main"
+[project.urls]
+"Homepage" = "https://github.com/jkrist2696/cleandoc"

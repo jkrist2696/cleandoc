@@ -1,5 +1,7 @@
 # cleandoc
 
+## Description
+
 Python package leveraging [doq](https://pypi.org/project/doq/), [black](https://pypi.org/project/black/), [pylint](https://pypi.org/project/pylint/), [mypy](https://pypi.org/project/mypy/) and [sphinx](https://pypi.org/project/Sphinx/) to automatically clean and document python code.
 
 ## Install

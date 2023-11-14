@@ -6,11 +6,10 @@ Created on Sun Jul  2 12:18:08 2023
 """
 
 from os import path, sep, remove
+from sys import platform
 from getpass import getuser
 from re import findall, sub
 import logging
-import sphinx_rtd_theme  # pylint: disable=W0611
-import sphinx  # pylint: disable=W0611
 from . import helper as ch
 
 
@@ -51,7 +50,7 @@ def run_sphinx_all(docpath: str, confpath: str, pkgpath: str, release: str):
     edit_index(srcpath, pkgname)
     summary += run_make(docpath)
     if len(summary) > 0:
-        raise SyntaxError(summary)
+        raise SyntaxError("\n\n" + summary)
 
 
 def run_quickstart(docpath: str, pkgname: str, release: str) -> str:
@@ -138,13 +137,17 @@ def run_make(docpath: str) -> str:
     str
         Shell output from "make html" command
     """
-    make_args = ["cd", f"{docpath}", "&&", "make", "html"]
+    make_args = ["make", "html"]
     logger = logging.getLogger("cleandoc")
     logger.debug(" ".join(make_args))
-    make_out, make_err = ch.run_capture_out(make_args, shell=True)
+    # print(f"docpath: {docpath}")
+    shell = False
+    if "win" in platform:
+        shell = True
+    make_out, make_err = ch.run_capture_out(make_args, cwd=docpath, shell=shell)
     make_str = f"{ch.format_header('Sphinx Make Output')}\n{make_out}\n{make_err}\n"
     if ("error" in make_str.lower()) or ("warning" in make_str.lower()):
-        logger.info(make_str)
+        logger.debug(make_str)
         return make_str
     return ""
 
